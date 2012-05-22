@@ -38,6 +38,13 @@ class tx_cloudflare_tcemain {
 	/** @var string */
 	protected $extKey = 'cloudflare';
 
+	/** @var array */
+	protected $config;
+
+	public function __construct() {
+		$this->config = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
+	}
+
 	/**
 	 * Clears the CloudFlare cache.
 	 *
@@ -50,19 +57,27 @@ class tx_cloudflare_tcemain {
 			return;
 		}
 
-		$domain = t3lib_div::getIndpEnv('TYPO3_HOST_ONLY');
-		$parameters = array(
-			'a' => 'fpurge_ts',
-			'z' => $domain,
-			'v' => '1',
-		);
-		$ret = $this->sendCloudFlare($parameters);
+		$domains = $this->config['domains'] ? t3lib_div::trimExplode(',', $this->config['domains'], TRUE) : array();
+		if (count($domains) == 0) {
+			$host = t3lib_div::getIndpEnv('TYPO3_HOST_ONLY');
+			$hostParts = explode('.', $host);
+			$domains[] = count($hostParts) > 1 ? implode('.', array_slice($hostParts, -2)) : $host;
+		}
 
-		if (is_object($pObj->BE_USER)) {
-			if ($ret['result'] === 'error') {
-				$pObj->BE_USER->writelog(4, 1, 1, 0, 'User %s failed to clear the cache on CloudFlare (domain: "%s"): %s', array($pObj->BE_USER->user['username'], $domain, $ret['msg']));
-			} else {
-				$pObj->BE_USER->writelog(4, 1, 0, 0, 'User %s cleared the cache on CloudFlare (domain: "%s")', array($pObj->BE_USER->user['username'], $domain));
+		foreach ($domains as $domain) {
+			$parameters = array(
+				'a' => 'fpurge_ts',
+				'z' => $domain,
+				'v' => '1',
+			);
+			$ret = $this->sendCloudFlare($parameters);
+
+			if (is_object($pObj->BE_USER)) {
+				if ($ret['result'] === 'error') {
+					$pObj->BE_USER->writelog(4, 1, 1, 0, 'User %s failed to clear the cache on CloudFlare (domain: "%s"): %s', array($pObj->BE_USER->user['username'], $domain, $ret['msg']));
+				} else {
+					$pObj->BE_USER->writelog(4, 1, 0, 0, 'User %s cleared the cache on CloudFlare (domain: "%s")', array($pObj->BE_USER->user['username'], $domain));
+				}
 			}
 		}
 	}
@@ -74,10 +89,9 @@ class tx_cloudflare_tcemain {
 	 * @return array
 	 */
 	protected function sendCloudFlare(array $additionalParams) {
-		$config = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
 		$params = array(
-			'tkn'   => $config['apiKey'],
-			'email' => $config['email']
+			'tkn'   => $this->config['apiKey'],
+			'email' => $this->config['email']
 		);
 		$allParams = array_merge($params, $additionalParams);
 
