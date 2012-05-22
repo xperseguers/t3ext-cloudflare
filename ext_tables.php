@@ -12,7 +12,7 @@ if (isset($config['enableOriginatingIPs']) && $config['enableOriginatingIPs'] ==
 	if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
 		$remoteIp = t3lib_div::getIndpEnv('REMOTE_ADDR');
 
-		// @see http://support.cloudflare.com/kb/troubleshooting/how-do-i-whitelist-cloudflares-ip-addresses-in-htacess
+		// @see https://www.cloudflare.com/ips
 		$whiteListIPv4s = array(
 			'204.93.240.0/24',
 			'204.93.177.0/24',
