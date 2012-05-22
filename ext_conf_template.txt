@@ -3,3 +3,6 @@ apiKey =
 
 	# cat=basic//20; type=string; label=Email: The e-mail address associated with the API key.
 email =
+
+	# cat=advanced/enable; type=boolean; label=Originating IPs: Tick this checkbox in case you cannot restore the originating IPs at the webserver level
+enableOriginatingIPs = 0

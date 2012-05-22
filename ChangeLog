@@ -1,3 +1,4 @@
 2012-05-22  Xavier Perseguers  <xavier@causal.ch>
 
-	* [TASK] Kickstart of the extension
+	* [FEATURE] Restore originating IP
+	* [FEATURE] Clear cache on CloudFlare
