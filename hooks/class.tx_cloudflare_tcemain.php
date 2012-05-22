@@ -70,13 +70,14 @@ class tx_cloudflare_tcemain {
 				'z' => $domain,
 				'v' => '1',
 			);
-			$ret = $this->sendCloudFlare($parameters);
-
-			if (is_object($pObj->BE_USER)) {
-				if ($ret['result'] === 'error') {
-					$pObj->BE_USER->writelog(4, 1, 1, 0, 'User %s failed to clear the cache on CloudFlare (domain: "%s"): %s', array($pObj->BE_USER->user['username'], $domain, $ret['msg']));
-				} else {
-					$pObj->BE_USER->writelog(4, 1, 0, 0, 'User %s cleared the cache on CloudFlare (domain: "%s")', array($pObj->BE_USER->user['username'], $domain));
+			$ret = $this->sendCloudFlare($parameters, $pObj);
+			if (isset($ret['result'])) {
+				if (is_object($pObj->BE_USER)) {
+					if ($ret['result'] === 'error') {
+						$pObj->BE_USER->writelog(4, 1, 1, 0, 'User %s failed to clear the cache on CloudFlare (domain: "%s"): %s', array($pObj->BE_USER->user['username'], $domain, $ret['msg']));
+					} else {
+						$pObj->BE_USER->writelog(4, 1, 0, 0, 'User %s cleared the cache on CloudFlare (domain: "%s")', array($pObj->BE_USER->user['username'], $domain));
+					}
 				}
 			}
 		}
@@ -86,12 +87,23 @@ class tx_cloudflare_tcemain {
 	 * Sends data to CloudFlare.
 	 *
 	 * @param array $additionalParams
+	 * @param t3lib_TCEmain $pObj
 	 * @return array
 	 */
-	protected function sendCloudFlare(array $additionalParams) {
+	protected function sendCloudFlare(array $additionalParams, t3lib_TCEmain $pObj) {
+		if (is_object($pObj->BE_USER)) {
+			if (!trim($this->config['apiKey'])) {
+				$pObj->BE_USER->writelog(4, 1, 1, 0, 'Cannot clear cache on CloudFlare: Invalid apiKey for EXT:cloudflare', array());
+				return NULL;
+			} elseif (!t3lib_div::validEmail(trim($this->config['email']))) {
+				$pObj->BE_USER->writelog(4, 1, 1, 0, 'Cannot clear cache on CloudFlare: Invalid email for EXT:cloudflare', array());
+				return NULL;
+			}
+		}
+
 		$params = array(
-			'tkn'   => $this->config['apiKey'],
-			'email' => $this->config['email']
+			'tkn'   => trim($this->config['apiKey']),
+			'email' => trim($this->config['email']),
 		);
 		$allParams = array_merge($params, $additionalParams);
 
