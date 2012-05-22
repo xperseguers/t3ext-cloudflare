@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "cloudflare".
 #
-# Auto generated 22-05-2012 09:03
+# Auto generated 22-05-2012 16:49
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -39,7 +39,7 @@ $EM_CONF[$_EXTKEY] = array(
 		'suggests' => array(
 		),
 	),
-	'_md5_values_when_last_written' => '',
+	'_md5_values_when_last_written' => 'a:7:{s:9:"ChangeLog";s:4:"d546";s:21:"ext_conf_template.txt";s:4:"5b33";s:12:"ext_icon.gif";s:4:"f7d7";s:17:"ext_localconf.php";s:4:"3b25";s:14:"ext_tables.php";s:4:"cbda";s:14:"doc/manual.sxw";s:4:"e99f";s:37:"hooks/class.tx_cloudflare_tcemain.php";s:4:"9c6a";}',
 	'suggests' => array(
 	),
 );
