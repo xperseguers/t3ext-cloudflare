@@ -1,0 +1,5 @@
+	# cat=basic//10; type=string; label=API Key: This is the API key made available on your account page (https://www.cloudflare.com/my-account.html)
+apiKey =
+
+	# cat=basic//20; type=string; label=Email: The e-mail address associated with the API key.
+email =
