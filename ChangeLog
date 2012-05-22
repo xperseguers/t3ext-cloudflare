@@ -1,5 +1,6 @@
 2012-05-22  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK][DOC] Add documentation
 	* [FEATURE] Allow arbitrary domains to be flushed
 	* [FEATURE] Restore originating IP
 	* [FEATURE] Clear cache on CloudFlare
