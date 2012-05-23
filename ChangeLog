@@ -1,5 +1,6 @@
 2012-05-23  Xavier Perseguers  <xavier@causal.ch>
 
+	* [FEATURE] Allow 'developer mode' to be toggled from TYPO3
 	* [BUGFIX] EM needs two updates to successfully connect to CloudFlare
 	* [TASK] Dynamically retrieve the list of zones from CloudFlare
 

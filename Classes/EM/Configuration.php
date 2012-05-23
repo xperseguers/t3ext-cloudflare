@@ -42,7 +42,7 @@ class Tx_Cloudflare_EM_Configuration {
 				}
 			}
 		} catch (RuntimeException $e) {
-
+			// Nothing to do
 		}
 
 		if (count($domains) == 0) {
