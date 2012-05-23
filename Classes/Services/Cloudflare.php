@@ -23,9 +23,9 @@
  ***************************************************************/
 
 /**
- * Hook for clearing cache on CloudFlare.
+ * Service to talk to CloudFlare.
  *
- * @category    Hooks
+ * @category    Services
  * @package     TYPO3
  * @subpackage  tx_cloudflare
  * @author      Xavier Perseguers <xavier@causal.ch>
@@ -33,7 +33,9 @@
  * @license     http://www.gnu.org/copyleft/gpl.html
  * @version     SVN: $Id$
  */
-class tx_cloudflare_tcemain {
+class Tx_Cloudflare_Services_Cloudflare implements t3lib_Singleton {
+
+	const CLOUDFLARE_API = 'https://www.cloudflare.com/api_json.html';
 
 	/** @var string */
 	protected $extKey = 'cloudflare';
@@ -41,64 +43,25 @@ class tx_cloudflare_tcemain {
 	/** @var array */
 	protected $config;
 
+	/**
+	 * Default constructor.
+	 */
 	public function __construct() {
 		$this->config = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
-	}
-
-	/**
-	 * Clears the CloudFlare cache.
-	 *
-	 * @param array $params
-	 * @param t3lib_TCEmain $pObj
-	 * @return void
-	 */
-	public function clear_cacheCmd(array $params, t3lib_TCEmain $pObj) {
-		if ($params['cacheCmd'] !== 'all') {
-			return;
-		}
-
-		$domains = $this->config['domains'] ? t3lib_div::trimExplode(',', $this->config['domains'], TRUE) : array();
-		if (count($domains) == 0) {
-			$host = t3lib_div::getIndpEnv('TYPO3_HOST_ONLY');
-			$hostParts = explode('.', $host);
-			$domains[] = count($hostParts) > 1 ? implode('.', array_slice($hostParts, -2)) : $host;
-		}
-
-		foreach ($domains as $domain) {
-			$parameters = array(
-				'a' => 'fpurge_ts',
-				'z' => $domain,
-				'v' => '1',
-			);
-			$ret = $this->sendCloudFlare($parameters, $pObj);
-			if (isset($ret['result'])) {
-				if (is_object($pObj->BE_USER)) {
-					if ($ret['result'] === 'error') {
-						$pObj->BE_USER->writelog(4, 1, 1, 0, 'User %s failed to clear the cache on CloudFlare (domain: "%s"): %s', array($pObj->BE_USER->user['username'], $domain, $ret['msg']));
-					} else {
-						$pObj->BE_USER->writelog(4, 1, 0, 0, 'User %s cleared the cache on CloudFlare (domain: "%s")', array($pObj->BE_USER->user['username'], $domain));
-					}
-				}
-			}
-		}
 	}
 
 	/**
 	 * Sends data to CloudFlare.
 	 *
 	 * @param array $additionalParams
-	 * @param t3lib_TCEmain $pObj
 	 * @return array
+	 * @throws RuntimeException
 	 */
-	protected function sendCloudFlare(array $additionalParams, t3lib_TCEmain $pObj) {
-		if (is_object($pObj->BE_USER)) {
-			if (!trim($this->config['apiKey'])) {
-				$pObj->BE_USER->writelog(4, 1, 1, 0, 'Cannot clear cache on CloudFlare: Invalid apiKey for EXT:cloudflare', array());
-				return NULL;
-			} elseif (!t3lib_div::validEmail(trim($this->config['email']))) {
-				$pObj->BE_USER->writelog(4, 1, 1, 0, 'Cannot clear cache on CloudFlare: Invalid email for EXT:cloudflare', array());
-				return NULL;
-			}
+	public function send(array $additionalParams) {
+		if (!trim($this->config['apiKey'])) {
+			throw new RuntimeException('Cannot clear cache on CloudFlare: Invalid apiKey for EXT:cloudflare', 1337770232);
+		} elseif (!t3lib_div::validEmail(trim($this->config['email']))) {
+			throw new RuntimeException('Cannot clear cache on CloudFlare: Invalid email for EXT:cloudflare', 1337770383);
 		}
 
 		$params = array(
@@ -107,7 +70,7 @@ class tx_cloudflare_tcemain {
 		);
 		$allParams = array_merge($params, $additionalParams);
 
-		return $this->POST('https://www.cloudflare.com/api_json.html', $allParams);
+		return $this->POST(self::CLOUDFLARE_API, $allParams);
 	}
 
 	/**
@@ -156,8 +119,8 @@ class tx_cloudflare_tcemain {
 }
 
 
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/cloudflare/hooks/class.tx_cloudflare_tcemain.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/cloudflare/hooks/class.tx_cloudflare_tcemain.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/cloudflare/Classes/Services/Cloudflare.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/cloudflare/Classes/Services/Cloudflare.php']);
 }
 
 ?>
