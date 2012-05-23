@@ -77,8 +77,8 @@ class Tx_Cloudflare_ExtDirect_ToolbarMenu {
 									break;
 							}
 							if ($active !== NULL) {
-								$js = 'TYPO3BackendCloudflareMenu.toggleDeveloperMode(\'' . $zone['zone_name'] . '\', ' . $active . ');';
-								$out[] = '<li class="divider"><a href="#" onclick="' . $js . '">Toggle developer mode</a></li>';
+								$js = 'TYPO3BackendCloudflareMenu.toggleDevelopmentMode(\'' . $zone['zone_name'] . '\', ' . $active . ');';
+								$out[] = '<li class="divider"><a href="#" onclick="' . $js . '">Toggle development mode</a></li>';
 							} else {
 								$out[] = '<li class="divider">This zone is currently inactive</li>';
 							}
@@ -96,12 +96,12 @@ class Tx_Cloudflare_ExtDirect_ToolbarMenu {
 	}
 
 	/**
-	 * Toggle the developer mode.
+	 * Toggle the development mode.
 	 *
 	 * @param $parameter
 	 * @return array
 	 */
-	public function toggleDeveloperMode($parameter) {
+	public function toggleDevelopmentMode($parameter) {
 		/** @var $cloudflare Tx_Cloudflare_Services_Cloudflare */
 		$cloudflare = t3lib_div::makeInstance('Tx_Cloudflare_Services_Cloudflare', $this->config);
 
@@ -130,7 +130,7 @@ class Tx_Cloudflare_ExtDirect_ToolbarMenu {
 				$icon = t3lib_iconWorks::getSpriteIcon('extensions-cloudflare-online', array('title' => 'Zone is active'));
 				break;
 			case 'status-dev-mode':
-				$icon = t3lib_iconWorks::getSpriteIcon('extensions-cloudflare-direct', array('title' => 'Zone is in developer mode'));
+				$icon = t3lib_iconWorks::getSpriteIcon('extensions-cloudflare-direct', array('title' => 'Zone is in development mode'));
 				break;
 			case 'status-deactivated':
 			default:

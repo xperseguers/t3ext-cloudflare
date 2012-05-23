@@ -71,10 +71,10 @@ var CloudflareMenu = Class.create({
 	},
 
 	/**
-	 * toggles the developer mode for a zone
+	 * toggles the development mode for a zone
 	 */
-	toggleDeveloperMode: function(zone, active) {
-		TYPO3.Ajax.ExtDirect.CloudflareToolbarMenu.toggleDeveloperMode({
+	toggleDevelopmentMode: function(zone, active) {
+		TYPO3.Ajax.ExtDirect.CloudflareToolbarMenu.toggleDevelopmentMode({
 			zone: zone,
 			active: active
 		});
