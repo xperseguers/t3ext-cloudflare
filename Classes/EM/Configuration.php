@@ -32,7 +32,7 @@ class Tx_Cloudflare_EM_Configuration {
 		$out = array();
 
 		/** @var $cloudflare Tx_Cloudflare_Services_Cloudflare */
-		$cloudflare = t3lib_div::makeInstance('Tx_Cloudflare_Services_Cloudflare');
+		$cloudflare = t3lib_div::makeInstance('Tx_Cloudflare_Services_Cloudflare', $this->config);
 
 		try {
 			$ret = $cloudflare->send(array('a' => 'zone_load_multi'));

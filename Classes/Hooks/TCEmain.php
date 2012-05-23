@@ -63,7 +63,7 @@ class Tx_Cloudflare_Hooks_TCEmain {
 		$domains = $this->config['domains'] ? t3lib_div::trimExplode(',', $this->config['domains'], TRUE) : array();
 
 		/** @var $cloudflare Tx_Cloudflare_Services_Cloudflare */
-		$cloudflare = t3lib_div::makeInstance('Tx_Cloudflare_Services_Cloudflare');
+		$cloudflare = t3lib_div::makeInstance('Tx_Cloudflare_Services_Cloudflare', $this->config);
 
 		foreach ($domains as $domain) {
 			$parameters = array(

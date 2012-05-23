@@ -37,17 +37,16 @@ class Tx_Cloudflare_Services_Cloudflare implements t3lib_Singleton {
 
 	const CLOUDFLARE_API = 'https://www.cloudflare.com/api_json.html';
 
-	/** @var string */
-	protected $extKey = 'cloudflare';
-
 	/** @var array */
 	protected $config;
 
 	/**
 	 * Default constructor.
+	 *
+	 * @param array $config
 	 */
-	public function __construct() {
-		$this->config = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
+	public function __construct(array $config = array()) {
+		$this->config = $config;
 	}
 
 	/**
