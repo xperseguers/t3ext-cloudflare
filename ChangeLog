@@ -6,6 +6,7 @@
 
 2012-05-22  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK] Raise version to 1.0.0 (stable)
 	* [TASK][DOC] Add documentation
 	* [FEATURE] Allow arbitrary domains to be flushed
 	* [FEATURE] Restore originating IP
