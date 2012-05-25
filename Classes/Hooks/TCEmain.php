@@ -49,7 +49,7 @@ class Tx_Cloudflare_Hooks_TCEmain {
 	}
 
 	/**
-	 * Clears the CloudFlare cache.
+	 * Hooks into the "clear all caches" call.
 	 *
 	 * @param array $params
 	 * @param t3lib_TCEmain $pObj
@@ -60,6 +60,25 @@ class Tx_Cloudflare_Hooks_TCEmain {
 			return;
 		}
 
+		$this->clearCloudflareCache($pObj->BE_USER);
+	}
+
+	/**
+	 * Answers to AJAX call invoked when clearing only Cloud Flare cache.
+	 *
+	 * @return void
+	 */
+	public function clearCache() {
+		$this->clearCloudflareCache(isset($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER'] : NULL);
+	}
+
+	/**
+	 * Clear the Cloud Flare cache.
+	 *
+	 * @param t3lib_beUserAuth $beUser
+	 * @return void
+	 */
+	protected function clearCloudflareCache(t3lib_beUserAuth $beUser = NULL) {
 		$domains = $this->config['domains'] ? t3lib_div::trimExplode(',', $this->config['domains'], TRUE) : array();
 
 		/** @var $cloudflare Tx_Cloudflare_Services_Cloudflare */
@@ -74,16 +93,16 @@ class Tx_Cloudflare_Hooks_TCEmain {
 			try {
 				$ret = $cloudflare->send($parameters);
 
-				if (is_object($pObj->BE_USER)) {
+				if ($beUser !== NULL) {
 					if ($ret['result'] === 'error') {
-						$pObj->BE_USER->writelog(4, 1, 1, 0, 'User %s failed to clear the cache on CloudFlare (domain: "%s"): %s', array($pObj->BE_USER->user['username'], $domain, $ret['msg']));
+						$beUser->writelog(4, 1, 1, 0, 'User %s failed to clear the cache on CloudFlare (domain: "%s"): %s', array($beUser->user['username'], $domain, $ret['msg']));
 					} else {
-						$pObj->BE_USER->writelog(4, 1, 0, 0, 'User %s cleared the cache on CloudFlare (domain: "%s")', array($pObj->BE_USER->user['username'], $domain));
+						$beUser->writelog(4, 1, 0, 0, 'User %s cleared the cache on CloudFlare (domain: "%s")', array($beUser->user['username'], $domain));
 					}
 				}
 			} catch (RuntimeException $e) {
-				if (is_object($pObj->BE_USER)) {
-					$pObj->BE_USER->writelog(4, 1, 1, 0, $e->getMessage(), array());
+				if ($beUser !== NULL) {
+					$beUser->writelog(4, 1, 1, 0, $e->getMessage(), array());
 				}
 			}
 		}

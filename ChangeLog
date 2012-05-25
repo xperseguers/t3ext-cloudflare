@@ -1,3 +1,7 @@
+2012-05-24  Xavier Perseguers  <xavier@causal.ch>
+
+	* [TASK] Add a "Clear Cloud Flare cache" menu entry
+
 2012-05-23  Xavier Perseguers  <xavier@causal.ch>
 
 	* [FEATURE] Allow 'development mode' to be toggled from TYPO3
