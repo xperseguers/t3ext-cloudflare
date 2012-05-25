@@ -74,9 +74,15 @@ var CloudflareMenu = Class.create({
 	 * toggles the development mode for a zone
 	 */
 	toggleDevelopmentMode: function(zone, active) {
+		var toolbarItemIcon = $$('#cloudflare-menu .toolbar-item span.t3-icon')[0];
+		var spinner = new Element('span').addClassName('spinner');
+		var oldIcon = toolbarItemIcon.replace(spinner);
+
 		TYPO3.Ajax.ExtDirect.CloudflareToolbarMenu.toggleDevelopmentMode({
 			zone: zone,
 			active: active
+		}, function(response) {
+			spinner.replace(oldIcon);
 		});
 	}
 
