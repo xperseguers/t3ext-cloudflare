@@ -59,11 +59,6 @@ class Tx_Cloudflare_ExtDirect_CloudflareToolbarItem implements backend_toolbarIt
 	 */
 	public function __construct(TYPO3backend &$backendReference = NULL) {
 		$this->backendReference = $backendReference;
-		#$this->changeWorkspace = t3lib_div::_GP('changeWorkspace');
-		#$this->changeWorkspacePreview = t3lib_div::_GP('changeWorkspacePreview');
-
-		$pageRenderer = t3lib_div::makeInstance('t3lib_pageRenderer');
-		#$this->backendReference->addJavaScript("TYPO3.Workspaces = { workspaceTitle : '" . htmlspecialchars(addslashes(Tx_Workspaces_Service_Workspaces::getWorkspaceTitle($GLOBALS['BE_USER']->workspace))) . "'};\n");
 	}
 
 	/**
