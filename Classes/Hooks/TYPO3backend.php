@@ -47,7 +47,7 @@ class Tx_Cloudflare_Hooks_TYPO3backend implements backend_cacheActionsHook {
 	public function manipulateCacheActions(&$cacheActions, &$optionValues) {
 		if ($GLOBALS['BE_USER']->isAdmin()) {
 				// Add new cache menu item
-			$title = 'Clear Cloud Flare cache';
+			$title = 'Clear CloudFlare cache';
 			$clearAll = array_shift($cacheActions);
 			$clearCloudFlare = array(
 				'id'    => 'clearCloudflareCache',
