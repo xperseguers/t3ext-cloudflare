@@ -9,3 +9,6 @@ domains =
 
 	# cat=advanced/enable; type=boolean; label=Originating IPs: Tick this checkbox in case you cannot restore the originating IPs at the webserver level.
 enableOriginatingIPs = 0
+
+	# cat=advanced/enable; type=boolean; label=Enforce SSL in Frontend: Tick this checkbox in case you cannot enforce SSL at the webserver level. Please note that SSL support for CloudFlare requires a Pro account.
+enforceSsl = 0

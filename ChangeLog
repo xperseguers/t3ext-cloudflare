@@ -1,3 +1,7 @@
+2012-06-02  Xavier Perseguers  <xavier@causal.ch>
+
+	* [TASK] Add support for flexible SSL (requires a Pro account)
+
 2012-05-29  Xavier Perseguers  <xavier@causal.ch>
 
 	* [TASK] Raise version to 1.1.0

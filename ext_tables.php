@@ -8,35 +8,51 @@ if (!is_array($config)) {
 	$config = array();
 }
 
+$remoteIp = t3lib_div::getIndpEnv('REMOTE_ADDR');
+
+// @see https://www.cloudflare.com/ips
+$whiteListIPv4s = array(
+	'204.93.240.0/24',
+	'204.93.177.0/24',
+	'199.27.128.0/21',
+	'173.245.48.0/20',
+	'103.22.200.0/22',
+	'141.101.64.0/18',
+	'108.162.192.0/18',
+	'190.93.240.0/20',
+);
+$whiteListIPv6s = array(
+	'2400:cb00::/32',
+	'2606:4700::/32',
+	'2803:f800::/32',
+);
+
+$isProxied = FALSE;
 if (isset($config['enableOriginatingIPs']) && $config['enableOriginatingIPs'] == 1) {
-	if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
-		$remoteIp = t3lib_div::getIndpEnv('REMOTE_ADDR');
+	if (t3lib_div::validIPv6($remoteIp)) {
+		$isProxied |= t3lib_div::cmpIPv6($remoteIp, implode(',', $whiteListIPv6s));
+	} else {
+		$isProxied |= t3lib_div::cmpIPv4($remoteIp, implode(',', $whiteListIPv4s));
+	}
+} elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+		// We take for granted that reverse-proxy is properly configured
+	$isProxied = TRUE;
+}
 
-		// @see https://www.cloudflare.com/ips
-		$whiteListIPv4s = array(
-			'204.93.240.0/24',
-			'204.93.177.0/24',
-			'199.27.128.0/21',
-			'173.245.48.0/20',
-			'103.22.200.0/22',
-			'141.101.64.0/18',
-			'108.162.192.0/18',
-			'190.93.240.0/20',
-		);
-		$whiteListIPv6s = array(
-			'2400:cb00::/32',
-			'2606:4700::/32',
-			'2803:f800::/32',
-		);
-
-		$overrideRemoteAddr = FALSE;
-		if (t3lib_div::validIPv6($remoteIp)) {
-			$overrideRemoteAddr |= t3lib_div::cmpIPv6($remoteIp, implode(',', $whiteListIPv6s));
-		} else {
-			$overrideRemoteAddr |= t3lib_div::cmpIPv4($remoteIp, implode(',', $whiteListIPv4s));
+if ($isProxied) {
+		// Flexible-SSL support
+	if (isset($_SERVER['HTTP_CF_VISITOR'])) {
+		$cloudflareVisitor = json_decode($_SERVER['HTTP_CF_VISITOR'], TRUE);
+		if ($cloudflareVisitor['scheme'] === 'https') {
+			$_SERVER['HTTPS'] = 'on';
+		} elseif (TYPO3_MODE === 'FE' && isset($config['enforceSsl']) && $config['enforceSsl'] == 1) {
+			$url = 'https://' . t3lib_div::getIndpEnv('HTTP_HOST') . t3lib_div::getIndpEnv('REQUEST_URI');
+			t3lib_utility_Http::redirect($url);
 		}
+	}
 
-		if ($overrideRemoteAddr) {
+	if (isset($config['enableOriginatingIPs']) && $config['enableOriginatingIPs'] == 1) {
+		if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
 			$_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CF_CONNECTING_IP'];
 		}
 	}
