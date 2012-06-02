@@ -45,6 +45,7 @@ if ($isProxied) {
 		$cloudflareVisitor = json_decode($_SERVER['HTTP_CF_VISITOR'], TRUE);
 		if ($cloudflareVisitor['scheme'] === 'https') {
 			$_SERVER['HTTPS'] = 'on';
+			$_SERVER['HTTP_X_FORWARDED_PROTO'] = 'https';
 		} elseif (TYPO3_MODE === 'FE' && isset($config['enforceSsl']) && $config['enforceSsl'] == 1) {
 			$url = 'https://' . t3lib_div::getIndpEnv('HTTP_HOST') . t3lib_div::getIndpEnv('REQUEST_URI');
 			t3lib_utility_Http::redirect($url);
