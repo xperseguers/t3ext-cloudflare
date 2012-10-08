@@ -1,3 +1,7 @@
+2012-10-08  Xavier Perseguers  <xavier@causal.ch>
+
+	* [TASK] Remove CloudFlare toolbar icon if no API key is provided
+
 2012-08-20  Xavier Perseguers  <xavier@causal.ch>
 
 	* [TASK] Enhance support for flexible SSL when using TYPO3 6.0

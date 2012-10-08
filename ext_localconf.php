@@ -17,11 +17,6 @@ $version = intval((int) $versionParts[0] . str_pad((int) $versionParts[1], 3, '0
 if ($version >= 6000000) {
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['postIndpEnvValue'][] = 'EXT:' . $_EXTKEY . '/Classes/Hooks/t3lib_div.php:Tx_Cloudflare_Hooks_Div->postProcessGetIndpEnv';
 } else {
-	$config = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY]);
-	if (!is_array($config)) {
-		$config = array();
-	}
-
 	$remoteIp = t3lib_div::getIndpEnv('REMOTE_ADDR');
 
 		// @see https://www.cloudflare.com/ips
@@ -71,7 +66,7 @@ if ($version >= 6000000) {
 	}
 }
 
-if (TYPO3_MODE === 'BE') {
+if (TYPO3_MODE === 'BE' && !empty($config['apiKey'])) {
 	$cloudflareToolbarItemClassPath = t3lib_extMgm::extPath($_EXTKEY, 'Classes/ExtDirect/CloudflareToolbarItem.php');
 	$GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'][] = $cloudflareToolbarItemClassPath;
 
