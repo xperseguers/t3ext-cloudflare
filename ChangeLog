@@ -1,3 +1,7 @@
+2012-10-10  Xavier Perseguers  <xavier@causal.ch>
+
+	* [TASK] Raise version to 1.2.0
+
 2012-10-08  Xavier Perseguers  <xavier@causal.ch>
 
 	* [TASK] Remove CloudFlare toolbar icon if no API key is provided
