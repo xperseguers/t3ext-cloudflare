@@ -7,5 +7,8 @@ email =
 	# cat=basic//30; type=user[EXT:cloudflare/Classes/EM/Configuration.php:&Tx_Cloudflare_EM_Configuration->getDomains]; label=Domains: Please tick the domains whose cache should be flushed on CloudFlare upon clearing all caches in TYPO3.
 domains =
 
+	# cat=advanced/enable; type=boolean; label=Purge single files (experimental): Tick this checkbox to try to purge single files on CloudFlare. Beware: Highly experimental!
+enablePurgeSingleFile = 0
+
 	# cat=advanced/enable; type=boolean; label=Originating IPs: Tick this checkbox in case you cannot restore the originating IPs at the webserver level.
 enableOriginatingIPs = 0
