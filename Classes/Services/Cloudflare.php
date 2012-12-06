@@ -35,10 +35,11 @@
  */
 class Tx_Cloudflare_Services_Cloudflare implements t3lib_Singleton {
 
-	const CLOUDFLARE_API = 'https://www.cloudflare.com/api_json.html';
-
 	/** @var array */
 	protected $config;
+
+	/** @var string */
+	protected $apiEndpoint = 'https://www.cloudflare.com/api_json.html';
 
 	/**
 	 * Default constructor.
@@ -47,6 +48,11 @@ class Tx_Cloudflare_Services_Cloudflare implements t3lib_Singleton {
 	 */
 	public function __construct(array $config = array()) {
 		$this->config = $config;
+
+		if (!empty($this->config['apiEndpoint'])) {
+			$this->apiEndpoint = $this->config['apiEndpoint'];
+		}
+
 	}
 
 	/**
@@ -69,7 +75,7 @@ class Tx_Cloudflare_Services_Cloudflare implements t3lib_Singleton {
 		);
 		$allParams = array_merge($params, $additionalParams);
 
-		return $this->POST(self::CLOUDFLARE_API, $allParams);
+		return $this->POST($this->apiEndpoint, $allParams);
 	}
 
 	/**

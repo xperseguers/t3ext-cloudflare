@@ -1,3 +1,7 @@
+2012-12-06  Xavier Perseguers  <xavier@causal.ch>
+
+	* [FEATURE] #43661: Allow a proxy to be defined
+
 2012-12-04  Xavier Perseguers  <xavier@causal.ch>
 
 	* [FEATURE] #43612: Implement "zone_file_purge"
