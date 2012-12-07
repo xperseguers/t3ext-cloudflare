@@ -1,3 +1,7 @@
+2012-12-07  Xavier Perseguers  <xavier@causal.ch>
+
+	* [FEATURE] #43661: Example of a CloudFlare proxy stored in Resources/Examples/proxy-cloudflare.php
+
 2012-12-06  Xavier Perseguers  <xavier@causal.ch>
 
 	* [FEATURE] #43661: Allow a proxy to be defined
