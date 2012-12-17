@@ -193,7 +193,13 @@ class Tx_Cloudflare_Hooks_TCEmain {
 
 		$GLOBALS['TSFE']->checkAlternativeIdMethods();
 		$GLOBALS['TSFE']->determineId();
-		$GLOBALS['TSFE']->getConfigArray();
+		try {
+			$GLOBALS['TSFE']->getConfigArray();
+		} catch (Exception $e) {
+			// Typicall problem: #1294587218: No TypoScript template found!
+			return NULL;
+		}
+
 
 		// Get linkVars, absRefPrefix, etc
 		TSpagegen::pagegenInit();
