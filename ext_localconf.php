@@ -14,7 +14,9 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clea
 $versionParts = explode('.', TYPO3_version);
 $version = intval((int) $versionParts[0] . str_pad((int) $versionParts[1], 3, '0', STR_PAD_LEFT) . str_pad((int) $versionParts[2], 3, '0', STR_PAD_LEFT));
 
-if ($version >= 6000000) {
+// Hook has been reverted in master:
+// @see https://review.typo3.org/#/c/16127/
+if (FALSE && $version >= 6000000) {
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['postIndpEnvValue'][] = 'EXT:' . $_EXTKEY . '/Classes/Hooks/t3lib_div.php:Tx_Cloudflare_Hooks_Div->postProcessGetIndpEnv';
 } else {
 	$remoteIp = t3lib_div::getIndpEnv('REMOTE_ADDR');

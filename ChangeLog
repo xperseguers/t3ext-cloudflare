@@ -1,3 +1,7 @@
+2013-01-14  Xavier Perseguers  <xavier@causal.ch>
+
+	* [BUGFIX] Hook to post-process getIndpEnv() has been reverted. See https://review.typo3.org/#/c/16127/
+
 2012-12-19  Xavier Perseguers  <xavier@causal.ch>
 
 	* [BUGFIX] Invalid HTML rendering of proxy sample configuration
