@@ -1,3 +1,7 @@
+2013-01-15  Xavier Perseguers  <xavier@causal.ch>
+
+	* [FEATURE] #44523: Implement hook in EXT:nc_staticfilecache
+
 2013-01-14  Xavier Perseguers  <xavier@causal.ch>
 
 	* [BUGFIX] Hook to post-process getIndpEnv() has been reverted. See https://review.typo3.org/#/c/16127/

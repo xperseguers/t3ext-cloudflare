@@ -60,6 +60,11 @@ if (FALSE && $version >= 6000000) {
 			}
 		}
 
+			// Cache SSL content
+		if (isset($config['cacheSslContent']) && $config['cacheSslContent'] == 1) {
+			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['nc_staticfilecache/class.tx_ncstaticfilecache.php']['createFile_initializeVariables'][] = 'EXT:' . $_EXTKEY . '/Classes/Hooks/tx_ncstaticfilecache.php:Tx_Cloudflare_Hooks_NcStaticfilecache->createFile_initializeVariables';
+		}
+
 		if (isset($config['enableOriginatingIPs']) && $config['enableOriginatingIPs'] == 1) {
 			if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
 				$_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CF_CONNECTING_IP'];
