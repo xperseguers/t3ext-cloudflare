@@ -87,17 +87,7 @@ class Tx_Cloudflare_Hooks_TYPO3backend_Cloudflare implements backend_toolbarItem
 	 * @return string CloudFlare menu as HTML select
 	 */
 	public function render() {
-		$title = 'CloudFlare'; // $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.workspace', TRUE);
 		$this->addJavascriptToBackend();
-		$cloudflareMenu = array();
-
-		$cloudflareMenu[] = '<a href="#" class="toolbar-item">' .
-			t3lib_iconWorks::getSpriteIcon('extensions-cloudflare-cloudflare', array('title' => $title)) .
-				'</a>';
-		$cloudflareMenu[] = '<ul class="toolbar-item-menu" style="display: none;">';
-		$cloudflareMenu[] = '</ul>';
-
-		return implode(LF, $cloudflareMenu);
 	}
 
 	/**

@@ -1,5 +1,6 @@
 2013-01-15  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK] Create an ExtJS menu for CloudFlare within TYPO3's toolbar
 	* [TASK] Refactoring of the toolbar icon instantiation
 	* [FEATURE] #44523: Implement hook in EXT:nc_staticfilecache
 

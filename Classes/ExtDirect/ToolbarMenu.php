@@ -55,7 +55,7 @@ class Tx_Cloudflare_ExtDirect_ToolbarMenu {
 	 * @return array
 	 */
 	public function retrieveCloudFlareStatus($parameter) {
-		$out = array();
+		$infoLines = array();
 		$domains = t3lib_div::trimExplode(',', $this->config['domains'], TRUE);
 		if (count($domains)) {
 			/** @var $cloudflare Tx_Cloudflare_Services_Cloudflare */
@@ -66,7 +66,11 @@ class Tx_Cloudflare_ExtDirect_ToolbarMenu {
 				if ($ret['result'] === 'success') {
 					foreach ($ret['response']['zones']['objs'] as $zone) {
 						if (in_array($zone['zone_name'], $domains)) {
-							$out[] = '<li><h3>&nbsp;' . $this->getZoneIcon($zone['zone_status_class']) . ' ' . $zone['zone_name'] . '</h3></li>';
+							$infoLine = array(
+								'domain' => $zone['zone_name'],
+								'icon'   => $this->getZoneIcon($zone['zone_status_class']),
+								'operations' => array(),
+							);
 							$active = NULL;
 							switch ($zone['zone_status_class']) {
 								case 'status-active':
@@ -77,22 +81,21 @@ class Tx_Cloudflare_ExtDirect_ToolbarMenu {
 									break;
 							}
 							if ($active !== NULL) {
-								$js = 'TYPO3BackendCloudflareMenu.toggleDevelopmentMode(\'' . $zone['zone_name'] . '\', ' . $active . ');';
-								$out[] = '<li class="divider"><a href="#" onclick="' . $js . '">Toggle development mode</a></li>';
+								$infoLine['operations'][] = 'toggleDevelopmentMode';
 							} else {
-								$out[] = '<li class="divider">This zone is currently inactive</li>';
+								$infoLine['operations'][] = 'currentlyInactive';
 							}
+
+							$infoLines[] = $infoLine;
 						}
 					}
 				}
 			} catch (RuntimeException $e) {
 				// Nothing to do
 			}
-		} else {
-			$out[] = '<li>No domains configured.</li>';
 		}
 
-		return array('html' => implode('', $out));
+		return $infoLines;
 	}
 
 	/**
@@ -127,17 +130,21 @@ class Tx_Cloudflare_ExtDirect_ToolbarMenu {
 	protected function getZoneIcon($status) {
 		switch ($status) {
 			case 'status-active':
-				$icon = t3lib_iconWorks::getSpriteIcon('extensions-cloudflare-online', array('title' => 'Zone is active'));
+				$span = t3lib_iconWorks::getSpriteIcon('extensions-cloudflare-online');
 				break;
 			case 'status-dev-mode':
-				$icon = t3lib_iconWorks::getSpriteIcon('extensions-cloudflare-direct', array('title' => 'Zone is in development mode'));
+				$span = t3lib_iconWorks::getSpriteIcon('extensions-cloudflare-direct');
 				break;
 			case 'status-deactivated':
 			default:
-				$icon = t3lib_iconWorks::getSpriteIcon('extensions-cloudflare-offline', array('title' => 'Zone is inactive'));
+				$span = t3lib_iconWorks::getSpriteIcon('extensions-cloudflare-offline');
 				break;
 		}
-		return $icon;
+
+		if (preg_match('/class=".* (t3-icon-cloudflare-.*)"/', $span, $matches)) {
+			return $matches[1];
+		}
+		return '';
 	}
 
 }
