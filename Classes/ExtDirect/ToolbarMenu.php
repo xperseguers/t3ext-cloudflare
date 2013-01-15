@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Xavier Perseguers <xavier@causal.ch>
+ *  (c) 2012-2013 Xavier Perseguers <xavier@causal.ch>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -142,8 +142,4 @@ class Tx_Cloudflare_ExtDirect_ToolbarMenu {
 
 }
 
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/cloudflare/Classes/ExtDirect/ToolbarMenu.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/cloudflare/Classes/ExtDirect/ToolbarMenu.php']);
-}
 ?>

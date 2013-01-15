@@ -74,7 +74,7 @@ if (FALSE && $version >= 6000000) {
 }
 
 if (TYPO3_MODE === 'BE' && !empty($config['apiKey'])) {
-	$cloudflareToolbarItemClassPath = t3lib_extMgm::extPath($_EXTKEY, 'Classes/ExtDirect/CloudflareToolbarItem.php');
+	$cloudflareToolbarItemClassPath = t3lib_extMgm::extPath($_EXTKEY, 'Classes/Hooks/TYPO3backend_Cloudflare.php');
 	$GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'][] = $cloudflareToolbarItemClassPath;
 
 	if ($config['domains'] !== '') {

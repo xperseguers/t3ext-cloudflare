@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Xavier Perseguers <xavier@causal.ch>
+ *  (c) 2012-2013 Xavier Perseguers <xavier@causal.ch>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,7 +29,7 @@ if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
 /**
  * Class to render the CloudFlare toolbar menu.
  *
- * @category    ExtDirect
+ * @category    Hooks
  * @package     TYPO3
  * @subpackage  tx_cloudflare
  * @author      Xavier Perseguers <xavier@causal.ch>
@@ -37,7 +37,7 @@ if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
  * @license     http://www.gnu.org/copyleft/gpl.html
  * @version     SVN: $Id$
  */
-class Tx_Cloudflare_ExtDirect_CloudflareToolbarItem implements backend_toolbarItem {
+class Tx_Cloudflare_Hooks_TYPO3backend_Cloudflare implements backend_toolbarItem {
 
 	protected $changeWorkspace;
 	protected $changeWorkspacePreview;
@@ -121,11 +121,7 @@ class Tx_Cloudflare_ExtDirect_CloudflareToolbarItem implements backend_toolbarIt
 
 
 if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX)) {
-	$GLOBALS['TYPO3backend']->addToolbarItem('cloudflare', 'Tx_Cloudflare_ExtDirect_CloudflareToolbarItem');
+	$GLOBALS['TYPO3backend']->addToolbarItem('cloudflare', 'Tx_Cloudflare_Hooks_TYPO3backend_Cloudflare');
 }
 
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/cloudflare/Classes/ExtDirect/CloudflareToolbarItem.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/cloudflare/Classes/ExtDirect/CloudflareToolbarItem.php']);
-}
 ?>
