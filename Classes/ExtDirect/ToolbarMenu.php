@@ -68,7 +68,7 @@ class Tx_Cloudflare_ExtDirect_ToolbarMenu {
 						if (in_array($zone['zone_name'], $domains)) {
 							$infoLine = array(
 								'domain' => $zone['zone_name'],
-								'icon'   => $this->getZoneIcon($zone['zone_status_class']),
+								'icon'   => $this->getOperationStatusIcon($zone['zone_status_class']),
 								'operations' => array(),
 							);
 							$active = NULL;
@@ -81,9 +81,30 @@ class Tx_Cloudflare_ExtDirect_ToolbarMenu {
 									break;
 							}
 							if ($active !== NULL) {
-								$infoLine['operations'][] = 'toggleDevelopmentMode';
+								$infoLine['operations'][] = array(
+									'text'   => 'Toggle development mode',
+									'icon'   => $this->getOperationStatusIcon('operation-toggle'),
+									'fn'     => 'this.toggleDevelopmentMode',
+									'params' => array(
+										'zone'   => $zone['zone_name'],
+										'active' => $active,
+									),
+								);
+								$infoLine['operations'][] = array(
+									'text'   => 'Clear CloudFlare cache',
+									'icon'   => $this->getOperationStatusIcon('operation-clear-cache'),
+									'fn'     => 'this.clearCache',
+									'params' => array(
+										'zone' => $zone['zone_name'],
+									),
+								);
 							} else {
-								$infoLine['operations'][] = 'currentlyInactive';
+								$infoLine['operations'][] = array(
+									'text'     => 'Zone is inactive',
+									'icon'     => $this->getOperationStatusIcon('status-inactive'),
+									'fn'       => 'function(){}',
+									'disabled' => 1,
+								);
 							}
 
 							$infoLines[] = $infoLine;
@@ -99,7 +120,7 @@ class Tx_Cloudflare_ExtDirect_ToolbarMenu {
 	}
 
 	/**
-	 * Toggle the development mode.
+	 * Toggles the development mode.
 	 *
 	 * @param $parameter
 	 * @return array
@@ -114,21 +135,58 @@ class Tx_Cloudflare_ExtDirect_ToolbarMenu {
 				'z' => $parameter->zone,
 				'v' => $parameter->active,
 			));
+			$newStatus = $parameter->active ? 'status-dev-mode' : 'status-active';
 		} catch (RuntimeException $e) {
 			// Nothing to do
 		}
 
-		return array('result' => 'success');
+		return array(
+			'result' => 'success',
+			'icon' => $this->getOperationStatusIcon($newStatus),
+		);
 	}
 
 	/**
-	 * Returns the icon associated to a given CloudFlare status.
+	 * Clears the cache of a given zone.
 	 *
-	 * @param string $status
+	 * @param $parameter
+	 * @return array
+	 */
+	public function clearCache($parameter) {
+		/** @var $cloudflare Tx_Cloudflare_Services_Cloudflare */
+		$cloudflare = t3lib_div::makeInstance('Tx_Cloudflare_Services_Cloudflare', $this->config);
+
+		try {
+			$ret = $cloudflare->send(array(
+				'a' => 'fpurge_ts',
+				'z' => $parameter->zone,
+				'v' => '1',
+			));
+		} catch (RuntimeException $e) {
+			// Nothing to do
+		}
+
+		return array(
+			'result' => 'success',
+		);
+	}
+
+	/**
+	 * Returns the icon associated to a given operation/status.
+	 *
+	 * @param string $operationStatus
 	 * @return string
 	 */
-	protected function getZoneIcon($status) {
-		switch ($status) {
+	protected function getOperationStatusIcon($operationStatus) {
+		switch ($operationStatus) {
+			case 'operation-toggle':
+				$span = t3lib_iconWorks::getSpriteIcon('extensions-cloudflare-toggle');
+				break;
+			case 'operation-clear-cache':
+				return 't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-cache-clear-impact-high';
+			case 'status-inactive':
+				$span = t3lib_iconWorks::getSpriteIcon('extensions-cloudflare-inactive');
+				break;
 			case 'status-active':
 				$span = t3lib_iconWorks::getSpriteIcon('extensions-cloudflare-online');
 				break;
@@ -141,7 +199,7 @@ class Tx_Cloudflare_ExtDirect_ToolbarMenu {
 				break;
 		}
 
-		if (preg_match('/class=".* (t3-icon-cloudflare-.*)"/', $span, $matches)) {
+		if (preg_match('/class="(.*)"/', $span, $matches)) {
 			return $matches[1];
 		}
 		return '';

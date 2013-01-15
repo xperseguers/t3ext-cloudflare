@@ -35,19 +35,31 @@ TYPO3.Cloudflare.App = {
 				callback: function(response) {
 					var domains = [];
 					for (var i = 0; i < response.length; i++) {
-						domains.push({
-							text: response[i].domain,
-							iconCls: 't3-icon t3-icon-extensions t3-icon-extensions-cloudflare ' + response[i].icon,
+						var record = response[i];
+						var domainMenu = new Ext.menu.Item({
+							text: record.domain,
+							iconCls: record.icon,
 							menu: {}
 						});
+						for (var o = 0; o < record.operations.length; o++) {
+							domainMenu.menu.add({
+								text: record.operations[o].text,
+								iconCls: record.operations[o].icon,
+								handler: eval(record.operations[o].fn),
+								disabled: record.operations[o].disabled,
+								handlerParams: record.operations[o].params,
+								zoneMenu: domainMenu,
+								scope: this
+							});
+						}
+						domains.push(domainMenu);
 					}
 					this.domainMenu = new Ext.menu.Menu({
 						items: domains
 					});
 
-					// Trick for Internet Explorer :-/
-					var tooltipTitle = 'Cloudflare Management'
-					var tooltipDescription = 'todo...';
+					var tooltipTitle = 'Cloudflare';
+					var tooltipDescription = 'This module allows you to manage your domains on CloudFlare.';
 					var button = new Ext.Button({
 						iconCls: 't3-icon t3-icon-extensions t3-icon-extensions-cloudflare t3-icon-cloudflare-cloudflare',
 						menu: TYPO3.Cloudflare.App.domainMenu,
@@ -57,33 +69,30 @@ TYPO3.Cloudflare.App = {
 				}
 			});
 		}
+	},
+
+	toggleDevelopmentMode: function(item, event) {
+		TYPO3.Ajax.ExtDirect.CloudflareToolbarMenu.toggleDevelopmentMode({
+			zone: item.handlerParams.zone,
+			active: item.handlerParams.active
+		}, function(response) {
+			if (response.result == 'success') {
+				item.handlerParams.active = 1 - item.handlerParams.active;
+				var img = document.getElementById(Ext.fly(item.zoneMenu.id).child('img').id);
+				img.className = 'x-menu-item-icon ' + response.icon;
+			}
+		});
+	},
+
+	clearCache: function(item, event) {
+		TYPO3.Ajax.ExtDirect.CloudflareToolbarMenu.clearCache({
+			zone: item.handlerParams.zone
+		});
 	}
 
 }
 
 Ext.onReady(function() {
-/*
-	TYPO3.Cloudflare.Store = new Ext.data.Store({
-		storeId: 'beUserSwitchStore',
-		autoLoad: false,
-		reader: new Ext.data.JsonReader({
-			idProperty: 'extkey',
-			root: 'data',
-			totalProperty: 'length',
-			fields:[
-				{name:'username'},
-				{name:'realName'},
-				{name:'admin'},
-				{name:'iconCls'},
-				{name:'uid'}
-			]
-		}),
-		proxy: new Ext.data.DirectProxy({
-			directFn: TYPO3.Ajax.ExtDirect.Cloudflare.getDomains
-		})
-	});
-*/
-
 	var dh = Ext.DomHelper;
 
 	var spec = {
@@ -104,5 +113,4 @@ Ext.onReady(function() {
 	TYPO3.Backend.Topbar.doLayout();
 
 	TYPO3.Cloudflare.App.buildMenu();
-
 });

@@ -88,6 +88,15 @@ class Tx_Cloudflare_Hooks_TYPO3backend_Cloudflare implements backend_toolbarItem
 	 */
 	public function render() {
 		$this->addJavascriptToBackend();
+
+		/** @var t3lib_pageRenderer $pageRenderer  */
+		$pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
+
+		$pageRenderer->addJsFile(t3lib_extMgm::extRelPath('lang') . 'res/js/be/typo3lang.js');
+		/*$pageRenderer->addInlineLanguageLabelFile(
+			t3lib_extMgm::extPath('lb_authentication') . 'Resources/Private/Language/locallang.xlf',
+			'lbauthentication_userswitch_'
+		);*/
 	}
 
 	/**

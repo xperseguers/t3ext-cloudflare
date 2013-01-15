@@ -8,6 +8,8 @@ $icons = array(
 	'direct' => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/direct-16.png',
 	'offline' => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/offline-16.png',
 	'online' => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/online-16.png',
+	'toggle' => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/toggle-16.png',
+	'inactive' => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/inactive-16.png',
 );
 t3lib_SpriteManager::addSingleIcons($icons, $_EXTKEY);
 
