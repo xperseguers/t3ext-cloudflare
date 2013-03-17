@@ -1,3 +1,8 @@
+2013-03-17  Xavier Perseguers  <xavier@causal.ch>
+
+	* [TASK] Raise version to 1.2.3
+	* [TASK] Raise version to 1.2.2 (on branch ExtJS_Menu)
+
 2013-01-15  Xavier Perseguers  <xavier@causal.ch>
 
 	* [TASK] Refactoring of the toolbar icon instantiation
