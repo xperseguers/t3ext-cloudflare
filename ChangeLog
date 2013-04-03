@@ -1,5 +1,6 @@
 2013-04-03  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK] Raise version to 1.2.4
 	* [BUGFIX] #46894: Fatal error in EM
 
 2013-03-17  Xavier Perseguers  <xavier@causal.ch>
