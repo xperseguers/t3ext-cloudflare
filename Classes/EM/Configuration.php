@@ -23,11 +23,14 @@ class Tx_Cloudflare_EM_Configuration {
 	 * Returns an Extension Manager field for selecting domains.
 	 *
 	 * @param array $params
-	 * @param t3lib_tsStyleConfig $pObj
+	 * @param t3lib_tsStyleConfig|\TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj
 	 * @return string
 	 */
-	public function getDomains(array $params, t3lib_tsStyleConfig $pObj) {
-		$this->overrideConfiguration($pObj);
+	public function getDomains(array $params, $pObj) {
+		if (version_compare(TYPO3_version, '6.0.0', '<')) {
+			// Prior to TYPO3 6.0 the global configuration does not yet reflect changes that were made
+			$this->overrideConfiguration($pObj);
+		}
 		$domains = array();
 		$out = array();
 
