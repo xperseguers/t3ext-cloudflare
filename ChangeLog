@@ -1,5 +1,6 @@
 2013-04-22  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK][SECURITY] Any Backend user may clear cache
 	* [FEATURE] #47032: Allow standard editor to flush cache
 
 2013-04-03  Xavier Perseguers  <xavier@causal.ch>

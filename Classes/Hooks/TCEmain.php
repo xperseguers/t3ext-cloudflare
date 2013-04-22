@@ -78,7 +78,12 @@ class Tx_Cloudflare_Hooks_TCEmain {
 	 * @return void
 	 */
 	public function clearCache() {
-		$this->clearCloudFlareCache(isset($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER'] : NULL);
+		if (!isset($GLOBALS['BE_USER'])) {
+			return;
+		}
+		if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.all') || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.cloudflare')) {
+			$this->clearCloudFlareCache($GLOBALS['BE_USER']);
+		}
 	}
 
 	/**
