@@ -1,3 +1,7 @@
+2013-04-22  Xavier Perseguers  <xavier@causal.ch>
+
+	* [FEATURE] #47032: Allow standard editor to flush cache
+
 2013-04-03  Xavier Perseguers  <xavier@causal.ch>
 
 	* [TASK] Raise version to 1.2.4

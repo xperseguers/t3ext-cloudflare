@@ -45,18 +45,22 @@ class Tx_Cloudflare_Hooks_TYPO3backend implements backend_cacheActionsHook {
 	 * @return void
 	 */
 	public function manipulateCacheActions(&$cacheActions, &$optionValues) {
-		if ($GLOBALS['BE_USER']->isAdmin()) {
+		if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.all') || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.cloudflare')) {
 				// Add new cache menu item
 			$title = 'Clear CloudFlare cache';
 			$clearAll = array_shift($cacheActions);
 			$clearCloudFlare = array(
-				'id'    => 'clearCloudflareCache',
+				'id'    => 'cloudflare',
 				'title' => $title,
 				'href'  => $GLOBALS['BACK_PATH'] . 'ajax.php?ajaxID=cloudflare::clearCache',
 				'icon'  => '<span class="t3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-cache-clear-impact-high"></span>'
 			);
-			$cacheActions = array_merge(array($clearAll, $clearCloudFlare), $cacheActions);
-			$optionValues[] = 'clearCloudflareCache';
+			if ($clearAll !== NULL) {
+				$cacheActions = array_merge(array($clearAll, $clearCloudFlare), $cacheActions);
+			} else {
+				$cacheActions[] = $clearCloudFlare;
+			}
+			$optionValues[] = 'cloudflare';
 		}
 	}
 
