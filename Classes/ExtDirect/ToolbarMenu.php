@@ -53,8 +53,12 @@ class Tx_Cloudflare_ExtDirect_ToolbarMenu {
 	 *
 	 * @param $parameter
 	 * @return array
+	 * @throws RuntimeException
 	 */
 	public function retrieveCloudFlareStatus($parameter) {
+		if (!$GLOBALS['BE_USER']->isAdmin()) {
+			throw new RuntimeException('Unauthorized call', 1366652032);
+		}
 		$out = array();
 		$domains = t3lib_div::trimExplode(',', $this->config['domains'], TRUE);
 		if (count($domains)) {
@@ -100,8 +104,13 @@ class Tx_Cloudflare_ExtDirect_ToolbarMenu {
 	 *
 	 * @param $parameter
 	 * @return array
+	 * @throws RuntimeException
 	 */
 	public function toggleDevelopmentMode($parameter) {
+		if (!$GLOBALS['BE_USER']->isAdmin()) {
+			throw new RuntimeException('Unauthorized call', 1366652080);
+		}
+
 		/** @var $cloudflare Tx_Cloudflare_Services_Cloudflare */
 		$cloudflare = t3lib_div::makeInstance('Tx_Cloudflare_Services_Cloudflare', $this->config);
 
