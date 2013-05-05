@@ -1,3 +1,7 @@
+2013-05-05  Xavier Perseguers  <xavier@causal.ch>
+
+	* [BUGFIX] #47963: Fatal error: require_once() fails in TYPO3 6.2
+
 2013-04-23  Xavier Perseguers  <xavier@causal.ch>
 
 	* [TASK] Raise version to 1.2.5

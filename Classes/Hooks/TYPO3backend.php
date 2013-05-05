@@ -22,7 +22,9 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once(PATH_typo3 . 'interfaces/interface.backend_cacheActionsHook.php');
+if (version_compare(TYPO3_version, '6.1.99', '<=')) {
+	require_once(PATH_typo3 . 'interfaces/interface.backend_cacheActionsHook.php');
+}
 
 /**
  * Hook for clearing cache on CloudFlare.
