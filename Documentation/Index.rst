@@ -12,40 +12,42 @@
 CloudFlare Client
 =================
 
-:Classification:
-	cloudflare
+.. only:: html
 
-:Version:
-	|release|
+	:Classification:
+		cloudflare
 
-:Language:
-	en
+	:Version:
+		|release|
 
-:Description:
-	Implementation of the CloudFlare Client Interface API to flush content cache and restore originating IPs.
+	:Language:
+		en
 
-:Keywords:
-	cloud, content delivery network, cdn, proxy, reverse proxy, ssl
+	:Description:
+		Implementation of the CloudFlare Client Interface API to flush content cache and restore originating IPs.
 
-:Copyright:
-	2012-2013
+	:Keywords:
+		cloud, content delivery network, cdn, proxy, reverse proxy, ssl
 
-:Author:
-	Xavier Perseguers
+	:Copyright:
+		2012-2013
 
-:Email:
-	xavier@causal.ch
+	:Author:
+		Xavier Perseguers
 
-:License:
-	This document is published under the Open Content License
-	available from http://www.opencontent.org/opl.shtml
+	:Email:
+		xavier@causal.ch
 
-:Rendered:
-	|today|
+	:License:
+		This document is published under the Open Content License
+		available from http://www.opencontent.org/opl.shtml
 
-The content of this document is related to TYPO3
+	:Rendered:
+		|today|
 
-\- a GNU/GPL CMS/Framework available from `www.typo3.org <http://www.typo3.org/>`_
+	The content of this document is related to TYPO3
+
+	\- a GNU/GPL CMS/Framework available from `www.typo3.org <http://www.typo3.org/>`_
 
 
 .. toctree::
