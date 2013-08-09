@@ -7,7 +7,7 @@
 
 
 Support for SSL
-^^^^^^^^^^^^^^^
+---------------
 
 SSL support for CloudFlare requires a Pro account. Please read
 `http://support.cloudflare.com/cgi/kb/pro-accounts/how-do-i-upgrade-

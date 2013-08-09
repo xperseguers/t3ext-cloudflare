@@ -8,7 +8,7 @@
 
 
 Toggling development mode
-^^^^^^^^^^^^^^^^^^^^^^^^^
+-------------------------
 
 An orange gear icon in the toolbar lets you manage your domains /
 zones:

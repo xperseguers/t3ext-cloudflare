@@ -7,14 +7,14 @@
 
 
 Configuration
-^^^^^^^^^^^^^
+-------------
 
 This extension comes with a few settings available from the Extension
 Manager.
 
 
 Category Basic
-""""""""""""""
+^^^^^^^^^^^^^^
 
 - **API Key** : This is the API key made available on your account page
   (`https://www.cloudflare.com/my-account.html
@@ -31,7 +31,7 @@ Category Basic
 
 
 Category Advanced
-"""""""""""""""""
+^^^^^^^^^^^^^^^^^
 
 - **Cache content over SSL:** This checkbox implements a hook of
   extension `nc\_staticfilecache
@@ -126,7 +126,7 @@ Feel free to enhance it to fit your needs!
 
 
 Allowing Backend users to clear cache on CloudFlare
-"""""""""""""""""""""""""""""""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 You can enable the "flash icon" clear cache command for common Backend
 users by adding following code to user's and/or user group's TSconfig:

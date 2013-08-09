@@ -7,7 +7,7 @@
 
 
 Requirements
-^^^^^^^^^^^^
+------------
 
 You need a CloudFlare account: `https://www.cloudflare.com/my-account
 <https://www.cloudflare.com/my-account>`_.

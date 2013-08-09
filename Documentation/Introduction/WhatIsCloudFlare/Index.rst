@@ -8,7 +8,7 @@
 
 
 What is CloudFlare?
-^^^^^^^^^^^^^^^^^^^
+-------------------
 
 CloudFlare protects and accelerates any website online. Once your
 website is a part of the CloudFlare community, its web traffic is

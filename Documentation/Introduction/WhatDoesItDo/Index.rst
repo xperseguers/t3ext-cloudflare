@@ -7,7 +7,7 @@
 
 
 What does it do?
-^^^^^^^^^^^^^^^^
+----------------
 
 This extension lets you flush cache on CloudFlare when content changes
 in your TYPO3 website and toggle "Developer Mode" for your domains
