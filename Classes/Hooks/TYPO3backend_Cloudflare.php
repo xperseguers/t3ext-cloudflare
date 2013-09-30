@@ -123,5 +123,3 @@ class Tx_Cloudflare_Hooks_TYPO3backend_Cloudflare implements backend_toolbarItem
 if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX)) {
 	$GLOBALS['TYPO3backend']->addToolbarItem('cloudflare', 'Tx_Cloudflare_Hooks_TYPO3backend_Cloudflare');
 }
-
-?>

@@ -67,5 +67,3 @@ class Tx_Cloudflare_Hooks_TYPO3backend implements backend_cacheActionsHook {
 	}
 
 }
-
-?>

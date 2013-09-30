@@ -48,5 +48,3 @@ class Tx_Cloudflare_Hooks_NcStaticfilecache {
 	}
 
 }
-
-?>

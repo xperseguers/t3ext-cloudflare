@@ -128,5 +128,3 @@ class Tx_Cloudflare_Hooks_Div implements t3lib_Singleton {
 	}
 
 }
-
-?>

@@ -127,5 +127,3 @@ class Tx_Cloudflare_Services_Cloudflare implements t3lib_Singleton {
 if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/cloudflare/Classes/Services/Cloudflare.php'])) {
 	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/cloudflare/Classes/Services/Cloudflare.php']);
 }
-
-?>

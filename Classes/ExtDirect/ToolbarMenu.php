@@ -150,5 +150,3 @@ class Tx_Cloudflare_ExtDirect_ToolbarMenu {
 	}
 
 }
-
-?>

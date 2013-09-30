@@ -20,5 +20,3 @@ t3lib_extMgm::registerExtDirectComponent(
 	NULL,
 	'admin'
 );
-
-?>

@@ -82,5 +82,3 @@ if (TYPO3_MODE === 'BE' && !empty($config['apiKey'])) {
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['cloudflare::clearCache'] = 'EXT:' . $_EXTKEY . '/Classes/Hooks/TCEmain.php:Tx_Cloudflare_Hooks_TCEmain->clearCache';
 	}
 }
-
-?>
