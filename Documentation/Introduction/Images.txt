@@ -1,2 +1,0 @@
-.. |overview-cloudflare| image:: ../Images/overview-cloudflare.png
-	:alt: System overview with and without CloudFlare

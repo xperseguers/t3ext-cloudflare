@@ -1,2 +1,0 @@
-.. |development-mode| image:: ../../Images/development-mode.png
-	:alt: Toggling development mode

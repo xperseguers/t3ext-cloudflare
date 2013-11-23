@@ -1,2 +1,0 @@
-.. |flush-cache| image:: ../../Images/flush-cache.png
-	:alt: Flushing cache on CloudFlare
