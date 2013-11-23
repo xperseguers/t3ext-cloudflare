@@ -35,7 +35,6 @@ if (version_compare(TYPO3_version, '6.1.99', '<=')) {
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
- * @version     SVN: $Id$
  */
 class Tx_Cloudflare_Hooks_TYPO3backend implements backend_cacheActionsHook {
 

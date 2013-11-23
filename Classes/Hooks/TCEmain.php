@@ -31,7 +31,6 @@
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
- * @version     SVN: $Id$
  */
 class Tx_Cloudflare_Hooks_TCEmain {
 
@@ -56,11 +55,14 @@ class Tx_Cloudflare_Hooks_TCEmain {
 	 * @return void
 	 */
 	public function clear_cacheCmd(array $params, t3lib_TCEmain $pObj) {
+		static $handledPageUids = array();
+
 		if ($params['cacheCmd'] === 'all') {
 			$this->clearCloudFlareCache($pObj->BE_USER);
 		} elseif (!empty($this->config['enablePurgeSingleFile'])) {
 			$pageUid = intval($params['cacheCmd']);
-			if ($pageUid) {
+			if ($pageUid && !in_array($pageUid, $handledPageUids)) {
+				$handledPageUids[] = $pageUid;
 				$url = $this->getFrontendUrl($pageUid);
 				if ($url) {
 					$this->purgeCloudFlareSingleFile(
@@ -225,6 +227,7 @@ class Tx_Cloudflare_Hooks_TCEmain {
 
 	/**
 	 * Purges a single file in CloudFlare cache.
+	 *
 	 * @param t3lib_beUserAuth $beUser
 	 * @param string $url
 	 * @return void

@@ -35,7 +35,6 @@ if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
- * @version     SVN: $Id$
  */
 class Tx_Cloudflare_Hooks_TYPO3backend_Cloudflare implements backend_toolbarItem {
 

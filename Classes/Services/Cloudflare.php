@@ -31,7 +31,6 @@
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
- * @version     SVN: $Id$
  */
 class Tx_Cloudflare_Services_Cloudflare implements t3lib_Singleton {
 
