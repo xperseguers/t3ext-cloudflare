@@ -114,7 +114,7 @@ class Tx_Cloudflare_Hooks_TYPO3backend_Cloudflare implements backend_toolbarItem
 	 * @return string List item HTML attributes
 	 */
 	public function getAdditionalAttributes() {
-		return ' id="cloudflare-menu"';
+		return ' id="cloudflare-menu" ';
 	}
 }
 
