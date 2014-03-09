@@ -13,7 +13,7 @@
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'CloudFlare Client',
 	'description' => 'Implementation of the CloudFlare Client Interface API to flush content cache and restore originating IPs.',
-	'category' => 'Service',
+	'category' => 'services',
 	'author' => 'Xavier Perseguers (Causal)',
 	'author_company' => 'Causal Sàrl',
 	'author_email' => 'xavier@causal.ch',
