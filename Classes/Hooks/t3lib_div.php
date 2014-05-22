@@ -96,8 +96,6 @@ class Tx_Cloudflare_Hooks_Div implements t3lib_Singleton {
 	protected function isProxied($remoteIp) {
 		// @see https://www.cloudflare.com/ips
 		$whiteListIPv4s = array(
-			'204.93.240.0/24',
-			'204.93.177.0/24',
 			'199.27.128.0/21',
 			'173.245.48.0/20',
 			'103.21.244.0/22',
@@ -110,6 +108,7 @@ class Tx_Cloudflare_Hooks_Div implements t3lib_Singleton {
 			'197.234.240.0/22',
 			'198.41.128.0/17',
 			'162.158.0.0/15',
+			'104.16.0.0/12',
 		);
 		$whiteListIPv6s = array(
 			'2400:cb00::/32',
