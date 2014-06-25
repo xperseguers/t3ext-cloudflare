@@ -52,7 +52,7 @@ CloudFlare Client
 	**Other version of this document**
 
 	:PDF:
-		http://docs.typo3.org/typo3cms/extensions/cloudflare/1.2.6/_pdf/
+		http://docs.typo3.org/typo3cms/extensions/cloudflare/1.2.8/_pdf/
 
 
 	**Table of Contents**
