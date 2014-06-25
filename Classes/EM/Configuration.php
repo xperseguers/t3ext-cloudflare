@@ -83,10 +83,10 @@ class Tx_Cloudflare_EM_Configuration {
 		$i = 0;
 		$selectedDomains = t3lib_div::trimExplode(',', $params['fieldValue'], TRUE);
 		foreach ($domains as $domain) {
-			$out[] = '<div style="margin-bottom:1ex">';
+			$out[] = '<div>';
 			$checked = in_array($domain, $selectedDomains) ? ' checked="checked"' : '';
 			$out[] = '<input type="checkbox" id="cloudflare_domain_' . $i . '" value="' . $domain . '"' . $checked . ' onclick="toggleCloudflareDomains();" />';
-			$out[] = '<label for="cloudflare_domain_' . $i . '">' . $domain . '</label>';
+			$out[] = '<label for="cloudflare_domain_' . $i . '" style="display:inline-block">' . $domain . '</label>';
 			$out[] = '</div>';
 			$i++;
 		}
