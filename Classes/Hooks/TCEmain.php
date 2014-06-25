@@ -57,7 +57,7 @@ class Tx_Cloudflare_Hooks_TCEmain {
 	public function clear_cacheCmd(array $params, t3lib_TCEmain $pObj) {
 		static $handledPageUids = array();
 
-		if ($params['cacheCmd'] === 'all') {
+		if (t3lib_div::inList('all,pages', $params['cacheCmd'])) {
 			$this->clearCloudFlareCache($pObj->BE_USER);
 		} elseif (!empty($this->config['enablePurgeSingleFile'])) {
 			$pageUid = intval($params['cacheCmd']);
