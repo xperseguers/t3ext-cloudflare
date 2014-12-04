@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012-2013 Xavier Perseguers <xavier@causal.ch>
+ *  (c) 2012-2014 Xavier Perseguers <xavier@causal.ch>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -21,6 +21,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Hook for clearing cache on CloudFlare.
@@ -51,13 +53,13 @@ class Tx_Cloudflare_Hooks_TCEmain {
 	 * Hooks into the "clear all caches" call.
 	 *
 	 * @param array $params
-	 * @param t3lib_TCEmain $pObj
+	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $pObj
 	 * @return void
 	 */
-	public function clear_cacheCmd(array $params, t3lib_TCEmain $pObj) {
+	public function clear_cacheCmd(array $params, \TYPO3\CMS\Core\DataHandling\DataHandler $pObj) {
 		static $handledPageUids = array();
 
-		if (t3lib_div::inList('all,pages', $params['cacheCmd'])) {
+		if (GeneralUtility::inList('all,pages', $params['cacheCmd'])) {
 			$this->clearCloudFlareCache($pObj->BE_USER);
 		} elseif (!empty($this->config['enablePurgeSingleFile'])) {
 			$pageUid = intval($params['cacheCmd']);
@@ -91,14 +93,14 @@ class Tx_Cloudflare_Hooks_TCEmain {
 	/**
 	 * Clears the CloudFlare cache.
 	 *
-	 * @param t3lib_beUserAuth $beUser
+	 * @param \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication $beUser
 	 * @return void
 	 */
-	protected function clearCloudFlareCache(t3lib_beUserAuth $beUser = NULL) {
-		$domains = $this->config['domains'] ? t3lib_div::trimExplode(',', $this->config['domains'], TRUE) : array();
+	protected function clearCloudFlareCache(\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication $beUser = NULL) {
+		$domains = $this->config['domains'] ? GeneralUtility::trimExplode(',', $this->config['domains'], TRUE) : array();
 
 		/** @var $cloudflare Tx_Cloudflare_Services_Cloudflare */
-		$cloudflare = t3lib_div::makeInstance('Tx_Cloudflare_Services_Cloudflare', $this->config);
+		$cloudflare = GeneralUtility::makeInstance('Tx_Cloudflare_Services_Cloudflare', $this->config);
 
 		foreach ($domains as $domain) {
 			$parameters = array(
@@ -116,7 +118,7 @@ class Tx_Cloudflare_Hooks_TCEmain {
 						$beUser->writelog(4, 1, 0, 0, 'User %s cleared the cache on CloudFlare (domain: "%s")', array($beUser->user['username'], $domain));
 					}
 				}
-			} catch (RuntimeException $e) {
+			} catch (\RuntimeException $e) {
 				if ($beUser !== NULL) {
 					$beUser->writelog(4, 1, 1, 0, $e->getMessage(), array());
 				}
@@ -138,9 +140,16 @@ class Tx_Cloudflare_Hooks_TCEmain {
 			return NULL;
 		}
 
-		$GLOBALS['TSFE'] = t3lib_div::makeInstance('tslib_fe', $GLOBALS['TYPO3_CONF_VARS'], $uid, '');
+		/** @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $tsfe */
+		$tsfe = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+			'TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController',
+			$GLOBALS['TYPO3_CONF_VARS'],
+			$uid,
+			''
+		);
+		$GLOBALS['TSFE'] = $tsfe;
 
-		$GLOBALS['TT'] = t3lib_div::makeInstance('t3lib_timeTrack');
+		$GLOBALS['TT'] = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TimeTracker\\TimeTracker');
 		$GLOBALS['TT']->start();
 		$GLOBALS['TSFE']->config['config']['language'] = 'default';
 
@@ -155,7 +164,7 @@ class Tx_Cloudflare_Hooks_TCEmain {
 		$GLOBALS['TSFE']->initFEuser();
 
 		// Look up the page
-		$GLOBALS['TSFE']->sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
+		$GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
 		$GLOBALS['TSFE']->sys_page->init($GLOBALS['TSFE']->showHiddenPage);
 
 		// If the page is not found (if the page is a sysfolder, etc), then return no URL,
@@ -168,7 +177,7 @@ class Tx_Cloudflare_Hooks_TCEmain {
 
 		// If the page is a shortcut, look up the page to which the shortcut references,
 		// and do the same check as above.
-		if ($page['doktype'] == 4 && count($GLOBALS['TSFE']->getPageShortcut($page['shortcut'],$page['shortcut_mode'], $page['uid'])) == 0) {
+		if ($page['doktype'] == 4 && count($GLOBALS['TSFE']->getPageShortcut($page['shortcut'], $page['shortcut_mode'], $page['uid'])) == 0) {
 			return NULL;
 		}
 
@@ -202,17 +211,16 @@ class Tx_Cloudflare_Hooks_TCEmain {
 		$GLOBALS['TSFE']->determineId();
 		try {
 			$GLOBALS['TSFE']->getConfigArray();
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			// Typicall problem: #1294587218: No TypoScript template found!
 			return NULL;
 		}
 
-
 		// Get linkVars, absRefPrefix, etc
-		TSpagegen::pagegenInit();
+		\TYPO3\CMS\Frontend\Page\PageGenerator::pagegenInit();
 
-		/** @var $contentObj tslib_cObj */
-		$contentObj = t3lib_div::makeInstance('tslib_cObj');
+		/** @var $contentObj \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
+		$contentObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 		$contentObj->start(array(), '');
 
 		// Create the URL
@@ -228,12 +236,12 @@ class Tx_Cloudflare_Hooks_TCEmain {
 	/**
 	 * Purges a single file in CloudFlare cache.
 	 *
-	 * @param t3lib_beUserAuth $beUser
+	 * @param \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication $beUser
 	 * @param string $url
 	 * @return void
 	 */
-	protected function purgeCloudFlareSingleFile(t3lib_beUserAuth $beUser = NULL, $url) {
-		$domains = $this->config['domains'] ? t3lib_div::trimExplode(',', $this->config['domains'], TRUE) : array();
+	protected function purgeCloudFlareSingleFile(\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication $beUser = NULL, $url) {
+		$domains = $this->config['domains'] ? GeneralUtility::trimExplode(',', $this->config['domains'], TRUE) : array();
 
 		$isValidUrl = FALSE;
 		$domain = NULL;
@@ -252,7 +260,7 @@ class Tx_Cloudflare_Hooks_TCEmain {
 		}
 
 		/** @var $cloudflare Tx_Cloudflare_Services_Cloudflare */
-		$cloudflare = t3lib_div::makeInstance('Tx_Cloudflare_Services_Cloudflare', $this->config);
+		$cloudflare = GeneralUtility::makeInstance('Tx_Cloudflare_Services_Cloudflare', $this->config);
 
 		$parameters = array(
 			'a'   => 'zone_file_purge',
@@ -269,7 +277,7 @@ class Tx_Cloudflare_Hooks_TCEmain {
 					$beUser->writelog(4, 1, 0, 0, 'User %s cleared the cache on CloudFlare (domain: "%s") for "%s"', array($beUser->user['username'], $domain, $url));
 				}
 			}
-		} catch (RuntimeException $e) {
+		} catch (\RuntimeException $e) {
 			if ($beUser !== NULL) {
 				$beUser->writelog(4, 1, 1, 0, $e->getMessage(), array());
 			}

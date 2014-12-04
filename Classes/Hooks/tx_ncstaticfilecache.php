@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Xavier Perseguers <xavier@causal.ch>
+ *  (c) 2013-2014 Xavier Perseguers <xavier@causal.ch>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -39,10 +39,10 @@ class Tx_Cloudflare_Hooks_NcStaticfilecache {
 	 * potentially cache the content.
 	 *
 	 * @param array $params
-	 * @param tx_ncstaticfilecache $pObj
+	 * @param \tx_ncstaticfilecache $pObj
 	 * @return void
 	 */
-	public function createFile_initializeVariables(array $params, tx_ncstaticfilecache $pObj) {
+	public function createFile_initializeVariables(array $params, \tx_ncstaticfilecache $pObj) {
 		$params['isHttp'] = TRUE;
 	}
 

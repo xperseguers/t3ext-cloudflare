@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012-2013 Xavier Perseguers <xavier@causal.ch>
+ *  (c) 2012-2014 Xavier Perseguers <xavier@causal.ch>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -36,7 +36,7 @@ if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Tx_Cloudflare_Hooks_TYPO3backend_Cloudflare implements backend_toolbarItem {
+class Tx_Cloudflare_Hooks_TYPO3backend_Cloudflare implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInterface {
 
 	protected $changeWorkspace;
 	protected $changeWorkspacePreview;
@@ -54,9 +54,9 @@ class Tx_Cloudflare_Hooks_TYPO3backend_Cloudflare implements backend_toolbarItem
 	/**
 	 * Default constructor.
 	 *
-	 * @param TYPO3backend TYPO3 Backend object reference
+	 * @param \TYPO3\CMS\Backend\Controller\BackendController TYPO3 Backend object reference
 	 */
-	public function __construct(TYPO3backend &$backendReference = NULL) {
+	public function __construct(\TYPO3\CMS\Backend\Controller\BackendController &$backendReference = NULL) {
 		$this->backendReference = $backendReference;
 	}
 
@@ -67,7 +67,7 @@ class Tx_Cloudflare_Hooks_TYPO3backend_Cloudflare implements backend_toolbarItem
 	 * @see typo3/alt_shortcut.php
 	 */
 	public function checkAccess() {
-		if (t3lib_extMgm::isLoaded('cloudflare')) {
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cloudflare')) {
 			if ($this->checkAccess === NULL) {
 					if ($GLOBALS['BE_USER']->isAdmin()) {
 						$this->checkAccess = TRUE;
@@ -91,7 +91,7 @@ class Tx_Cloudflare_Hooks_TYPO3backend_Cloudflare implements backend_toolbarItem
 		$cloudflareMenu = array();
 
 		$cloudflareMenu[] = '<a href="#" class="toolbar-item">' .
-			t3lib_iconWorks::getSpriteIcon('extensions-cloudflare-cloudflare', array('title' => $title)) .
+			\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-cloudflare-cloudflare', array('title' => $title)) .
 				'</a>';
 		$cloudflareMenu[] = '<ul class="toolbar-item-menu" style="display: none;">';
 		$cloudflareMenu[] = '</ul>';
@@ -105,7 +105,7 @@ class Tx_Cloudflare_Hooks_TYPO3backend_Cloudflare implements backend_toolbarItem
 	 * @return	void
 	 */
 	protected function addJavascriptToBackend() {
-		$this->backendReference->addJavascriptFile(t3lib_extMgm::extRelPath('cloudflare') . 'Resources/Public/JavaScript/cloudflaremenu.js');
+		$this->backendReference->addJavascriptFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('cloudflare') . 'Resources/Public/JavaScript/cloudflaremenu.js');
 	}
 
 	/**

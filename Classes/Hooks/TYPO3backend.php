@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012-2013 Xavier Perseguers <xavier@causal.ch>
+ *  (c) 2012-2014 Xavier Perseguers <xavier@causal.ch>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,10 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-if (version_compare(TYPO3_version, '6.1.99', '<=')) {
-	require_once(PATH_typo3 . 'interfaces/interface.backend_cacheActionsHook.php');
-}
-
 /**
  * Hook for clearing cache on CloudFlare.
  *
@@ -36,7 +32,7 @@ if (version_compare(TYPO3_version, '6.1.99', '<=')) {
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Tx_Cloudflare_Hooks_TYPO3backend implements backend_cacheActionsHook {
+class Tx_Cloudflare_Hooks_TYPO3backend implements \TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookInterface {
 
 	/**
 	 * Adds cache menu item.
@@ -47,7 +43,7 @@ class Tx_Cloudflare_Hooks_TYPO3backend implements backend_cacheActionsHook {
 	 */
 	public function manipulateCacheActions(&$cacheActions, &$optionValues) {
 		if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.all') || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.cloudflare')) {
-				// Add new cache menu item
+			// Add new cache menu item
 			$title = 'Clear CloudFlare cache';
 			$clearAll = array_shift($cacheActions);
 			$clearCloudFlare = array(

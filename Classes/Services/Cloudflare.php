@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012-2013 Xavier Perseguers <xavier@causal.ch>
+ *  (c) 2012-2014 Xavier Perseguers <xavier@causal.ch>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,7 +32,7 @@
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Tx_Cloudflare_Services_Cloudflare implements t3lib_Singleton {
+class Tx_Cloudflare_Services_Cloudflare implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/** @var array */
 	protected $config;
@@ -64,7 +64,7 @@ class Tx_Cloudflare_Services_Cloudflare implements t3lib_Singleton {
 	public function send(array $additionalParams) {
 		if (!trim($this->config['apiKey'])) {
 			throw new RuntimeException('Cannot clear cache on CloudFlare: Invalid apiKey for EXT:cloudflare', 1337770232);
-		} elseif (!t3lib_div::validEmail(trim($this->config['email']))) {
+		} elseif (!\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail(trim($this->config['email']))) {
 			throw new RuntimeException('Cannot clear cache on CloudFlare: Invalid email for EXT:cloudflare', 1337770383);
 		}
 
@@ -87,7 +87,7 @@ class Tx_Cloudflare_Services_Cloudflare implements t3lib_Singleton {
 	protected function POST($url, array $data) {
 		if (TRUE || $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] == '1') {
 			if (!function_exists('curl_init') || !($ch = curl_init())) {
-				throw new RuntimeException('cURL cannot be used', 1337673614);
+				throw new \RuntimeException('cURL cannot be used', 1337673614);
 			}
 
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -120,9 +120,4 @@ class Tx_Cloudflare_Services_Cloudflare implements t3lib_Singleton {
 		}
 	}
 
-}
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/cloudflare/Classes/Services/Cloudflare.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/cloudflare/Classes/Services/Cloudflare.php']);
 }

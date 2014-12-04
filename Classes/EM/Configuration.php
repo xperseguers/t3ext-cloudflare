@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Xavier Perseguers <xavier@causal.ch>
+ *  (c) 2013-2014 Xavier Perseguers <xavier@causal.ch>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -21,6 +21,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Configuration class for the TYPO3 Extension Manager.
@@ -61,7 +63,7 @@ class Tx_Cloudflare_EM_Configuration {
 		$out = array();
 
 		/** @var $cloudflare Tx_Cloudflare_Services_Cloudflare */
-		$cloudflare = t3lib_div::makeInstance('Tx_Cloudflare_Services_Cloudflare', $this->config);
+		$cloudflare = GeneralUtility::makeInstance('Tx_Cloudflare_Services_Cloudflare', $this->config);
 
 		try {
 			$ret = $cloudflare->send(array('a' => 'zone_load_multi'));
@@ -75,13 +77,13 @@ class Tx_Cloudflare_EM_Configuration {
 		}
 
 		if (count($domains) == 0) {
-			$host = t3lib_div::getIndpEnv('TYPO3_HOST_ONLY');
+			$host = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
 			$hostParts = explode('.', $host);
 			$domains[] = count($hostParts) > 1 ? implode('.', array_slice($hostParts, -2)) : $host;
 		}
 
 		$i = 0;
-		$selectedDomains = t3lib_div::trimExplode(',', $params['fieldValue'], TRUE);
+		$selectedDomains = GeneralUtility::trimExplode(',', $params['fieldValue'], TRUE);
 		foreach ($domains as $domain) {
 			$out[] = '<div>';
 			$checked = in_array($domain, $selectedDomains) ? ' checked="checked"' : '';

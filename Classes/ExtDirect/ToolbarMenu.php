@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012-2013 Xavier Perseguers <xavier@causal.ch>
+ *  (c) 2012-2014 Xavier Perseguers <xavier@causal.ch>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -21,6 +21,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
 
 /**
  * Toolbar Menu ExtDirect handler.
@@ -56,13 +59,13 @@ class Tx_Cloudflare_ExtDirect_ToolbarMenu {
 	 */
 	public function retrieveCloudFlareStatus($parameter) {
 		if (!$GLOBALS['BE_USER']->isAdmin()) {
-			throw new RuntimeException('Unauthorized call', 1366652032);
+			throw new \RuntimeException('Unauthorized call', 1366652032);
 		}
 		$out = array();
-		$domains = t3lib_div::trimExplode(',', $this->config['domains'], TRUE);
+		$domains = GeneralUtility::trimExplode(',', $this->config['domains'], TRUE);
 		if (count($domains)) {
 			/** @var $cloudflare Tx_Cloudflare_Services_Cloudflare */
-			$cloudflare = t3lib_div::makeInstance('Tx_Cloudflare_Services_Cloudflare', $this->config);
+			$cloudflare = GeneralUtility::makeInstance('Tx_Cloudflare_Services_Cloudflare', $this->config);
 
 			try {
 				$ret = $cloudflare->send(array('a' => 'zone_load_multi'));
@@ -88,7 +91,7 @@ class Tx_Cloudflare_ExtDirect_ToolbarMenu {
 						}
 					}
 				}
-			} catch (RuntimeException $e) {
+			} catch (\RuntimeException $e) {
 				// Nothing to do
 			}
 		} else {
@@ -107,11 +110,11 @@ class Tx_Cloudflare_ExtDirect_ToolbarMenu {
 	 */
 	public function toggleDevelopmentMode($parameter) {
 		if (!$GLOBALS['BE_USER']->isAdmin()) {
-			throw new RuntimeException('Unauthorized call', 1366652080);
+			throw new \RuntimeException('Unauthorized call', 1366652080);
 		}
 
 		/** @var $cloudflare Tx_Cloudflare_Services_Cloudflare */
-		$cloudflare = t3lib_div::makeInstance('Tx_Cloudflare_Services_Cloudflare', $this->config);
+		$cloudflare = GeneralUtility::makeInstance('Tx_Cloudflare_Services_Cloudflare', $this->config);
 
 		try {
 			$ret = $cloudflare->send(array(
@@ -119,7 +122,7 @@ class Tx_Cloudflare_ExtDirect_ToolbarMenu {
 				'z' => $parameter->zone,
 				'v' => $parameter->active,
 			));
-		} catch (RuntimeException $e) {
+		} catch (\RuntimeException $e) {
 			// Nothing to do
 		}
 
@@ -135,14 +138,14 @@ class Tx_Cloudflare_ExtDirect_ToolbarMenu {
 	protected function getZoneIcon($status) {
 		switch ($status) {
 			case 'status-active':
-				$icon = t3lib_iconWorks::getSpriteIcon('extensions-cloudflare-online', array('title' => 'Zone is active'));
+				$icon = IconUtility::getSpriteIcon('extensions-cloudflare-online', array('title' => 'Zone is active'));
 				break;
 			case 'status-dev-mode':
-				$icon = t3lib_iconWorks::getSpriteIcon('extensions-cloudflare-direct', array('title' => 'Zone is in development mode'));
+				$icon = IconUtility::getSpriteIcon('extensions-cloudflare-direct', array('title' => 'Zone is in development mode'));
 				break;
 			case 'status-deactivated':
 			default:
-				$icon = t3lib_iconWorks::getSpriteIcon('extensions-cloudflare-offline', array('title' => 'Zone is inactive'));
+				$icon = IconUtility::getSpriteIcon('extensions-cloudflare-offline', array('title' => 'Zone is inactive'));
 				break;
 		}
 		return $icon;
