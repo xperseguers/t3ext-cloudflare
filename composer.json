@@ -1,0 +1,12 @@
+{
+  "name": "causal/cloudflare",
+  "description": "Implementation of the CloudFlare Client Interface API to flush content cache and restore originating IPs.",
+  "type": "typo3-cms-extension",
+  "keywords": ["TYPO3 CMS", "cloudflare", "cloud", "content delivery network", "cdn", "proxy", "reverse proxy", "ssl", "performance"],
+  "homepage": "https://forge.typo3.org/projects/extension-sphinx",
+  "license": "GPL-2.0+",
+  "version": "1.3.0-dev",
+  "support": {
+	"issues": "https://forge.typo3.org/projects/extension-cloudflare/issues"
+  }
+}

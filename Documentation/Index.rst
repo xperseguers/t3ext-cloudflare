@@ -27,10 +27,10 @@ CloudFlare Client
 		Implementation of the CloudFlare Client Interface API to flush content cache and restore originating IPs.
 
 	:Keywords:
-		cloud, content delivery network, cdn, proxy, reverse proxy, ssl
+		cloud, content delivery network, cdn, proxy, reverse proxy, ssl, performance
 
 	:Copyright:
-		2012-2013
+		2012-2014
 
 	:Author:
 		Xavier Perseguers
@@ -68,4 +68,18 @@ CloudFlare Client
 	KnownProblems/Index
 	ToDoList/Index
 	ChangeLog/Index
-	Targets
+	Links
+
+.. only:: latex
+
+	.. toctree::
+		:maxdepth: 5
+		:titlesonly:
+		:glob:
+
+		Introduction/Index
+		UsersManual/Index
+		AdministratorManual/Index
+		KnownProblems/Index
+		ToDoList/Index
+		ChangeLog/Index
