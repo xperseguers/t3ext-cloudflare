@@ -1,7 +1,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Xavier Perseguers <xavier@causal.ch>
+ *  (c) 2012-2014 Xavier Perseguers <xavier@causal.ch>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -24,9 +24,7 @@
 Ext.ns('TYPO3', 'TYPO3.configuration');
 
 /**
- * Class to handle the CloudFlare menu
- *
- * $Id$
+ * Class to handle the CloudFlare menu (TYPO3 6.2)
  */
 var CloudflareMenu = Class.create({
 

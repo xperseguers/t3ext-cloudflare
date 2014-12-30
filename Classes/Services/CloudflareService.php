@@ -1,4 +1,6 @@
 <?php
+namespace Causal\Cloudflare\Services;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,7 +34,7 @@
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Tx_Cloudflare_Services_Cloudflare implements \TYPO3\CMS\Core\SingletonInterface {
+class CloudflareService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/** @var array */
 	protected $config;

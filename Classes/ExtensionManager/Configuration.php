@@ -1,4 +1,6 @@
 <?php
+namespace Causal\Cloudflare\ExtensionManager;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -34,7 +36,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Tx_Cloudflare_EM_Configuration {
+class Configuration {
 
 	/** @var string */
 	protected $extKey = 'cloudflare';
@@ -51,28 +53,24 @@ class Tx_Cloudflare_EM_Configuration {
 	 * Returns an Extension Manager field for selecting domains.
 	 *
 	 * @param array $params
-	 * @param t3lib_tsStyleConfig|\TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj
+	 * @param \TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj
 	 * @return string
 	 */
 	public function getDomains(array $params, $pObj) {
-		if (version_compare(TYPO3_version, '6.0.0', '<')) {
-			// Prior to TYPO3 6.0 the global configuration does not yet reflect changes that were made
-			$this->overrideConfiguration($pObj);
-		}
 		$domains = array();
 		$out = array();
 
-		/** @var $cloudflare Tx_Cloudflare_Services_Cloudflare */
-		$cloudflare = GeneralUtility::makeInstance('Tx_Cloudflare_Services_Cloudflare', $this->config);
+		/** @var $cloudflareService \Causal\Cloudflare\Services\CloudflareService */
+		$cloudflareService = GeneralUtility::makeInstance('Causal\\Cloudflare\\Services\\CloudflareService', $this->config);
 
 		try {
-			$ret = $cloudflare->send(array('a' => 'zone_load_multi'));
+			$ret = $cloudflareService->send(array('a' => 'zone_load_multi'));
 			if ($ret['result'] === 'success') {
 				foreach ($ret['response']['zones']['objs'] as $zone) {
 					$domains[] = $zone['zone_name'];
 				}
 			}
-		} catch (RuntimeException $e) {
+		} catch (\RuntimeException $e) {
 			// Nothing to do
 		}
 
@@ -113,19 +111,6 @@ JS;
 		$out[] = '<input type="hidden" id="' . $fieldId . '" name="' . $params['fieldName'] .  '" value="' . $params['fieldValue'] . '" />';
 
 		return implode(LF, $out);
-	}
-
-	/**
-	 * Overrides local configuration.
-	 *
-	 * @param t3lib_tsStyleConfig $pObj
-	 * @return void
-	 */
-	protected function overrideConfiguration(t3lib_tsStyleConfig $pObj) {
-		foreach ($pObj->ext_incomingValues as $incomingValues) {
-			list($key, $value) = explode('=', $incomingValues, 2);
-			$this->config[$key] = $value;
-		}
 	}
 
 }

@@ -7,10 +7,7 @@ if (!is_array($config)) {
 }
 
 // Register additional clear_cache method
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'][] = 'EXT:' . $_EXTKEY . '/Classes/Hooks/TCEmain.php:Tx_Cloudflare_Hooks_TCEmain->clear_cacheCmd';
-
-$versionParts = explode('.', TYPO3_version);
-$version = intval((int) $versionParts[0] . str_pad((int) $versionParts[1], 3, '0', STR_PAD_LEFT) . str_pad((int) $versionParts[2], 3, '0', STR_PAD_LEFT));
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'][] = 'EXT:' . $_EXTKEY . '/Classes/Hooks/TCEmain.php:Causal\\Cloudflare\\Hooks\\TCEmain->clear_cacheCmd';
 
 $remoteIp = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR');
 
@@ -74,11 +71,15 @@ if ($isProxied) {
 }
 
 if (TYPO3_MODE === 'BE' && !empty($config['apiKey'])) {
-	$cloudflareToolbarItemClassPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY, 'Classes/Hooks/TYPO3backend_Cloudflare.php');
-	$GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'][] = $cloudflareToolbarItemClassPath;
+	if (version_compare(TYPO3_version, '6.99.99', '<=')) {
+		$cloudflareToolbarItemClassPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY, 'Classes/Hooks/TYPO3backend_Cloudflare.php');
+		$GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'][] = $cloudflareToolbarItemClassPath;
+	} else {
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'][] = 'Causal\\Cloudflare\\Backend\\ToolbarItems\\CloudflareToolbarItem';
+	}
 
 	if ($config['domains'] !== '') {
-		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['additionalBackendItems']['cacheActions']['clearCloudflareCache'] = 'EXT:' . $_EXTKEY . '/Classes/Hooks/TYPO3backend.php:&Tx_Cloudflare_Hooks_TYPO3backend';
-		$GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['cloudflare::clearCache'] = 'EXT:' . $_EXTKEY . '/Classes/Hooks/TCEmain.php:Tx_Cloudflare_Hooks_TCEmain->clearCache';
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['additionalBackendItems']['cacheActions']['clearCloudflareCache'] = 'EXT:' . $_EXTKEY . '/Classes/Hooks/TYPO3backend.php:Causal\\Cloudflare\\Hooks\\TYPO3backend';
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['cloudflare::clearCache'] = 'EXT:' . $_EXTKEY . '/Classes/Hooks/TCEmain.php:Causal\\Cloudflare\\Hooks\\TCEmain->clearCache';
 	}
 }

@@ -1,4 +1,6 @@
 <?php
+namespace Causal\Cloudflare\Hooks;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,7 +34,14 @@
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Tx_Cloudflare_Hooks_TYPO3backend implements \TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookInterface {
+class TYPO3backend implements \TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookInterface {
+
+	/**
+	 * Default constructor.
+	 */
+	public function __construct() {
+		$this->getLanguageService()->includeLLFile('EXT:cloudflare/Resources/Private/Language/locallang.xlf');
+	}
 
 	/**
 	 * Adds cache menu item.
@@ -42,9 +51,10 @@ class Tx_Cloudflare_Hooks_TYPO3backend implements \TYPO3\CMS\Backend\Toolbar\Cle
 	 * @return void
 	 */
 	public function manipulateCacheActions(&$cacheActions, &$optionValues) {
-		if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.all') || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.cloudflare')) {
+		$backendUser = $this->getBackendUser();
+		if ($backendUser->isAdmin() || $backendUser->getTSConfigVal('options.clearCache.all') || $backendUser->getTSConfigVal('options.clearCache.cloudflare')) {
 			// Add new cache menu item
-			$title = 'Clear CloudFlare cache';
+			$title = $this->getLanguageService()->getLL('clear_cache');
 			$clearAll = array_shift($cacheActions);
 			$clearCloudFlare = array(
 				'id'    => 'cloudflare',
@@ -59,6 +69,24 @@ class Tx_Cloudflare_Hooks_TYPO3backend implements \TYPO3\CMS\Backend\Toolbar\Cle
 			}
 			$optionValues[] = 'cloudflare';
 		}
+	}
+
+	/**
+	 * Returns the current Backend user.
+	 *
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * Returns the LanguageService.
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 
 }

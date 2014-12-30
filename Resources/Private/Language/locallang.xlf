@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2014-12-30T10:37:08Z" product-name="cloudflare">
+		<header/>
+		<body>
+			<trans-unit id="toolbarItem">
+				<source>CloudFlare</source>
+			</trans-unit>
+			<trans-unit id="no_domains">
+				<source>No domains configured.</source>
+			</trans-unit>
+			<trans-unit id="toggle_development">
+				<source>Toggle development mode</source>
+			</trans-unit>
+			<trans-unit id="zone_active">
+				<source>This zone is active</source>
+			</trans-unit>
+			<trans-unit id="zone_inactive">
+				<source>This zone is currently inactive</source>
+			</trans-unit>
+			<trans-unit id="zone_development">
+				<source>This zone is in development mode</source>
+			</trans-unit>
+			<trans-unit id="clear_cache">
+				<source>Clear CloudFlare cache</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

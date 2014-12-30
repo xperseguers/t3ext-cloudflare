@@ -1,20 +1,20 @@
-	# cat=basic//10; type=string; label=API Key: This is the API key made available on your account page (https://www.cloudflare.com/my-account.html)
-apiKey =
-
-	# cat=basic//20; type=string; label=Email: The e-mail address associated with the API key.
+# cat=basic//10; type=string; label=Email: The e-mail address associated with the API key.
 email =
 
-	# cat=basic//30; type=user[EXT:cloudflare/Classes/EM/Configuration.php:&Tx_Cloudflare_EM_Configuration->getDomains]; label=Domains: Please tick the domains whose cache should be flushed on CloudFlare upon clearing all caches in TYPO3.
+# cat=basic//20; type=string; label=API Key: This is the API key made available on your account page (https://www.cloudflare.com/my-account.html)
+apiKey =
+
+# cat=basic//30; type=user[EXT:cloudflare/Classes/ExtensionManager/Configuration.php:\Causal\Cloudflare\ExtensionManager\Configuration->getDomains]; label=Domains: Please tick the domains whose cache should be flushed on CloudFlare upon clearing all caches in TYPO3.
 domains =
 
-	# cat=advanced/enable/10; type=boolean; label=Originating IPs: Tick this checkbox in case you cannot restore the originating IPs at the webserver level.
+# cat=advanced/enable/10; type=boolean; label=Originating IPs: Tick this checkbox in case you cannot restore the originating IPs at the webserver level.
 enableOriginatingIPs = 0
 
-	# cat=advanced/enable/20; type=boolean; label=Cache content over SSL: Requires EXT:nc_staticfilecache. Tick this checkbox in case you would to cache content over SSL. Typically useful when securing your website with CloudFlare's flexible SSL.
+# cat=advanced/enable/20; type=boolean; label=Cache content over SSL: Requires EXT:nc_staticfilecache. Tick this checkbox in case you would to cache content over SSL. Typically useful when securing your website with CloudFlare's flexible SSL.
 cacheSslContent = 0
 
-	# cat=advanced/enable/30; type=boolean; label=Purge single files (experimental): Tick this checkbox to try to purge single files on CloudFlare. Beware: Highly experimental!
+# cat=advanced/enable/30; type=boolean; label=Purge single files (experimental): Tick this checkbox to try to purge single files on CloudFlare. Beware: Highly experimental!
 enablePurgeSingleFile = 0
 
-	# customsubcategory=proxy=Proxy Settings; cat=advanced/proxy; type=string; label=API Endpoint: Alternate API endpoint/proxy. Beware: DO NOT change unless you know what you do!
+# customsubcategory=proxy=Proxy Settings; cat=advanced/proxy; type=string; label=API Endpoint: Alternate API endpoint/proxy. Beware: DO NOT change unless you know what you do!
 apiEndpoint =

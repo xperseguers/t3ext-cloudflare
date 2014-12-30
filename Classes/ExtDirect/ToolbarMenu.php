@@ -1,4 +1,6 @@
 <?php
+namespace Causal\Cloudflare\ExtDirect;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -26,7 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 
 /**
- * Toolbar Menu ExtDirect handler.
+ * Toolbar Menu ExtDirect handler (TYPO3 6.2).
  *
  * @category    ExtDirect
  * @package     TYPO3
@@ -35,7 +37,7 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Tx_Cloudflare_ExtDirect_ToolbarMenu {
+class ToolbarMenu {
 
 	/** @var string */
 	protected $extKey = 'cloudflare';
@@ -48,6 +50,7 @@ class Tx_Cloudflare_ExtDirect_ToolbarMenu {
 	 */
 	public function __construct() {
 		$this->config = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
+		$this->getLanguageService()->includeLLFile('EXT:cloudflare/Resources/Private/Language/locallang.xlf');
 	}
 
 	/**
@@ -55,24 +58,25 @@ class Tx_Cloudflare_ExtDirect_ToolbarMenu {
 	 *
 	 * @param $parameter
 	 * @return array
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	public function retrieveCloudFlareStatus($parameter) {
-		if (!$GLOBALS['BE_USER']->isAdmin()) {
+		if (!$this->getBackendUser()->isAdmin()) {
 			throw new \RuntimeException('Unauthorized call', 1366652032);
 		}
+		$languageService = $this->getLanguageService();
 		$out = array();
 		$domains = GeneralUtility::trimExplode(',', $this->config['domains'], TRUE);
 		if (count($domains)) {
-			/** @var $cloudflare Tx_Cloudflare_Services_Cloudflare */
-			$cloudflare = GeneralUtility::makeInstance('Tx_Cloudflare_Services_Cloudflare', $this->config);
+			/** @var $cloudflareService \Causal\Cloudflare\Services\CloudflareService */
+			$cloudflareService = GeneralUtility::makeInstance('Causal\\Cloudflare\\Services\\CloudflareService', $this->config);
 
 			try {
-				$ret = $cloudflare->send(array('a' => 'zone_load_multi'));
+				$ret = $cloudflareService->send(array('a' => 'zone_load_multi'));
 				if ($ret['result'] === 'success') {
 					foreach ($ret['response']['zones']['objs'] as $zone) {
 						if (in_array($zone['zone_name'], $domains)) {
-							$out[] = '<li><h3>&nbsp;' . $this->getZoneIcon($zone['zone_status_class']) . ' ' . $zone['zone_name'] . '</h3></li>';
+							$out[] = '<li><h3>&nbsp;' . $this->getZoneIcon($zone['zone_status_class']) . ' ' . htmlspecialchars($zone['zone_name']) . '</h3></li>';
 							$active = NULL;
 							switch ($zone['zone_status_class']) {
 								case 'status-active':
@@ -83,10 +87,10 @@ class Tx_Cloudflare_ExtDirect_ToolbarMenu {
 									break;
 							}
 							if ($active !== NULL) {
-								$js = 'TYPO3BackendCloudflareMenu.toggleDevelopmentMode(\'' . $zone['zone_name'] . '\', ' . $active . ');';
-								$out[] = '<li class="divider"><a href="#" onclick="' . $js . '">Toggle development mode</a></li>';
+								$onClickCode = 'TYPO3BackendCloudflareMenu.toggleDevelopmentMode(\'' . $zone['zone_name'] . '\', ' . $active . ');';
+								$out[] = '<li class="divider"><a href="#" onclick="' . htmlspecialchars($onClickCode) . '">' . $languageService->getLL('toggle_development', TRUE) . '</a></li>';
 							} else {
-								$out[] = '<li class="divider">This zone is currently inactive</li>';
+								$out[] = '<li class="divider">' . $languageService->getLL('zone_inactive', TRUE) . '</li>';
 							}
 						}
 					}
@@ -95,7 +99,7 @@ class Tx_Cloudflare_ExtDirect_ToolbarMenu {
 				// Nothing to do
 			}
 		} else {
-			$out[] = '<li>No domains configured.</li>';
+			$out[] = '<li>' . $languageService->getLL('no_domains') . '</li>';
 		}
 
 		return array('html' => implode('', $out));
@@ -106,18 +110,18 @@ class Tx_Cloudflare_ExtDirect_ToolbarMenu {
 	 *
 	 * @param $parameter
 	 * @return array
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	public function toggleDevelopmentMode($parameter) {
-		if (!$GLOBALS['BE_USER']->isAdmin()) {
+		if (!$this->getBackendUser()->isAdmin()) {
 			throw new \RuntimeException('Unauthorized call', 1366652080);
 		}
 
-		/** @var $cloudflare Tx_Cloudflare_Services_Cloudflare */
-		$cloudflare = GeneralUtility::makeInstance('Tx_Cloudflare_Services_Cloudflare', $this->config);
+		/** @var $cloudflareService \Causal\Cloudflare\Services\CloudflareService */
+		$cloudflareService = GeneralUtility::makeInstance('Causal\\Cloudflare\\Services\\CloudflareService', $this->config);
 
 		try {
-			$ret = $cloudflare->send(array(
+			$ret = $cloudflareService->send(array(
 				'a' => 'devmode',
 				'z' => $parameter->zone,
 				'v' => $parameter->active,
@@ -136,19 +140,38 @@ class Tx_Cloudflare_ExtDirect_ToolbarMenu {
 	 * @return string
 	 */
 	protected function getZoneIcon($status) {
+		$languageService = $this->getLanguageService();
 		switch ($status) {
 			case 'status-active':
-				$icon = IconUtility::getSpriteIcon('extensions-cloudflare-online', array('title' => 'Zone is active'));
+				$icon = IconUtility::getSpriteIcon('extensions-cloudflare-online', array('title' => $languageService->getLL('zone_active')));
 				break;
 			case 'status-dev-mode':
-				$icon = IconUtility::getSpriteIcon('extensions-cloudflare-direct', array('title' => 'Zone is in development mode'));
+				$icon = IconUtility::getSpriteIcon('extensions-cloudflare-direct', array('title' => $languageService->getLL('zone_development')));
 				break;
 			case 'status-deactivated':
 			default:
-				$icon = IconUtility::getSpriteIcon('extensions-cloudflare-offline', array('title' => 'Zone is inactive'));
+				$icon = IconUtility::getSpriteIcon('extensions-cloudflare-offline', array('title' => $languageService->getLL('zone_inactive')));
 				break;
 		}
 		return $icon;
+	}
+
+	/**
+	 * Returns the current Backend user.
+	 *
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * Returns the LanguageService.
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 
 }

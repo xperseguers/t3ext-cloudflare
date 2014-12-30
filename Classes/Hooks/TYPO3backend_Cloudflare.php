@@ -27,7 +27,7 @@ if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
 }
 
 /**
- * Class to render the CloudFlare toolbar menu.
+ * Class to render the CloudFlare toolbar menu (TYPO3 6.2).
  *
  * @category    Hooks
  * @package     TYPO3
@@ -58,6 +58,7 @@ class Tx_Cloudflare_Hooks_TYPO3backend_Cloudflare implements \TYPO3\CMS\Backend\
 	 */
 	public function __construct(\TYPO3\CMS\Backend\Controller\BackendController &$backendReference = NULL) {
 		$this->backendReference = $backendReference;
+		$this->getLanguageService()->includeLLFile('EXT:cloudflare/Resources/Private/Language/locallang.xlf');
 	}
 
 	/**
@@ -69,7 +70,7 @@ class Tx_Cloudflare_Hooks_TYPO3backend_Cloudflare implements \TYPO3\CMS\Backend\
 	public function checkAccess() {
 		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cloudflare')) {
 			if ($this->checkAccess === NULL) {
-					if ($GLOBALS['BE_USER']->isAdmin()) {
+					if ($this->getBackendUser()->isAdmin()) {
 						$this->checkAccess = TRUE;
 					} else {
 						$this->checkAccess = FALSE;
@@ -86,7 +87,7 @@ class Tx_Cloudflare_Hooks_TYPO3backend_Cloudflare implements \TYPO3\CMS\Backend\
 	 * @return string CloudFlare menu as HTML select
 	 */
 	public function render() {
-		$title = 'CloudFlare'; // $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.workspace', TRUE);
+		$title = $this->getLanguageService()->getLL('toolbarItem', TRUE);
 		$this->addJavascriptToBackend();
 		$cloudflareMenu = array();
 
@@ -116,6 +117,25 @@ class Tx_Cloudflare_Hooks_TYPO3backend_Cloudflare implements \TYPO3\CMS\Backend\
 	public function getAdditionalAttributes() {
 		return ' id="cloudflare-menu" ';
 	}
+
+	/**
+	 * Returns the current Backend user.
+	 *
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * Returns the LanguageService.
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
+
 }
 
 

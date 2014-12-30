@@ -1,4 +1,6 @@
 <?php
+namespace Causal\Cloudflare\Hooks;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -34,7 +36,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Tx_Cloudflare_Hooks_TCEmain {
+class TCEmain {
 
 	/** @var string */
 	protected $extKey = 'cloudflare';
@@ -99,8 +101,8 @@ class Tx_Cloudflare_Hooks_TCEmain {
 	protected function clearCloudFlareCache(\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication $beUser = NULL) {
 		$domains = $this->config['domains'] ? GeneralUtility::trimExplode(',', $this->config['domains'], TRUE) : array();
 
-		/** @var $cloudflare Tx_Cloudflare_Services_Cloudflare */
-		$cloudflare = GeneralUtility::makeInstance('Tx_Cloudflare_Services_Cloudflare', $this->config);
+		/** @var $cloudflareService \Causal\Cloudflare\Services\CloudflareService */
+		$cloudflareService = GeneralUtility::makeInstance('Causal\\Cloudflare\\Services\\CloudflareService', $this->config);
 
 		foreach ($domains as $domain) {
 			$parameters = array(
@@ -109,7 +111,7 @@ class Tx_Cloudflare_Hooks_TCEmain {
 				'v' => '1',
 			);
 			try {
-				$ret = $cloudflare->send($parameters);
+				$ret = $cloudflareService->send($parameters);
 
 				if ($beUser !== NULL) {
 					if ($ret['result'] === 'error') {
@@ -259,8 +261,8 @@ class Tx_Cloudflare_Hooks_TCEmain {
 			return;
 		}
 
-		/** @var $cloudflare Tx_Cloudflare_Services_Cloudflare */
-		$cloudflare = GeneralUtility::makeInstance('Tx_Cloudflare_Services_Cloudflare', $this->config);
+		/** @var $cloudflareService \Causal\Cloudflare\Services\CloudflareService */
+		$cloudflareService = GeneralUtility::makeInstance('Causal\\Cloudflare\\Services\\CloudflareService', $this->config);
 
 		$parameters = array(
 			'a'   => 'zone_file_purge',
@@ -268,7 +270,7 @@ class Tx_Cloudflare_Hooks_TCEmain {
 			'url' => $url,
 		);
 		try {
-			$ret = $cloudflare->send($parameters);
+			$ret = $cloudflareService->send($parameters);
 
 			if ($beUser !== NULL) {
 				if ($ret['result'] === 'error') {
