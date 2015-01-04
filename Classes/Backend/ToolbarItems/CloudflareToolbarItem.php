@@ -9,7 +9,7 @@ namespace Causal\Cloudflare\Backend\ToolbarItems;
  * of the License, or any later version.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
+ * LICENSE.txt file that was distributed with TYPO3 source code.
  *
  * The TYPO3 project - inspiring people to share!
  */
