@@ -9,14 +9,15 @@
 Support for SSL
 ---------------
 
-SSL support for CloudFlare requires a Business plan (formerly "Pro account"). Please read
+SSL support for CloudFlare originally required a Business plan (formerly "Pro account") but is now freely available to
+everyone, including free accounts. Please read
 https://support.cloudflare.com/hc/en-us/articles/200170336-How-do-I-upgrade-to-a-Business-Plan if you want to upgrade
 your FREE account.
 
-CloudFlare supports either Full SSL or Flexible SSL. Full SSL requires your web server to run over SSL whereas Flexible
-SSL will only use SSL from the client to CloudFlare but then your web server will still operate on port 80. This
-extension is able to deal with Flexible SSL and will automatically set the HTTPS header to "``on``" if Flexible SSL is
-detected, allowing you to generate links containing the "``https://``" prefix.
+CloudFlare supports either Full SSL (strict) or Flexible SSL. Full SSL requires your web server to run over SSL whereas
+Flexible SSL will only use SSL from the client to CloudFlare but then your web server will still operate on port 80.
+This extension is able to deal with Flexible SSL and will automatically set the HTTPS header to "``on``" if Flexible SSL
+is detected, allowing you to generate links containing the "``https://``" prefix.
 
 You may enforce SSL either at the Web Server level or using Page Rules in CloudFlare. If using Apache, please read
 https://support.cloudflare.com/hc/en-us/articles/200170536-How-do-I-redirect-HTTPS-traffic-with-Flexible-SSL-and-Apache.
@@ -37,3 +38,5 @@ Read more:
 
 - `Nginx configuration <http://nginx.org/en/docs/http/configuring_https_servers.html#sni>`_
 - `Apache configuration <http://www.rackspace.com/knowledge_center/article/serving-secure-sites-with-sni-on-apache>`_
+
+.. note:: If you choose "Full SSL (strict)" instead of "Full SSL", you will not be able to use a self-signed certificate.

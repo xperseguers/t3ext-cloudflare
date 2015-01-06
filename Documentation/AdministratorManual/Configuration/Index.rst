@@ -49,8 +49,8 @@ The official list of CloudFlare's reverse-proxy IPs (both IPv4 and IPv6) can be 
 
 	.. code-block:: php
 
-		$TYPO3_CONF_VARS['SYS']['reverseProxyIP'] = '10.0.0.5';
-		$TYPO3_CONF_VARS['SYS']['reverseProxyHeaderMultiValue'] = 'first';
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'] = '10.0.0.5';
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyHeaderMultiValue'] = 'first';
 
 	where ``10.0.0.5`` is the IP of your reverse-proxy. This is needed in order for this extension to allow the
 	originating IP to be overridden based on the HTTP header ``HTTP_CF_CONNECTING_IP`` that is only allowed if the
