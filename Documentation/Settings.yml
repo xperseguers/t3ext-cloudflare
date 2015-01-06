@@ -7,7 +7,7 @@ conf.py:
   copyright: 2012-2015
   project: CloudFlare Client
   version: 1.3
-  release: 1.3.0-dev
+  release: 1.3.0
   latex_documents:
   - - Index
     - cloudflare.tex
