@@ -49,7 +49,8 @@ class CloudflareToolbarItem implements ToolbarItemInterface {
 	 * Default constructor.
 	 */
 	public function __construct() {
-		$this->config = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
+		$config = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey];
+		$this->config = $config ? unserialize($config) : array();
 		$this->cloudflareService = GeneralUtility::makeInstance('Causal\\Cloudflare\\Services\\CloudflareService', $this->config);
 		$this->getLanguageService()->includeLLFile('EXT:cloudflare/Resources/Private/Language/locallang.xlf');
 		$pageRenderer = $this->getPageRenderer();

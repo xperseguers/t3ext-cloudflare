@@ -38,7 +38,8 @@ class TCEmain {
 	 * Default constructor.
 	 */
 	public function __construct() {
-		$this->config = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
+		$config = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey];
+		$this->config = $config ? unserialize($config) : array();
 	}
 
 	/**
