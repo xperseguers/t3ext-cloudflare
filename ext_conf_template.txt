@@ -4,7 +4,7 @@ email =
 # cat=basic//20; type=string; label=LLL:EXT:cloudflare/Resources/Private/Language/locallang_db.xlf:settings.apiKey
 apiKey =
 
-# cat=basic//30; type=user[EXT:cloudflare/Classes/ExtensionManager/Configuration.php:\Causal\Cloudflare\ExtensionManager\Configuration->getDomains]; label=LLL:EXT:cloudflare/Resources/Private/Language/locallang_db.xlf:settings.domains
+# cat=basic//30; type=user[EXT:cloudflare/Classes/ExtensionManager/Configuration.php:Causal\Cloudflare\ExtensionManager\Configuration->getDomains]; label=LLL:EXT:cloudflare/Resources/Private/Language/locallang_db.xlf:settings.domains
 domains =
 
 # cat=advanced/enable/10; type=boolean; label=LLL:EXT:cloudflare/Resources/Private/Language/locallang_db.xlf:settings.enableOriginatingIPs
