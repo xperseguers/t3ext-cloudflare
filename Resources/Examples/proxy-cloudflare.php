@@ -62,7 +62,7 @@ class cloudflareProxy {
 	 * Handles a proxy request.
 	 *
 	 * @return string
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	public function handleRequest() {
 		$parameters = $GLOBALS['_POST'];
@@ -102,7 +102,7 @@ class cloudflareProxy {
 			}
 		}
 
-		throw new RuntimeException('Not Authorized', 1354810958);
+		throw new \RuntimeException('Not Authorized', 1354810958);
 	}
 
 	/**
@@ -186,14 +186,14 @@ class cloudflareProxy {
 	 *
 	 * @param array $data
 	 * @return string
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	protected function POST(array $data) {
 		$data['email'] = $this->email;
 		$data['tkn'] = $this->token;
 
 		if (!function_exists('curl_init') || !($ch = curl_init())) {
-			throw new RuntimeException('cURL cannot be used', 1354811692);
+			throw new \RuntimeException('cURL cannot be used', 1354811692);
 		}
 
 		$url = 'https://www.cloudflare.com/api_json.html';

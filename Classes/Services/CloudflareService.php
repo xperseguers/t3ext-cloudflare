@@ -51,13 +51,13 @@ class CloudflareService implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param array $additionalParams
 	 * @return array
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	public function send(array $additionalParams) {
 		if (!trim($this->config['apiKey'])) {
-			throw new RuntimeException('Cannot clear cache on CloudFlare: Invalid apiKey for EXT:cloudflare', 1337770232);
+			throw new \RuntimeException('Cannot clear cache on CloudFlare: Invalid apiKey for EXT:cloudflare', 1337770232);
 		} elseif (!\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail(trim($this->config['email']))) {
-			throw new RuntimeException('Cannot clear cache on CloudFlare: Invalid email for EXT:cloudflare', 1337770383);
+			throw new \RuntimeException('Cannot clear cache on CloudFlare: Invalid email for EXT:cloudflare', 1337770383);
 		}
 
 		$params = array(
@@ -74,7 +74,7 @@ class CloudflareService implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param array $data
 	 * @return array JSON payload returned by CloudFlare
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	protected function POST($url, array $data) {
 		if (TRUE || $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] == '1') {
