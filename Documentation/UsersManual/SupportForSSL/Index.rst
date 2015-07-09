@@ -30,9 +30,9 @@ As explained full SSL means CloudFlare provides its own wildcard certificate for
 SSL to your server. This is of course the most secured option. The common problem with SSL on your own servers is when
 having virtual hosts (multiple domains on the same IP).
 
-I recently successfully tested if CloudFlare would support :abbr:`SNI (Server Name Indication)` (an extension to the TLS
-protocol that indicates what hostname the client is attempting to connect to at the start of the handshaking process)
-and self-signed certificates and its the case.
+I recently successfully checked if CloudFlare would support :abbr:`SNI (Server Name Indication)` (an extension to the
+TLS protocol that indicates what hostname the client is attempting to connect to at the start of the handshaking
+process) and self-signed certificates and this is the case.
 
 Read more:
 
