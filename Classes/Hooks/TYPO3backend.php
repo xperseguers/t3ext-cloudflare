@@ -55,7 +55,7 @@ class TYPO3backend implements \TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookIn
                 'href' => $GLOBALS['BACK_PATH'] . 'ajax.php?ajaxID=cloudflare::clearCache',
                 'icon' => '<span class="t3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-cache-clear-impact-low"></span>'
             );
-            if ($clearAll !== NULL) {
+            if ($clearAll !== null) {
                 $cacheActions = array_merge(array($clearAll, $clearCloudFlare), $cacheActions);
             } else {
                 $cacheActions[] = $clearCloudFlare;

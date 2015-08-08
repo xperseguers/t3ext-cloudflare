@@ -40,14 +40,14 @@ class Tx_Cloudflare_Hooks_TYPO3backend_Cloudflare implements \TYPO3\CMS\Backend\
     protected $backendReference;
 
     /** @var boolean */
-    protected $checkAccess = NULL;
+    protected $checkAccess = null;
 
     /**
      * Default constructor.
      *
      * @param \TYPO3\CMS\Backend\Controller\BackendController TYPO3 Backend object reference
      */
-    public function __construct(\TYPO3\CMS\Backend\Controller\BackendController &$backendReference = NULL)
+    public function __construct(\TYPO3\CMS\Backend\Controller\BackendController &$backendReference = null)
     {
         $this->backendReference = $backendReference;
         $this->getLanguageService()->includeLLFile('EXT:cloudflare/Resources/Private/Language/locallang.xlf');
@@ -56,22 +56,22 @@ class Tx_Cloudflare_Hooks_TYPO3backend_Cloudflare implements \TYPO3\CMS\Backend\
     /**
      * Checks whether the user has access to this toolbar item
      *
-     * @return boolean TRUE if user has access, FALSE otherwise
+     * @return boolean true if user has access, false otherwise
      * @see typo3/alt_shortcut.php
      */
     public function checkAccess()
     {
         if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cloudflare')) {
-            if ($this->checkAccess === NULL) {
+            if ($this->checkAccess === null) {
                 if ($this->getBackendUser()->isAdmin()) {
-                    $this->checkAccess = TRUE;
+                    $this->checkAccess = true;
                 } else {
-                    $this->checkAccess = FALSE;
+                    $this->checkAccess = false;
                 }
             }
             return $this->checkAccess;
         }
-        return FALSE;
+        return false;
     }
 
     /**
@@ -81,7 +81,7 @@ class Tx_Cloudflare_Hooks_TYPO3backend_Cloudflare implements \TYPO3\CMS\Backend\
      */
     public function render()
     {
-        $title = $this->getLanguageService()->getLL('toolbarItem', TRUE);
+        $title = $this->getLanguageService()->getLL('toolbarItem', true);
         $this->addJavascriptToBackend();
         $cloudflareMenu = array();
 

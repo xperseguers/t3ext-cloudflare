@@ -62,7 +62,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
     /**
      * Checks whether the user has access to this toolbar item.
      *
-     * @return bool TRUE if user has access, FALSE if not
+     * @return bool true if user has access, false if not
      */
     public function checkAccess()
     {
@@ -76,7 +76,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      */
     public function getItem()
     {
-        $title = $this->getLanguageService()->getLL('toolbarItem', TRUE);
+        $title = $this->getLanguageService()->getLL('toolbarItem', true);
 
         $cloudflare = array();
         $cloudflare[] = IconUtility::getSpriteIcon('actions-system-extension-configure', array('title' => $title));
@@ -95,7 +95,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
         $languageService = $this->getLanguageService();
         $entries = array();
 
-        $domains = GeneralUtility::trimExplode(',', $this->config['domains'], TRUE);
+        $domains = GeneralUtility::trimExplode(',', $this->config['domains'], true);
         if (count($domains)) {
             try {
                 $ret = $this->cloudflareService->send(array('a' => 'zone_load_multi'));
@@ -106,7 +106,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
                                 $entries[] = '<li class="divider"></li>';
                             }
                             $entries[] = '<li class="dropdown-header" data-zone-status="' . htmlspecialchars($zone['zone_status_class']) . '">' . $this->getZoneIcon($zone['zone_status_class']) . ' ' . htmlspecialchars($zone['zone_name']) . '</li>';
-                            $active = NULL;
+                            $active = null;
                             switch ($zone['zone_status_class']) {
                                 case 'status-active':
                                     $active = 1;
@@ -115,11 +115,11 @@ class CloudflareToolbarItem implements ToolbarItemInterface
                                     $active = 0;
                                     break;
                             }
-                            if ($active !== NULL) {
+                            if ($active !== null) {
                                 $onClickCode = 'TYPO3.CloudflareMenu.toggleDevelopmentMode(\'' . $zone['zone_name'] . '\', ' . $active . '); return false;';
-                                $entries[] = '<li><a href="#" onclick="' . htmlspecialchars($onClickCode) . '">' . $languageService->getLL('toggle_development', TRUE) . '</a></li>';
+                                $entries[] = '<li><a href="#" onclick="' . htmlspecialchars($onClickCode) . '">' . $languageService->getLL('toggle_development', true) . '</a></li>';
                             } else {
-                                $entries[] = '<li>' . $languageService->getLL('zone_inactive', TRUE) . '</li>';
+                                $entries[] = '<li>' . $languageService->getLL('zone_inactive', true) . '</li>';
                             }
                         }
                     }
@@ -132,7 +132,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
         if (count($entries)) {
             $content = '<ul class="dropdown-list">' . implode('', $entries) . '</ul>';
         } else {
-            $content = '<p>' . $languageService->getLL('no_domains', TRUE) . '</p>';
+            $content = '<p>' . $languageService->getLL('no_domains', true) . '</p>';
         }
         return $content;
     }
@@ -178,7 +178,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      */
     public function hasDropDown()
     {
-        return TRUE;
+        return true;
     }
 
     /**
@@ -202,7 +202,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
      * @return void
      */
-    public function renderAjax($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj = NULL)
+    public function renderAjax($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj = null)
     {
         $ajaxObj->addContent('cloudflareMenu', $this->getDropDown());
     }
@@ -213,7 +213,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      * @param array $params Array of parameters from the AJAX interface, currently unused
      * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
      */
-    public function toggleDevelopmentMode($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj = NULL)
+    public function toggleDevelopmentMode($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj = null)
     {
         $zone = GeneralUtility::_GP('zone');
         $active = GeneralUtility::_GP('active');

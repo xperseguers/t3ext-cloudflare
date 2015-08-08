@@ -35,7 +35,7 @@ $whiteListIPv6s = array(
     '2405:8100::/32',
 );
 
-$isProxied = FALSE;
+$isProxied = false;
 if (isset($config['enableOriginatingIPs']) && $config['enableOriginatingIPs'] == 1) {
     if (\TYPO3\CMS\Core\Utility\GeneralUtility::validIPv6($remoteIp)) {
         $isProxied |= \TYPO3\CMS\Core\Utility\GeneralUtility::cmpIPv6($remoteIp, implode(',', $whiteListIPv6s));
@@ -44,13 +44,13 @@ if (isset($config['enableOriginatingIPs']) && $config['enableOriginatingIPs'] ==
     }
 } elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
     // We take for granted that reverse-proxy is properly configured
-    $isProxied = TRUE;
+    $isProxied = true;
 }
 
 if ($isProxied) {
     // Flexible-SSL support
     if (isset($_SERVER['HTTP_CF_VISITOR'])) {
-        $cloudflareVisitor = json_decode($_SERVER['HTTP_CF_VISITOR'], TRUE);
+        $cloudflareVisitor = json_decode($_SERVER['HTTP_CF_VISITOR'], true);
         if ($cloudflareVisitor['scheme'] === 'https') {
             $_SERVER['HTTPS'] = 'on';
             $_SERVER['HTTP_X_FORWARDED_PROTO'] = 'https';

@@ -74,7 +74,7 @@ class Configuration
         }
 
         $i = 0;
-        $selectedDomains = GeneralUtility::trimExplode(',', $params['fieldValue'], TRUE);
+        $selectedDomains = GeneralUtility::trimExplode(',', $params['fieldValue'], true);
         foreach ($domains as $domain) {
             $out[] = '<div>';
             $checked = in_array($domain, $selectedDomains) ? ' checked="checked"' : '';

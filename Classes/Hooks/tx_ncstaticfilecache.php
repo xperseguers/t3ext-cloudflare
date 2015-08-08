@@ -35,7 +35,7 @@ class Tx_Cloudflare_Hooks_NcStaticfilecache
      */
     public function createFile_initializeVariables(array $params, \tx_ncstaticfilecache $pObj)
     {
-        $params['isHttp'] = TRUE;
+        $params['isHttp'] = true;
     }
 
 }

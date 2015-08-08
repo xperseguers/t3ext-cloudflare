@@ -60,7 +60,7 @@ class ToolbarMenu
         }
         $languageService = $this->getLanguageService();
         $out = array();
-        $domains = GeneralUtility::trimExplode(',', $this->config['domains'], TRUE);
+        $domains = GeneralUtility::trimExplode(',', $this->config['domains'], true);
         if (count($domains)) {
             /** @var $cloudflareService \Causal\Cloudflare\Services\CloudflareService */
             $cloudflareService = GeneralUtility::makeInstance('Causal\\Cloudflare\\Services\\CloudflareService', $this->config);
@@ -71,7 +71,7 @@ class ToolbarMenu
                     foreach ($ret['response']['zones']['objs'] as $zone) {
                         if (in_array($zone['zone_name'], $domains)) {
                             $out[] = '<li><h3>&nbsp;' . $this->getZoneIcon($zone['zone_status_class']) . ' ' . htmlspecialchars($zone['zone_name']) . '</h3></li>';
-                            $active = NULL;
+                            $active = null;
                             switch ($zone['zone_status_class']) {
                                 case 'status-active':
                                     $active = 1;
@@ -80,11 +80,11 @@ class ToolbarMenu
                                     $active = 0;
                                     break;
                             }
-                            if ($active !== NULL) {
+                            if ($active !== null) {
                                 $onClickCode = 'TYPO3BackendCloudflareMenu.toggleDevelopmentMode(\'' . $zone['zone_name'] . '\', ' . $active . ');';
-                                $out[] = '<li class="divider"><a href="#" onclick="' . htmlspecialchars($onClickCode) . '">' . $languageService->getLL('toggle_development', TRUE) . '</a></li>';
+                                $out[] = '<li class="divider"><a href="#" onclick="' . htmlspecialchars($onClickCode) . '">' . $languageService->getLL('toggle_development', true) . '</a></li>';
                             } else {
-                                $out[] = '<li class="divider">' . $languageService->getLL('zone_inactive', TRUE) . '</li>';
+                                $out[] = '<li class="divider">' . $languageService->getLL('zone_inactive', true) . '</li>';
                             }
                         }
                     }

@@ -17,7 +17,7 @@ if (TYPO3_MODE === 'BE') {
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerExtDirectComponent(
             'TYPO3.Ajax.ExtDirect.CloudflareToolbarMenu',
             \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Classes/ExtDirect/ToolbarMenu.php:Causal\\Cloudflare\\ExtDirect\\ToolbarMenu',
-            NULL,
+            null,
             'admin'
         );
     } else {

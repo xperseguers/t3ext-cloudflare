@@ -81,7 +81,7 @@ class CloudflareService implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function POST($url, array $data)
     {
-        if (TRUE || $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] == '1') {
+        if (true || $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] == '1') {
             if (!function_exists('curl_init') || !($ch = curl_init())) {
                 throw new \RuntimeException('cURL cannot be used', 1337673614);
             }
@@ -110,7 +110,7 @@ class CloudflareService implements \TYPO3\CMS\Core\SingletonInterface
                 trigger_error(curl_errno($ch));
             }
             curl_close($ch);
-            return json_decode($result, TRUE);
+            return json_decode($result, true);
         } else {
             // TODO with fsockopen()
         }

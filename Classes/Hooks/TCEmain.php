@@ -64,7 +64,7 @@ class TCEmain
                 $url = $this->getFrontendUrl($pageUid);
                 if ($url) {
                     $this->purgeCloudFlareSingleFile(
-                        isset($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER'] : NULL,
+                        isset($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER'] : null,
                         $url
                     );
                 }
@@ -93,9 +93,9 @@ class TCEmain
      * @param \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication $beUser
      * @return void
      */
-    protected function clearCloudFlareCache(\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication $beUser = NULL)
+    protected function clearCloudFlareCache(\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication $beUser = null)
     {
-        $domains = $this->config['domains'] ? GeneralUtility::trimExplode(',', $this->config['domains'], TRUE) : array();
+        $domains = $this->config['domains'] ? GeneralUtility::trimExplode(',', $this->config['domains'], true) : array();
 
         /** @var $cloudflareService \Causal\Cloudflare\Services\CloudflareService */
         $cloudflareService = GeneralUtility::makeInstance('Causal\\Cloudflare\\Services\\CloudflareService', $this->config);
@@ -109,7 +109,7 @@ class TCEmain
             try {
                 $ret = $cloudflareService->send($parameters);
 
-                if ($beUser !== NULL) {
+                if ($beUser !== null) {
                     if ($ret['result'] === 'error') {
                         $beUser->writelog(4, 1, 1, 0, 'User %s failed to clear the cache on CloudFlare (domain: "%s"): %s', array($beUser->user['username'], $domain, $ret['msg']));
                     } else {
@@ -117,7 +117,7 @@ class TCEmain
                     }
                 }
             } catch (\RuntimeException $e) {
-                if ($beUser !== NULL) {
+                if ($beUser !== null) {
                     $beUser->writelog(4, 1, 1, 0, $e->getMessage(), array());
                 }
             }
@@ -136,7 +136,7 @@ class TCEmain
     {
         if (isset($GLOBALS['BE_USER']) && $GLOBALS['BE_USER']->workspace != 0) {
             // Preview in workspaces is not supported!
-            return NULL;
+            return null;
         }
 
         /** @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $tsfe */
@@ -157,7 +157,7 @@ class TCEmain
         $GLOBALS['TSFE']->connectToDB();
 
         // Prevent database debug messages from messing up the output
-        $GLOBALS['TYPO3_DB']->debugOutput = FALSE;
+        $GLOBALS['TYPO3_DB']->debugOutput = false;
 
         $GLOBALS['TSFE']->initLLVars();
         $GLOBALS['TSFE']->initFEuser();
@@ -171,18 +171,18 @@ class TCEmain
         $page = $GLOBALS['TSFE']->sys_page->getPage($uid);
 
         if (count($page) == 0) {
-            return NULL;
+            return null;
         }
 
         // If the page is a shortcut, look up the page to which the shortcut references,
         // and do the same check as above.
         if ($page['doktype'] == 4 && count($GLOBALS['TSFE']->getPageShortcut($page['shortcut'], $page['shortcut_mode'], $page['uid'])) == 0) {
-            return NULL;
+            return null;
         }
 
         // Spacer pages and sysfolders result in a page not found page too...
         if ($page['doktype'] == 199 || $page['doktype'] == 254) {
-            return NULL;
+            return null;
         }
 
         $GLOBALS['TSFE']->getPageAndRootline();
@@ -203,7 +203,7 @@ class TCEmain
         // And the same applies if pSetup is empty, which would result in a
         // "The page is not configured" message.
         if (!$GLOBALS['TSFE']->tmpl->loaded || ($GLOBALS['TSFE']->tmpl->loaded && !$GLOBALS['TSFE']->pSetup)) {
-            //return NULL;
+            //return null;
         }
 
         $GLOBALS['TSFE']->checkAlternativeIdMethods();
@@ -212,7 +212,7 @@ class TCEmain
             $GLOBALS['TSFE']->getConfigArray();
         } catch (\Exception $e) {
             // Typicall problem: #1294587218: No TypoScript template found!
-            return NULL;
+            return null;
         }
 
         // Get linkVars, absRefPrefix, etc
@@ -239,12 +239,12 @@ class TCEmain
      * @param string $url
      * @return void
      */
-    protected function purgeCloudFlareSingleFile(\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication $beUser = NULL, $url)
+    protected function purgeCloudFlareSingleFile(\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication $beUser = null, $url)
     {
-        $domains = $this->config['domains'] ? GeneralUtility::trimExplode(',', $this->config['domains'], TRUE) : array();
+        $domains = $this->config['domains'] ? GeneralUtility::trimExplode(',', $this->config['domains'], true) : array();
 
-        $isValidUrl = FALSE;
-        $domain = NULL;
+        $isValidUrl = false;
+        $domain = null;
 
         if (preg_match('#^https?://([^/]+)#', $url, $matches)) {
             $domainParts = explode('.', $matches[1]);
@@ -270,7 +270,7 @@ class TCEmain
         try {
             $ret = $cloudflareService->send($parameters);
 
-            if ($beUser !== NULL) {
+            if ($beUser !== null) {
                 if ($ret['result'] === 'error') {
                     $beUser->writelog(4, 1, 1, 0, 'User %s failed to clear the cache on CloudFlare (domain: "%s") for "%s": %s', array($beUser->user['username'], $domain, $url, $ret['msg']));
                 } else {
@@ -278,7 +278,7 @@ class TCEmain
                 }
             }
         } catch (\RuntimeException $e) {
-            if ($beUser !== NULL) {
+            if ($beUser !== null) {
                 $beUser->writelog(4, 1, 1, 0, $e->getMessage(), array());
             }
         }

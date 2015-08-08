@@ -76,7 +76,7 @@ class cloudflareProxy
         if ($email !== '' && $token !== '') {
             if (isset($this->clients[$email]) && $this->clients[$email]['token'] === $token) {
                 $allowedDomains = $this->clients[$email]['domains'];
-                $data = NULL;
+                $data = null;
 
                 switch ($parameters['a']) {
                     case 'zone_load_multi':
@@ -99,7 +99,7 @@ class cloudflareProxy
                         break;
                 }
 
-                if ($data !== NULL) {
+                if ($data !== null) {
                     return $data;
                 }
             }
@@ -119,7 +119,7 @@ class cloudflareProxy
         $args = array(
             'a' => 'zone_load_multi',
         );
-        $data = json_decode($this->POST($args), TRUE);
+        $data = json_decode($this->POST($args), true);
         $objs = array();
         if ($data['result'] === 'success') {
             foreach ($data['response']['zones']['objs'] as $zone) {
