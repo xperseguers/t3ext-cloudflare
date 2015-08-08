@@ -13,7 +13,7 @@
  */
 
 if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
-	require_once(PATH_typo3 . 'interfaces/interface.backend_toolbaritem.php');
+    require_once(PATH_typo3 . 'interfaces/interface.backend_toolbaritem.php');
 }
 
 /**
@@ -26,109 +26,117 @@ if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Tx_Cloudflare_Hooks_TYPO3backend_Cloudflare implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInterface {
+class Tx_Cloudflare_Hooks_TYPO3backend_Cloudflare implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInterface
+{
 
-	protected $changeWorkspace;
-	protected $changeWorkspacePreview;
+    protected $changeWorkspace;
+    protected $changeWorkspacePreview;
 
-	/**
-	 * Reference back to the Backend object
-	 *
-	 * @var TYPO3backend
-	 */
-	protected $backendReference;
+    /**
+     * Reference back to the Backend object
+     *
+     * @var TYPO3backend
+     */
+    protected $backendReference;
 
-	/** @var boolean */
-	protected $checkAccess = NULL;
+    /** @var boolean */
+    protected $checkAccess = NULL;
 
-	/**
-	 * Default constructor.
-	 *
-	 * @param \TYPO3\CMS\Backend\Controller\BackendController TYPO3 Backend object reference
-	 */
-	public function __construct(\TYPO3\CMS\Backend\Controller\BackendController &$backendReference = NULL) {
-		$this->backendReference = $backendReference;
-		$this->getLanguageService()->includeLLFile('EXT:cloudflare/Resources/Private/Language/locallang.xlf');
-	}
+    /**
+     * Default constructor.
+     *
+     * @param \TYPO3\CMS\Backend\Controller\BackendController TYPO3 Backend object reference
+     */
+    public function __construct(\TYPO3\CMS\Backend\Controller\BackendController &$backendReference = NULL)
+    {
+        $this->backendReference = $backendReference;
+        $this->getLanguageService()->includeLLFile('EXT:cloudflare/Resources/Private/Language/locallang.xlf');
+    }
 
-	/**
-	 * Checks whether the user has access to this toolbar item
-	 *
-	 * @return boolean TRUE if user has access, FALSE otherwise
-	 * @see typo3/alt_shortcut.php
-	 */
-	public function checkAccess() {
-		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cloudflare')) {
-			if ($this->checkAccess === NULL) {
-					if ($this->getBackendUser()->isAdmin()) {
-						$this->checkAccess = TRUE;
-					} else {
-						$this->checkAccess = FALSE;
-					}
-			}
-			return $this->checkAccess;
-		}
-		return FALSE;
-	}
+    /**
+     * Checks whether the user has access to this toolbar item
+     *
+     * @return boolean TRUE if user has access, FALSE otherwise
+     * @see typo3/alt_shortcut.php
+     */
+    public function checkAccess()
+    {
+        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cloudflare')) {
+            if ($this->checkAccess === NULL) {
+                if ($this->getBackendUser()->isAdmin()) {
+                    $this->checkAccess = TRUE;
+                } else {
+                    $this->checkAccess = FALSE;
+                }
+            }
+            return $this->checkAccess;
+        }
+        return FALSE;
+    }
 
-	/**
-	 * Creates the CloudFlare toolbar icon with popup menu.
-	 *
-	 * @return string CloudFlare menu as HTML select
-	 */
-	public function render() {
-		$title = $this->getLanguageService()->getLL('toolbarItem', TRUE);
-		$this->addJavascriptToBackend();
-		$cloudflareMenu = array();
+    /**
+     * Creates the CloudFlare toolbar icon with popup menu.
+     *
+     * @return string CloudFlare menu as HTML select
+     */
+    public function render()
+    {
+        $title = $this->getLanguageService()->getLL('toolbarItem', TRUE);
+        $this->addJavascriptToBackend();
+        $cloudflareMenu = array();
 
-		$cloudflareMenu[] = '<a href="#" class="toolbar-item">' .
-			\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-cloudflare-cloudflare', array('title' => $title)) .
-				'</a>';
-		$cloudflareMenu[] = '<ul class="toolbar-item-menu" style="display: none;">';
-		$cloudflareMenu[] = '</ul>';
+        $cloudflareMenu[] = '<a href="#" class="toolbar-item">' .
+            \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-cloudflare-cloudflare', array('title' => $title)) .
+            '</a>';
+        $cloudflareMenu[] = '<ul class="toolbar-item-menu" style="display: none;">';
+        $cloudflareMenu[] = '</ul>';
 
-		return implode(LF, $cloudflareMenu);
-	}
+        return implode(LF, $cloudflareMenu);
+    }
 
-	/**
-	 * Adds the necessary JavaScript to the backend.
-	 *
-	 * @return	void
-	 */
-	protected function addJavascriptToBackend() {
-		$this->backendReference->addJavascriptFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('cloudflare') . 'Resources/Public/JavaScript/cloudflaremenu.js');
-	}
+    /**
+     * Adds the necessary JavaScript to the backend.
+     *
+     * @return    void
+     */
+    protected function addJavascriptToBackend()
+    {
+        $this->backendReference->addJavascriptFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('cloudflare') . 'Resources/Public/JavaScript/cloudflaremenu.js');
+    }
 
-	/**
-	 * Returns additional attributes for the list item in the toolbar.
-	 *
-	 * @return string List item HTML attributes
-	 */
-	public function getAdditionalAttributes() {
-		return ' id="cloudflare-menu" ';
-	}
+    /**
+     * Returns additional attributes for the list item in the toolbar.
+     *
+     * @return string List item HTML attributes
+     */
+    public function getAdditionalAttributes()
+    {
+        return ' id="cloudflare-menu" ';
+    }
 
-	/**
-	 * Returns the current Backend user.
-	 *
-	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-	 */
-	protected function getBackendUser() {
-		return $GLOBALS['BE_USER'];
-	}
+    /**
+     * Returns the current Backend user.
+     *
+     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
+    }
 
-	/**
-	 * Returns the LanguageService.
-	 *
-	 * @return \TYPO3\CMS\Lang\LanguageService
-	 */
-	protected function getLanguageService() {
-		return $GLOBALS['LANG'];
-	}
+    /**
+     * Returns the LanguageService.
+     *
+     * @return \TYPO3\CMS\Lang\LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
 
 }
 
 
 if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX)) {
-	$GLOBALS['TYPO3backend']->addToolbarItem('cloudflare', 'Tx_Cloudflare_Hooks_TYPO3backend_Cloudflare');
+    $GLOBALS['TYPO3backend']->addToolbarItem('cloudflare', 'Tx_Cloudflare_Hooks_TYPO3backend_Cloudflare');
 }

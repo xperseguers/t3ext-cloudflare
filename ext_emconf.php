@@ -11,38 +11,33 @@
  ***************************************************************/
 
 $EM_CONF[$_EXTKEY] = array(
-	'title' => 'CloudFlare Client',
-	'description' => 'Implementation of the CloudFlare Client Interface API to flush content cache and restore originating IPs.',
-	'category' => 'services',
-	'author' => 'Xavier Perseguers (Causal)',
-	'author_company' => 'Causal Sàrl',
-	'author_email' => 'xavier@causal.ch',
-	'shy' => '',
-	'dependencies' => '',
-	'conflicts' => '',
-	'priority' => '',
-	'module' => '',
-	'state' => 'stable',
-	'internal' => '',
-	'uploadfolder' => 0,
-	'createDirs' => '',
-	'modify_tables' => '',
-	'clearCacheOnLoad' => 0,
-	'lockType' => '',
-	'version' => '1.3.2-dev',
-	'constraints' => array(
-		'depends' => array(
-			'php' => '5.3.3-5.6.99',
-			'typo3' => '6.2.0-7.99.99',
-		),
-		'conflicts' => array(
-		),
-		'suggests' => array(
-		),
-	),
-	'_md5_values_when_last_written' => '',
-	'suggests' => array(
-	),
+    'title' => 'CloudFlare Client',
+    'description' => 'Implementation of the CloudFlare Client Interface API to flush content cache and restore originating IPs.',
+    'category' => 'services',
+    'author' => 'Xavier Perseguers (Causal)',
+    'author_company' => 'Causal Sàrl',
+    'author_email' => 'xavier@causal.ch',
+    'shy' => '',
+    'dependencies' => '',
+    'conflicts' => '',
+    'priority' => '',
+    'module' => '',
+    'state' => 'stable',
+    'internal' => '',
+    'uploadfolder' => 0,
+    'createDirs' => '',
+    'modify_tables' => '',
+    'clearCacheOnLoad' => 0,
+    'lockType' => '',
+    'version' => '1.3.2-dev',
+    'constraints' => array(
+        'depends' => array(
+            'php' => '5.3.3-5.6.99',
+            'typo3' => '6.2.0-7.99.99',
+        ),
+        'conflicts' => array(),
+        'suggests' => array(),
+    ),
+    '_md5_values_when_last_written' => '',
+    'suggests' => array(),
 );
-
-?>

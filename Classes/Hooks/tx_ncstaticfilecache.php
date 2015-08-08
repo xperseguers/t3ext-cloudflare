@@ -22,18 +22,20 @@
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Tx_Cloudflare_Hooks_NcStaticfilecache {
+class Tx_Cloudflare_Hooks_NcStaticfilecache
+{
 
-	/**
-	 * Pretends we are NOT running over SSL to let EXT:nc_staticfilecache
-	 * potentially cache the content.
-	 *
-	 * @param array $params
-	 * @param \tx_ncstaticfilecache $pObj
-	 * @return void
-	 */
-	public function createFile_initializeVariables(array $params, \tx_ncstaticfilecache $pObj) {
-		$params['isHttp'] = TRUE;
-	}
+    /**
+     * Pretends we are NOT running over SSL to let EXT:nc_staticfilecache
+     * potentially cache the content.
+     *
+     * @param array $params
+     * @param \tx_ncstaticfilecache $pObj
+     * @return void
+     */
+    public function createFile_initializeVariables(array $params, \tx_ncstaticfilecache $pObj)
+    {
+        $params['isHttp'] = TRUE;
+    }
 
 }
