@@ -24,7 +24,7 @@ Links
 	https://translation.typo3.org/projects/TYPO3.ext.cloudflare/
 
 :Contact:
-	`@xperseguers <https://twitter.com/xperseguers>`_
+	`@xperseguers <https://twitter.com/xperseguers>`__
 
 
 .. _links-how-to-contribute:
