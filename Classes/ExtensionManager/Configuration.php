@@ -57,31 +57,48 @@ class Configuration
         $cloudflareService = GeneralUtility::makeInstance('Causal\\Cloudflare\\Services\\CloudflareService', $this->config);
 
         try {
-            $ret = $cloudflareService->send(array('a' => 'zone_load_multi'));
-            if ($ret['result'] === 'success') {
-                foreach ($ret['response']['zones']['objs'] as $zone) {
-                    $domains[] = $zone['zone_name'];
+            $ret = $cloudflareService->send('/zones/');
+            if ($ret['success']) {
+                $data = $cloudflareService->sort($ret, 'name');
+                foreach ($data['result'] as $zone) {
+                    $domains[$zone['id']] = $zone['name'];
                 }
             }
         } catch (\RuntimeException $e) {
             // Nothing to do
         }
 
-        if (count($domains) == 0) {
-            $host = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
-            $hostParts = explode('.', $host);
-            $domains[] = count($hostParts) > 1 ? implode('.', array_slice($hostParts, -2)) : $host;
-        }
-
         $i = 0;
         $selectedDomains = GeneralUtility::trimExplode(',', $params['fieldValue'], true);
-        foreach ($domains as $domain) {
-            $out[] = '<div>';
-            $checked = in_array($domain, $selectedDomains) ? ' checked="checked"' : '';
-            $out[] = '<input type="checkbox" id="cloudflare_domain_' . $i . '" value="' . $domain . '"' . $checked . ' onclick="toggleCloudflareDomains();" />';
-            $out[] = '<label for="cloudflare_domain_' . $i . '" style="display:inline-block">' . $domain . '</label>';
-            $out[] = '</div>';
+
+        if (!empty($domains)) {
+            $out[] = '<table class="table table-striped table-hover">';
+            $out[] = '<thead>';
+            $out[] = '<tr><th></th><th></th><th>' . htmlspecialchars($this->sL('settings.labels.zoneIdentifiers')) . '</th></tr>';
+            $out[] = '<thead>';
+            $out[] = '<tbody>';
+        } else {
+            $out[] = '<em>' . htmlspecialchars($this->sL('settings.labels.emptyList')) . '</em>';
+        }
+
+        foreach ($domains as $identifier => $domain) {
+            $out[] = '<tr>';
+
+            // Check: in_array($domain, $selectedDomains) is for configuration coming from EXT:cloudflare < v1.4.0
+            $value = $identifier . '|' . $domain;
+            $checked = in_array($domain, $selectedDomains) || in_array($value, $selectedDomains)
+                ? ' checked="checked"'
+                : '';
+            $out[] = '<td style="width:20px"><input type="checkbox" id="cloudflare_domain_' . $i . '" value="' . $value . '"' . $checked . ' onclick="toggleCloudflareDomains();" /></td>';
+            $out[] = '<td style="padding-right:50px"><label for="cloudflare_domain_' . $i . '">' . htmlspecialchars($domain) . '</label></td>';
+            $out[] = '<td><tt>' . htmlspecialchars($identifier) . '</tt></td>';
+            $out[] = '</tr>';
             $i++;
+        }
+
+        if (!empty($domains)) {
+            $out[] = '</tbody>';
+            $out[] = '</table>';
         }
 
         $fieldId = str_replace(array('[', ']'), '_', $params['fieldName']);
@@ -104,6 +121,26 @@ JS;
         $out[] = '<input type="hidden" id="' . $fieldId . '" name="' . $params['fieldName'] . '" value="' . $params['fieldValue'] . '" />';
 
         return implode(LF, $out);
+    }
+
+    /**
+     * Translates a message.
+     *
+     * @param string $key
+     * @return string
+     */
+    protected function sL($key)
+    {
+        $message = $this->getLanguageService()->sL('LLL:EXT:' . $this->extKey . '/Resources/Private/Language/locallang_db.xlf:' . $key);
+        return $message;
+    }
+
+    /**
+     * @return \TYPO3\CMS\Lang\LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 
 }

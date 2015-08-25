@@ -65,32 +65,40 @@ class ToolbarMenu
             /** @var $cloudflareService \Causal\Cloudflare\Services\CloudflareService */
             $cloudflareService = GeneralUtility::makeInstance('Causal\\Cloudflare\\Services\\CloudflareService', $this->config);
 
-            try {
-                $ret = $cloudflareService->send(array('a' => 'zone_load_multi'));
-                if ($ret['result'] === 'success') {
-                    foreach ($ret['response']['zones']['objs'] as $zone) {
-                        if (in_array($zone['zone_name'], $domains)) {
-                            $out[] = '<li><h3>&nbsp;' . $this->getZoneIcon($zone['zone_status_class']) . ' ' . htmlspecialchars($zone['zone_name']) . '</h3></li>';
-                            $active = null;
-                            switch ($zone['zone_status_class']) {
-                                case 'status-active':
-                                    $active = 1;
-                                    break;
-                                case 'status-dev-mode':
-                                    $active = 0;
-                                    break;
-                            }
-                            if ($active !== null) {
-                                $onClickCode = 'TYPO3BackendCloudflareMenu.toggleDevelopmentMode(\'' . $zone['zone_name'] . '\', ' . $active . ');';
-                                $out[] = '<li class="divider"><a href="#" onclick="' . htmlspecialchars($onClickCode) . '">' . $languageService->getLL('toggle_development', true) . '</a></li>';
-                            } else {
-                                $out[] = '<li class="divider">' . $languageService->getLL('zone_inactive', true) . '</li>';
-                            }
+            foreach ($domains as $domain) {
+                list($identifier,) = explode('|', $domain, 2);
+                try {
+                    $ret = $cloudflareService->send('/zones/' . $identifier);
+                    if ($ret['success']) {
+                        $zone = $ret['result'];
+
+                        switch (true) {
+                            case $zone['development_mode'] > 0:
+                                $status = 'dev-mode';
+                                $active = 0;
+                                break;
+                            case $zone['status'] === 'active':
+                                $status = 'active';
+                                $active = 1;
+                                break;
+                            case $zone['paused']:
+                            default:
+                                $status = 'deactivated';
+                                $active = null;
+                                break;
+                        }
+
+                        $out[] = '<li><h3>&nbsp;' . $this->getZoneIcon($status) . ' ' . htmlspecialchars($zone['name']) . '</h3></li>';
+                        if ($active !== null) {
+                            $onClickCode = 'TYPO3BackendCloudflareMenu.toggleDevelopmentMode(\'' . $identifier . '\', ' . $active . ');';
+                            $out[] = '<li class="divider"><a href="#" onclick="' . htmlspecialchars($onClickCode) . '">' . $languageService->getLL('toggle_development', true) . '</a></li>';
+                        } else {
+                            $out[] = '<li class="divider">' . $languageService->getLL('zone_inactive', true) . '</li>';
                         }
                     }
+                } catch (\RuntimeException $e) {
+                    // Nothing to do
                 }
-            } catch (\RuntimeException $e) {
-                // Nothing to do
             }
         } else {
             $out[] = '<li>' . $languageService->getLL('no_domains') . '</li>';
@@ -116,11 +124,9 @@ class ToolbarMenu
         $cloudflareService = GeneralUtility::makeInstance('Causal\\Cloudflare\\Services\\CloudflareService', $this->config);
 
         try {
-            $ret = $cloudflareService->send(array(
-                'a' => 'devmode',
-                'z' => $parameter->zone,
-                'v' => $parameter->active,
-            ));
+            $ret = $cloudflareService->send('/zones/' . $parameter->zone . '/settings/development_mode', array(
+                'value' => $parameter->active ? 'on' : 'off',
+            ), 'PATCH');
         } catch (\RuntimeException $e) {
             // Nothing to do
         }
@@ -138,13 +144,13 @@ class ToolbarMenu
     {
         $languageService = $this->getLanguageService();
         switch ($status) {
-            case 'status-active':
+            case 'active':
                 $icon = IconUtility::getSpriteIcon('extensions-cloudflare-online', array('title' => $languageService->getLL('zone_active')));
                 break;
-            case 'status-dev-mode':
+            case 'dev-mode':
                 $icon = IconUtility::getSpriteIcon('extensions-cloudflare-direct', array('title' => $languageService->getLL('zone_development')));
                 break;
-            case 'status-deactivated':
+            case 'deactivated':
             default:
                 $icon = IconUtility::getSpriteIcon('extensions-cloudflare-offline', array('title' => $languageService->getLL('zone_inactive')));
                 break;

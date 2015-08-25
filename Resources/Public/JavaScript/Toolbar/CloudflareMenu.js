@@ -56,7 +56,7 @@ define('TYPO3/CMS/Cloudflare/Toolbar/CloudflareMenu', ['jquery'], function ($) {
      * Updates the number of domains in development mode in the toolbar.
      */
     CloudflareMenu.updateNumberOfDomainsInDevelopmentMode = function () {
-        var num = $(CloudflareMenu.options.containerSelector).find(CloudflareMenu.options.menuItemSelector).filter('li[data-zone-status=status-dev-mode]').length;
+        var num = $(CloudflareMenu.options.containerSelector).find(CloudflareMenu.options.menuItemSelector).filter('li[data-zone-status=dev-mode]').length;
         $(CloudflareMenu.options.counterSelector).text(num).toggle(num > 0);
     };
 

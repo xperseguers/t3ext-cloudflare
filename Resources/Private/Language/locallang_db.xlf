@@ -24,6 +24,12 @@
 			<trans-unit id="settings.apiEndpoint">
 				<source>API Endpoint: Alternate API endpoint/proxy. Beware: DO NOT change unless you know what you do!</source>
 			</trans-unit>
+			<trans-unit id="settings.labels.emptyList">
+				<source>Empty list fetched from CloudFlare, please check your credentials.</source>
+			</trans-unit>
+			<trans-unit id="settings.labels.zoneIdentifiers">
+				<source>CloudFlare API Zone Identifiers</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

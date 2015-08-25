@@ -101,19 +101,17 @@ class TCEmain
         $cloudflareService = GeneralUtility::makeInstance('Causal\\Cloudflare\\Services\\CloudflareService', $this->config);
 
         foreach ($domains as $domain) {
-            $parameters = array(
-                'a' => 'fpurge_ts',
-                'z' => $domain,
-                'v' => '1',
-            );
             try {
-                $ret = $cloudflareService->send($parameters);
+                list($identifier, $zoneName) = explode('|', $domain, 2);
+                $ret = $cloudflareService->send('/zones/' . $identifier . '/purge_cache', array(
+                    'purge_everything' => true,
+                ), 'DELETE');
 
                 if ($beUser !== null) {
-                    if ($ret['result'] === 'error') {
-                        $beUser->writelog(4, 1, 1, 0, 'User %s failed to clear the cache on CloudFlare (domain: "%s"): %s', array($beUser->user['username'], $domain, $ret['msg']));
+                    if ($ret['success']) {
+                        $beUser->writelog(4, 1, 0, 0, 'User %s cleared the cache on CloudFlare (domain: "%s")', array($beUser->user['username'], $zoneName));
                     } else {
-                        $beUser->writelog(4, 1, 0, 0, 'User %s cleared the cache on CloudFlare (domain: "%s")', array($beUser->user['username'], $domain));
+                        $beUser->writelog(4, 1, 1, 0, 'User %s failed to clear the cache on CloudFlare (domain: "%s"): %s', array($beUser->user['username'], $zoneName, implode(LF, $ret['errors'])));
                     }
                 }
             } catch (\RuntimeException $e) {
@@ -243,32 +241,36 @@ class TCEmain
     {
         $domains = $this->config['domains'] ? GeneralUtility::trimExplode(',', $this->config['domains'], true) : array();
 
-        $isValidUrl = false;
         $domain = null;
+        $zoneIdentifier = null;
 
         if (preg_match('#^https?://([^/]+)#', $url, $matches)) {
             $domainParts = explode('.', $matches[1]);
             if (count($domainParts) > 1) {
                 $size = count($domainParts);
-                $domain = $domainParts[$size - 2] . '.' . $domainParts[$size - 1];
-                $isValidUrl = in_array($domain, $domains);
+                $zoneName = $domainParts[$size - 2] . '.' . $domainParts[$size - 1];
+
+                foreach ($domains as $domain) {
+                    list($identifier, $z) = explode('|', $domain, 2);
+                    if ($z === $zoneName) {
+                        $zoneIdentifier = $identifier;
+                        break;
+                    }
+                }
             }
         }
 
-        if (!$isValidUrl) {
+        if ($zoneIdentifier === null) {
             return;
         }
 
         /** @var $cloudflareService \Causal\Cloudflare\Services\CloudflareService */
         $cloudflareService = GeneralUtility::makeInstance('Causal\\Cloudflare\\Services\\CloudflareService', $this->config);
 
-        $parameters = array(
-            'a' => 'zone_file_purge',
-            'z' => $domain,
-            'url' => $url,
-        );
         try {
-            $ret = $cloudflareService->send($parameters);
+            $ret = $cloudflareService->send('/zones/' . $zoneIdentifier . '/purge_cache', array(
+                'files' => array($url),
+            ), 'DELETE');
 
             if ($beUser !== null) {
                 if ($ret['result'] === 'error') {

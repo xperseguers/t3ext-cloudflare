@@ -16,7 +16,7 @@
  * Implementation example of a proxy to CloudFlare API.
  *
  * Should naturally be copied outside of this directory and adapted
- * as needed. This script is intended to be as-this and does not
+ * as needed. This script is intended to be used as-this and does not
  * depend on anything.
  *
  * @category    Examples
@@ -24,38 +24,38 @@
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class cloudflareProxy
+class cloudFlareProxy
 {
 
     protected $email = '';
-    protected $token = '';
+    protected $key = '';
     protected $clients = array();
 
     /**
      * Default constructor.
      *
      * @param string $email
-     * @param string $token
+     * @param string $key
      */
-    public function __construct($email, $token)
+    public function __construct($email, $key)
     {
         $this->email = $email;
-        $this->token = $token;
+        $this->key = $key;
     }
 
     /**
      * Adds a client to this proxy.
      *
      * @param string $email
-     * @param string $token
-     * @param array $allowedDomains
-     * @return cloudflareProxy this instance for method chaining
+     * @param string $key
+     * @param array $allowedIdentifiers
+     * @return cloudFlareProxy this instance for method chaining
      */
-    public function addClient($email, $token, array $allowedDomains)
+    public function addClient($email, $key, array $allowedIdentifiers)
     {
         $this->clients[$email] = array(
-            'token' => $token,
-            'domains' => $allowedDomains,
+            'key' => $key,
+            'identifiers' => $allowedIdentifiers,
         );
         return $this;
     }
@@ -68,44 +68,187 @@ class cloudflareProxy
      */
     public function handleRequest()
     {
+        if (!empty($_GET['v']) && (int)$_GET['v'] === 4) {
+            return $this->handleRequestV4();
+        } else {
+            return $this->handleRequestV1();
+        }
+    }
+
+    /**
+     * Handles a proxy request with CloudFlare API v4.
+     *
+     * @return string JSON-encoded answer
+     * @throws \RuntimeException
+     * @api v4
+     */
+    protected function handleRequestV4()
+    {
+        $method = $_SERVER['REQUEST_METHOD'];
+        $headers = getallheaders();
+
+        $email = $headers['X-Auth-Email'];
+        $key = $headers['X-Auth-Key'];
+
+        if (($email === '' || $key === '')
+            || !(isset($this->clients[$email]) && $this->clients[$email]['key'] === $key)) {
+            throw new \RuntimeException('Not Authorized', 1440754856);
+        }
+
+        $allowedIdentifiers = $this->clients[$email]['identifiers'];
+        $data = null;
+
+        $route = ltrim($_GET['route'], '/');
+        $parameters = $method === 'GET' ? '' : file_get_contents('php://input');
+
+        if (strpos($route, '?') !== false) {
+            list($route, $parameters) = explode('?', ltrim($route, '/'));
+        }
+
+        $arguments = explode('/', $route);
+        $object = array_shift($arguments);
+        if (empty($arguments[0])) {
+            $arguments = array();
+        }
+
+        switch ($object) {
+            case 'zones':
+                $data = $this->zones($method, $arguments, $parameters, $allowedIdentifiers);
+                break;
+        }
+
+        return $data;
+    }
+
+    /**
+     * Sends a /zones request.
+     *
+     * @param string $method
+     * @param array $arguments
+     * @param string $parameters
+     * @param array $allowedIdentifiers
+     * @return string
+     */
+    protected function zones($method, array $arguments, $parameters, array $allowedIdentifiers)
+    {
+        if (!empty($arguments) && !isset($allowedIdentifiers[$arguments[0]])) {
+            throw new \RuntimeException('Not Authorized', 1440756109);
+        }
+
+        // Proxy to CloudFlare
+        $json = $this->sendHttpRequest($method, 'zones/' . implode('/', $arguments), $parameters);
+
+        if (empty($arguments)) {
+            // Keep only allowed identifiers
+            $data = json_decode($json, true);
+
+            $newResult = array();
+            foreach ($data['result'] as $zone) {
+                if (isset($allowedIdentifiers[$zone['id']])) {
+                    $newResult[] = $zone;
+                }
+            }
+            $data['result'] = $newResult;
+            $data['result_info']['count'] = count($newResult);
+            // Arbitrary total_count value without disclosing the real value
+            $data['result_info']['total_count'] = $data['result_info']['total_pages'] * count($newResult);
+
+            $json = json_encode($data);
+        }
+
+        return $json;
+    }
+
+    /**
+     * This methods sends a custom HTTP request to CloudFlare.
+     *
+     * @param string $method
+     * @param string $url
+     * @param string $data
+     * @return string
+     * @throws \RuntimeException
+     * @api v4
+     */
+    protected function sendHttpRequest($method, $route, $data)
+    {
+        $headers = array(
+            'Content-Type: application/json',
+            'X-Auth-Key: ' . $this->key,
+            'X-Auth-Email: ' . $this->email
+        );
+        $url = 'https://api.cloudflare.com/client/v4/' . $route;
+
+        $ch = curl_init();
+
+        if ($method === 'GET') {
+            if (!empty($data)) {
+                $url .= '?' . $data;
+            }
+        } else {
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        }
+
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_FRESH_CONNECT, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);
+        //curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+
+        if (!($result = curl_exec($ch))) {
+            trigger_error(curl_errno($ch));
+        }
+        curl_close($ch);
+
+        return $result;
+    }
+
+    /**
+     * Handles a proxy request with CloudFlare API v1.
+     *
+     * @return string JSON-encoded answer
+     * @throws \RuntimeException
+     * @api v1
+     */
+    protected function handleRequestV1()
+    {
         $parameters = $GLOBALS['_POST'];
 
         $email = isset($parameters['email']) ? $parameters['email'] : '';
-        $token = isset($parameters['tkn']) ? $parameters['tkn'] : '';
+        $key = isset($parameters['tkn']) ? $parameters['tkn'] : '';
 
-        if ($email !== '' && $token !== '') {
-            if (isset($this->clients[$email]) && $this->clients[$email]['token'] === $token) {
-                $allowedDomains = $this->clients[$email]['domains'];
-                $data = null;
-
-                switch ($parameters['a']) {
-                    case 'zone_load_multi':
-                        $data = $this->zone_load_multi($allowedDomains);
-                        break;
-                    case 'devmode':
-                        if (in_array($parameters['z'], $allowedDomains)) {
-                            $data = $this->devmode($parameters);
-                        }
-                        break;
-                    case 'fpurge_ts':
-                        if (in_array($parameters['z'], $allowedDomains)) {
-                            $data = $this->fpurge_ts($parameters);
-                        }
-                        break;
-                    case 'zone_file_purge':
-                        if (in_array($parameters['z'], $allowedDomains)) {
-                            $data = $this->zone_file_purge($parameters);
-                        }
-                        break;
-                }
-
-                if ($data !== null) {
-                    return $data;
-                }
-            }
+        if (($email === '' || $key === '')
+            || !(isset($this->clients[$email]) && $this->clients[$email]['key'] === $key)) {
+            throw new \RuntimeException('Not Authorized', 1354810958);
         }
 
-        throw new \RuntimeException('Not Authorized', 1354810958);
+        $allowedDomains = $this->clients[$email]['identifiers'];
+        $data = null;
+
+        switch ($parameters['a']) {
+            case 'zone_load_multi':
+                $data = $this->zone_load_multi($allowedDomains);
+                break;
+            case 'devmode':
+                if (in_array($parameters['z'], $allowedDomains)) {
+                    $data = $this->devmode($parameters);
+                }
+                break;
+            case 'fpurge_ts':
+                if (in_array($parameters['z'], $allowedDomains)) {
+                    $data = $this->fpurge_ts($parameters);
+                }
+                break;
+            case 'zone_file_purge':
+                if (in_array($parameters['z'], $allowedDomains)) {
+                    $data = $this->zone_file_purge($parameters);
+                }
+                break;
+        }
+
+        return $data;
     }
 
     /**
@@ -113,13 +256,14 @@ class cloudflareProxy
      *
      * @param array $allowedDomains
      * @return string
+     * @api v1
      */
     protected function zone_load_multi(array $allowedDomains)
     {
         $args = array(
             'a' => 'zone_load_multi',
         );
-        $data = json_decode($this->POST($args), true);
+        $data = json_decode($this->POSTv1($args), true);
         $objs = array();
         if ($data['result'] === 'success') {
             foreach ($data['response']['zones']['objs'] as $zone) {
@@ -143,6 +287,7 @@ class cloudflareProxy
      * @param array $parameters
      * @param array $allowedDomains
      * @return string
+     * @api v1
      */
     protected function devmode(array $parameters)
     {
@@ -151,7 +296,7 @@ class cloudflareProxy
             'z' => $parameters['z'],
             'v' => $parameters['v'] ? 1 : 0,
         );
-        return $this->POST($args);
+        return $this->POSTv1($args);
     }
 
     /**
@@ -169,7 +314,7 @@ class cloudflareProxy
             'z' => $parameters['z'],
             'v' => 1,
         );
-        return $this->POST($args);
+        return $this->POSTv1($args);
     }
 
     /**
@@ -177,6 +322,7 @@ class cloudflareProxy
      *
      * @param array $parameters
      * @return string
+     * @api v1
      */
     protected function zone_file_purge(array $parameters)
     {
@@ -185,7 +331,7 @@ class cloudflareProxy
             'z' => $parameters['z'],
             'url' => $parameters['url'],
         );
-        return $this->POST($args);
+        return $this->POSTv1($args);
     }
 
     /**
@@ -194,11 +340,12 @@ class cloudflareProxy
      * @param array $data
      * @return string
      * @throws \RuntimeException
+     * @api v1
      */
-    protected function POST(array $data)
+    protected function POSTv1(array $data)
     {
         $data['email'] = $this->email;
-        $data['tkn'] = $this->token;
+        $data['tkn'] = $this->key;
 
         if (!function_exists('curl_init') || !($ch = curl_init())) {
             throw new \RuntimeException('cURL cannot be used', 1354811692);
@@ -226,7 +373,7 @@ class cloudflareProxy
 }
 
 // Enter your CloudFlare API credentials below
-$proxy = new cloudflareProxy(
+$proxy = new cloudFlareProxy(
     'api-email@your-domain.tld',
     '000111222333444555666777888999aaabbbc'
 );
@@ -237,15 +384,15 @@ $proxy
         'domain@mydomain.tld',
         '1234567890ABCDEF',
         array(
-            'mydomain.tld'
+            '627aaac32cbff7210660f400a6451ccc' => 'mydomain.tld',
         )
     )
     ->addClient(
         'other@somedomain.tld',
         'an-arbitrary-k3y',
         array(
-            'somedomain.tld',
-            'someotherdomain.tld',
+            '627aaac32cbff7210660f400a6451ccc' => 'somedomain.tld',
+            '123aaac32cbff7150660f999a1d2addd' => 'someotherdomain.tld',
         )
     );
 

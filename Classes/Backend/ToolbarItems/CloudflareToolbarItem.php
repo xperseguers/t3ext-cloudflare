@@ -97,35 +97,44 @@ class CloudflareToolbarItem implements ToolbarItemInterface
 
         $domains = GeneralUtility::trimExplode(',', $this->config['domains'], true);
         if (count($domains)) {
-            try {
-                $ret = $this->cloudflareService->send(array('a' => 'zone_load_multi'));
-                if ($ret['result'] === 'success') {
-                    foreach ($ret['response']['zones']['objs'] as $zone) {
-                        if (in_array($zone['zone_name'], $domains)) {
-                            if (count($entries)) {
-                                $entries[] = '<li class="divider"></li>';
-                            }
-                            $entries[] = '<li class="dropdown-header" data-zone-status="' . htmlspecialchars($zone['zone_status_class']) . '">' . $this->getZoneIcon($zone['zone_status_class']) . ' ' . htmlspecialchars($zone['zone_name']) . '</li>';
-                            $active = null;
-                            switch ($zone['zone_status_class']) {
-                                case 'status-active':
-                                    $active = 1;
-                                    break;
-                                case 'status-dev-mode':
-                                    $active = 0;
-                                    break;
-                            }
-                            if ($active !== null) {
-                                $onClickCode = 'TYPO3.CloudflareMenu.toggleDevelopmentMode(\'' . $zone['zone_name'] . '\', ' . $active . '); return false;';
-                                $entries[] = '<li><a href="#" onclick="' . htmlspecialchars($onClickCode) . '">' . $languageService->getLL('toggle_development', true) . '</a></li>';
-                            } else {
-                                $entries[] = '<li>' . $languageService->getLL('zone_inactive', true) . '</li>';
-                            }
+            $entries[] = '<li class="divider"></li>';
+
+            foreach ($domains as $domain) {
+                list($identifier, ) = explode('|', $domain, 2);
+                try {
+                    $ret = $this->cloudflareService->send('/zones/' . $identifier);
+
+                    if ($ret['success']) {
+                        $zone = $ret['result'];
+
+                        switch (true) {
+                            case $zone['development_mode'] > 0:
+                                $status = 'dev-mode';
+                                $active = 0;
+                                break;
+                            case $zone['status'] === 'active':
+                                $status = 'active';
+                                $active = 1;
+                                break;
+                            case $zone['paused']:
+                            default:
+                                $status = 'deactivated';
+                                $active = null;
+                                break;
+                        }
+
+                        $entries[] = '<li class="dropdown-header" data-zone-status="' . $status . '">' . $this->getZoneIcon($status) . ' ' . htmlspecialchars($zone['name']) . '</li>';
+
+                        if ($active !== null) {
+                            $onClickCode = 'TYPO3.CloudflareMenu.toggleDevelopmentMode(\'' . $identifier . '\', ' . $active . '); return false;';
+                            $entries[] = '<li><a href="#" onclick="' . htmlspecialchars($onClickCode) . '">' . $languageService->getLL('toggle_development', true) . '</a></li>';
+                        } else {
+                            $entries[] = '<li>' . $languageService->getLL('zone_inactive', true) . '</li>';
                         }
                     }
+                } catch (\RuntimeException $e) {
+                    // Nothing to do
                 }
-            } catch (\RuntimeException $e) {
-                // Nothing to do
             }
         }
 
@@ -147,13 +156,13 @@ class CloudflareToolbarItem implements ToolbarItemInterface
     {
         $languageService = $this->getLanguageService();
         switch ($status) {
-            case 'status-active':
+            case 'active':
                 $icon = IconUtility::getSpriteIcon('extensions-cloudflare-online', array('title' => $languageService->getLL('zone_active')));
                 break;
-            case 'status-dev-mode':
+            case 'dev-mode':
                 $icon = IconUtility::getSpriteIcon('extensions-cloudflare-direct', array('title' => $languageService->getLL('zone_development')));
                 break;
-            case 'status-deactivated':
+            case 'deactivated':
             default:
                 $icon = IconUtility::getSpriteIcon('extensions-cloudflare-offline', array('title' => $languageService->getLL('zone_inactive')));
                 break;
@@ -212,6 +221,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      *
      * @param array $params Array of parameters from the AJAX interface, currently unused
      * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
+     * @return void
      */
     public function toggleDevelopmentMode($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj = null)
     {
@@ -219,14 +229,28 @@ class CloudflareToolbarItem implements ToolbarItemInterface
         $active = GeneralUtility::_GP('active');
 
         try {
-            $ret = $this->cloudflareService->send(array(
-                'a' => 'devmode',
-                'z' => $zone,
-                'v' => $active,
-            ));
+            $ret = $this->cloudflareService->send('/zones/' . $zone . '/settings/development_mode', array(
+                'value' => $active ? 'on' : 'off',
+            ), 'PATCH');
         } catch (\RuntimeException $e) {
             // Nothing to do
         }
+
+        $ajaxObj->addContent('success', $ret['success'] === true);
+    }
+
+    /**
+     * Purges cache from all configured zones.
+     *
+     * @param array $params Array of parameters from the AJAX interface, currently unused
+     * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
+     * @return void
+     */
+    public function purge($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj = null)
+    {
+        /** @var \Causal\Cloudflare\Hooks\TCEmain $tceMain */
+        $tceMain = GeneralUtility::makeInstance('Causal\\Cloudflare\\Hooks\\TCEmain');
+        $tceMain->clearCache();
 
         $ajaxObj->addContent('success', true);
     }

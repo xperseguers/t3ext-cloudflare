@@ -31,7 +31,7 @@ class CloudflareService implements \TYPO3\CMS\Core\SingletonInterface
     protected $config;
 
     /** @var string */
-    protected $apiEndpoint = 'https://www.cloudflare.com/api_json.html';
+    protected $apiEndpoint = 'https://api.cloudflare.com/client/v4/';
 
     /**
      * Default constructor.
@@ -43,19 +43,20 @@ class CloudflareService implements \TYPO3\CMS\Core\SingletonInterface
         $this->config = $config;
 
         if (!empty($this->config['apiEndpoint'])) {
-            $this->apiEndpoint = $this->config['apiEndpoint'];
+            $this->apiEndpoint = $this->config['apiEndpoint'] . '?v=4&route=';
         }
-
     }
 
     /**
      * Sends data to CloudFlare.
      *
-     * @param array $additionalParams
+     * @param string $route
+     * @param array $parameters
+     * @param string $request
      * @return array
      * @throws \RuntimeException
      */
-    public function send(array $additionalParams)
+    public function send($route, array $parameters = array(), $request = 'GET')
     {
         if (!trim($this->config['apiKey'])) {
             throw new \RuntimeException('Cannot clear cache on CloudFlare: Invalid apiKey for EXT:cloudflare', 1337770232);
@@ -63,37 +64,98 @@ class CloudflareService implements \TYPO3\CMS\Core\SingletonInterface
             throw new \RuntimeException('Cannot clear cache on CloudFlare: Invalid email for EXT:cloudflare', 1337770383);
         }
 
-        $params = array(
-            'tkn' => trim($this->config['apiKey']),
-            'email' => trim($this->config['email']),
+        $url = rtrim($this->apiEndpoint, '/') . '/' . ltrim($route, '/');
+        $headers = array(
+            'Content-Type: application/json',
+            'X-Auth-Key: ' . trim($this->config['apiKey']),
+            'X-Auth-Email: ' . trim($this->config['email']),
         );
-        $allParams = array_merge($params, $additionalParams);
 
-        return $this->POST($this->apiEndpoint, $allParams);
+        if ($request === 'GET') {
+            $data = $this->sendHttpRequest($request, $url, $headers, $parameters);
+            if ($data['success'] && $data['result_info']['total_pages'] > 1) {
+                $accumulatedData = $data;
+                for ($i = $data['result_info']['page'] + 1; $i <= $data['result_info']['total_pages']; $i++) {
+                    $nextParameters = $parameters;
+                    $nextParameters['page'] = $i;
+                    $data = $this->sendHttpRequest($request, $url, $headers, $nextParameters);
+                    if ($data['success']) {
+                        $accumulatedData['result'] = array_merge($accumulatedData['result'], $data['result']);
+                        $accumulatedData['result_info']['count'] += $data['result_info']['count'];
+                        $accumulatedData['result_info']['total_pages'] = 1;
+                    } else {
+                        break;
+                    }
+                }
+                $data = $accumulatedData;
+            }
+        } else {
+            $data = $this->sendHttpRequest($request, $url, $headers, $parameters);
+        }
+
+        return $data;
     }
 
     /**
-     * This methods POSTs data to CloudFlare.
+     * Sorts $data using a given sorting key from $data['result'].
      *
+     * @param array $data
+     * @param string $resultSortingKey
+     * @return array
+     */
+    public function sort(array $data, $resultSortingKey)
+    {
+        $keyValues = array();
+        foreach ($data['result'] as $key => $arr) {
+            $keyValues[$key] = $arr[$resultSortingKey];
+        }
+
+        array_multisort($keyValues, SORT_ASC, $data['result']);
+
+        return $data;
+    }
+
+    /**
+     * Sends a custom HTTP request to CloudFlare.
+     *
+     * @param string $method
+     * @param string $url
+     * @param array $headers
      * @param array $data
      * @return array JSON payload returned by CloudFlare
      * @throws \RuntimeException
      */
-    protected function POST($url, array $data)
+    protected function sendHttpRequest($method, $url, array $headers, array $data)
     {
         if (true || $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] == '1') {
             if (!function_exists('curl_init') || !($ch = curl_init())) {
                 throw new \RuntimeException('cURL cannot be used', 1337673614);
             }
 
-            curl_setopt($ch, CURLOPT_POST, 1);
+            if ($method === 'GET') {
+                if (!empty($data)) {
+                    $parameters = '?' . http_build_query($data);
+                    if (strpos($url, '?') === false) {
+                        $url .= $parameters;
+                    } else {
+                        // URL is currently proxied
+                        $pos = strpos($url, '&route=') + 7;
+                        $route = substr($url, $pos) . $parameters;
+                        $url = substr($url, 0, $pos) . urlencode($route);
+                    }
+                }
+            } else {
+                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+            }
+
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
             curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_FRESH_CONNECT, 1);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);
             curl_setopt($ch, CURLOPT_TIMEOUT, max(0, intval($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlTimeout'])));
-            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
 
             if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']) {
                 curl_setopt($ch, CURLOPT_PROXY, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']);
