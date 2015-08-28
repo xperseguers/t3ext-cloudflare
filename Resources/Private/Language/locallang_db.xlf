@@ -7,7 +7,7 @@
 				<source>Email: The e-mail address associated with the API key.</source>
 			</trans-unit>
 			<trans-unit id="settings.apiKey">
-				<source>API Key: This is the API key made available on your account page (https://www.cloudflare.com/my-account.html)</source>
+				<source>API Key: This is the API key made available on your account page (https://www.cloudflare.com/a/account/my-account)</source>
 			</trans-unit>
 			<trans-unit id="settings.domains">
 				<source>Domains: Please tick the domains whose cache should be flushed on CloudFlare upon clearing all caches in TYPO3.</source>

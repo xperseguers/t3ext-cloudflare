@@ -15,7 +15,7 @@ This extension comes with a few settings available from the Extension Manager.
 Category Basic
 ^^^^^^^^^^^^^^
 
-- **API Key** : This is the API key made available on your account page (https://www.cloudflare.com/my-account.html)
+- **API Key** : This is the API key made available on your account page (https://www.cloudflare.com/a/account/my-account)
 
 - **Email** : The e-mail address associated with the API key.
 
