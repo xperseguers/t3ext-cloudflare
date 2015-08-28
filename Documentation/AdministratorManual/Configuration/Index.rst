@@ -79,7 +79,7 @@ The configuration takes place at the end of the file:
 .. code-block:: php
 
 	// Enter your CloudFlare API credentials below
-	$proxy = new cloudflareProxy(
+	$proxy = new cloudFlareProxy(
 	    'api-email@your-domain.tld',
 	    '000111222333444555666777888999aaabbbc'
 	);
@@ -90,15 +90,15 @@ The configuration takes place at the end of the file:
 	        'domain@mydomain.tld',
 	        '1234567890ABCDEF',
 	        array(
-	            'mydomain.tld'
+	            '627aaac32cbff7210660f400a6451ccc' => 'mydomain.tld',
 	        )
 	    )
 	    ->addClient(
 	        'other@somedomain.tld',
 	        'an-arbitrary-k3y',
 	        array(
-	            'somedomain.tld',
-	            'someotherdomain.tld',
+	            '627aaac32cbff7210660f400a6451ccc' => 'somedomain.tld',
+	            '123aaac32cbff7150660f999a1d2addd' => 'someotherdomain.tld',
 	        )
 	    )
 	;

@@ -17,7 +17,7 @@ Introduction
 What does it do?
 ----------------
 
-This extension lets you flush cache on CloudFlare when content changes in your TYPO3 website and toggle "Developer Mode"
+This extension lets you flush cache on CloudFlare when content changes in your TYPO3 website and toggle "Development Mode"
 for your domains from within TYPO3 Backend.
 
 CloudFlare introduced a mechanism to purge single files instead of only allowing to flush all caches of a domain. This
