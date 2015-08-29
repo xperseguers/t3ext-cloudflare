@@ -135,6 +135,13 @@ class cloudFlareProxy
             throw new \RuntimeException('Not Authorized', 1440756109);
         }
 
+        if (strtoupper($method) === 'PATCH') {
+            $p = json_decode($parameters, TRUE);
+            if (isset($p['plan'])) {
+                throw new \RuntimeException('Changing the plan is not authorized', 1440854632);
+            }
+        }
+
         // Proxy to CloudFlare
         $json = $this->sendHttpRequest($method, 'zones/' . implode('/', $arguments), $parameters);
 
@@ -178,7 +185,9 @@ class cloudFlareProxy
         );
         $url = 'https://api.cloudflare.com/client/v4/' . $route;
 
-        $ch = curl_init();
+        if (!function_exists('curl_init') || !($ch = curl_init())) {
+            throw new \RuntimeException('cURL cannot be used', 1440854374);
+        }
 
         if ($method === 'GET') {
             if (!empty($data)) {

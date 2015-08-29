@@ -86,9 +86,9 @@ define('TYPO3/CMS/Cloudflare/Toolbar/CloudflareMenu', ['jquery'], function ($) {
     /**
      * Closes the menu (e.g. when clicked on an item)
      */
-        CloudflareMenu.toggleMenu = function () {
-            $(CloudflareMenu.options.containerSelector).toggleClass('open');
-        };
+    CloudflareMenu.toggleMenu = function () {
+        $(CloudflareMenu.options.containerSelector).toggleClass('open');
+    };
 
     /**
      * Initializes and return the Cloudflare object
