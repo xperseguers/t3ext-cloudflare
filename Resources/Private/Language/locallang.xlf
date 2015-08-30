@@ -24,6 +24,126 @@
 			<trans-unit id="clear_cache">
 				<source>Clear CloudFlare cache</source>
 			</trans-unit>
+
+			<!-- dashboard -->
+			<trans-unit id="period.30">
+				<source>Last 30 Minutes</source>
+			</trans-unit>
+			<trans-unit id="period.360">
+				<source>Last 6 Hours</source>
+			</trans-unit>
+			<trans-unit id="period.720">
+				<source>Last 12 Hours</source>
+			</trans-unit>
+			<trans-unit id="period.1440">
+				<source>Last 24 Hours</source>
+			</trans-unit>
+			<trans-unit id="period.10080">
+				<source>Last Week</source>
+			</trans-unit>
+			<trans-unit id="period.43200">
+				<source>Last Month</source>
+			</trans-unit>
+
+			<trans-unit id="dashboard.requests">
+				<source>Requests</source>
+			</trans-unit>
+			<trans-unit id="dashboard.requests.long">
+				<source>Requests Through CloudFlare</source>
+			</trans-unit>
+			<trans-unit id="dashboard.requests.total">
+				<source>Total Requests</source>
+			</trans-unit>
+			<trans-unit id="dashboard.requests.cached">
+				<source>Cached Requests</source>
+			</trans-unit>
+			<trans-unit id="dashboard.requests.uncached">
+				<source>Uncached Requests</source>
+			</trans-unit>
+
+			<trans-unit id="dashboard.bandwidth">
+				<source>Bandwidth</source>
+			</trans-unit>
+			<trans-unit id="dashboard.bandwidth.total">
+				<source>Total Bandwidth</source>
+			</trans-unit>
+			<trans-unit id="dashboard.bandwidth.cached">
+				<source>Cached Bandwidth</source>
+			</trans-unit>
+			<trans-unit id="dashboard.bandwidth.uncached">
+				<source>Uncached Bandwidth</source>
+			</trans-unit>
+
+			<trans-unit id="dashboard.uniques">
+				<source>Unique Visitors</source>
+			</trans-unit>
+			<trans-unit id="dashboard.uniques.total">
+				<source>Total Unique Visitors</source>
+			</trans-unit>
+			<trans-unit id="dashboard.uniques.maximum">
+				<source>Maximum Unique Visitors</source>
+			</trans-unit>
+			<trans-unit id="dashboard.uniques.minimum">
+				<source>Minimum Unique Visitors</source>
+			</trans-unit>
+
+			<trans-unit id="dashboard.threats">
+				<source>Threats</source>
+			</trans-unit>
+			<trans-unit id="dashboard.threats.total">
+				<source>Total Threats</source>
+			</trans-unit>
+			<trans-unit id="dashboard.threats.topCountry">
+				<source>Top Country</source>
+			</trans-unit>
+			<trans-unit id="dashboard.threats.topType">
+				<source>Top Threat Type</source>
+			</trans-unit>
+			<trans-unit id="dashboard.threats.bic.ban.unknown">
+				<source>Bad Browser</source>
+			</trans-unit>
+			<trans-unit id="dashboard.threats.hot.ban.unknown">
+				<source>Blocked hotlink</source>
+			</trans-unit>
+			<trans-unit id="dashboard.threats.macro.ban.unknown">
+				<source>Bad IP</source>
+			</trans-unit>
+			<trans-unit id="dashboard.threats.macro.chl.captchaFail">
+				<source>Human challenged</source>
+			</trans-unit>
+			<trans-unit id="dashboard.threats.macro.chl.jschlFail">
+				<source>Browser challenged</source>
+			</trans-unit>
+			<trans-unit id="dashboard.threats.user.ban.ip">
+				<source>IP block (user)</source>
+			</trans-unit>
+
+			<trans-unit id="dashboard.performanceSecurity">
+				<source>Performance &amp; Security</source>
+			</trans-unit>
+
+			<trans-unit id="dashboard.bandwidthSaved">
+				<source>Bandwidth Saved</source>
+			</trans-unit>
+			<trans-unit id="dashboard.contentType">
+				<source>Content Type Breakdown</source>
+			</trans-unit>
+			<trans-unit id="dashboard.ssl">
+				<source>Traffic Served Over SSL</source>
+			</trans-unit>
+
+			<trans-unit id="dashboard.cached">
+				<source>Cached</source>
+			</trans-unit>
+			<trans-unit id="dashboard.uncached">
+				<source>Uncached</source>
+			</trans-unit>
+			<trans-unit id="dashboard.encrypted">
+				<source>Encrypted</source>
+			</trans-unit>
+			<trans-unit id="dashboard.unencrypted">
+				<source>Unencrypted</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

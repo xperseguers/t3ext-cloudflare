@@ -1,0 +1,79 @@
+<f:layout name="Default"/>
+
+<f:section name="content">
+
+    <div class="header typo3{typo3version}">
+        <div class="left">
+            <f:if condition="{zones -> f:count()} > 1">
+                <f:then>
+                    <f:form.select id="zone" options="{zones}"/>
+                </f:then>
+                <f:else>
+                    <h1>{defaultZone}</h1>
+                    <input type="hidden" id="zone" value="{defaultIdentifier}"/>
+                </f:else>
+            </f:if>
+        </div>
+        <div class="right">
+            <f:form.select id="period" options="{periods}" value="1440"/>
+        </div>
+    </div>
+
+    <section class="tab-container">
+        <ul class="tabs">
+            <li class="active"><a href="#requests" data-tab-id="0"><f:translate key="dashboard.requests"/></a></li>
+            <li class=""><a href="#bandwidth" data-tab-id="1"><f:translate key="dashboard.bandwidth"/></a></li>
+            <li class=""><a href="#unique-visitors" data-tab-id="2"><f:translate key="dashboard.uniques"/></a></li>
+            <li class=""><a href="#threats" data-tab-id="3"><f:translate key="dashboard.threats"/></a></li>
+        </ul>
+
+        <div class="tab-content" id="requests">
+            <f:render partial="Tab/Requests"/>
+        </div>
+
+        <div class="tab-content" id="bandwidth">
+            <f:render partial="Tab/Bandwidth"/>
+        </div>
+
+        <div class="tab-content" id="unique-visitors">
+            <f:render partial="Tab/Uniques"/>
+        </div>
+
+        <div class="tab-content" id="threats">
+            <f:render partial="Tab/Threats"/>
+        </div>
+    </section>
+
+    <section class="analytics">
+        <h2><f:translate key="dashboard.performanceSecurity"/></h2>
+
+        <ul class="blocks">
+            <li>
+                <f:render partial="Box/BandwidthSaved"/>
+            </li>
+            <li>
+                <f:render partial="Box/ContentType"/>
+            </li>
+            <li>
+                <f:render partial="Box/Ssl"/>
+            </li>
+        </ul>
+
+    </section>
+
+    <!-- amCharts javascript code -->
+    <script type="text/javascript">
+        // Initialize the dashboard's actions and labels
+        var dataUrl = "{f:uri.action(controller:'Dashboard', action:'ajaxAnalytics', arguments:{zone: '_ZONE_', since: '_SINCE_'})}";
+
+        CloudflareAnalytics.labels.requests = "{f:translate(key:'dashboard.requests')}";
+        CloudflareAnalytics.labels.bandwidth = "{f:translate(key:'dashboard.bandwidth')}";
+        CloudflareAnalytics.labels.uniques = "{f:translate(key:'dashboard.uniques')}";
+        CloudflareAnalytics.labels.threats = "{f:translate(key:'dashboard.threats')}";
+        CloudflareAnalytics.labels.cached = "{f:translate(key:'dashboard.cached')}";
+        CloudflareAnalytics.labels.uncached = "{f:translate(key:'dashboard.uncached')}";
+        CloudflareAnalytics.labels.encrypted = "{f:translate(key:'dashboard.encrypted')}";
+        CloudflareAnalytics.labels.unencrypted = "{f:translate(key:'dashboard.unencrypted')}";
+    </script>
+
+</f:section>

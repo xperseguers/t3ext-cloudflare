@@ -115,6 +115,9 @@ class cloudFlareProxy
             case 'zones':
                 $data = $this->zones($method, $arguments, $parameters, $allowedIdentifiers);
                 break;
+            case 'analytics':
+                $data = $this->analytics($method, $arguments, $parameters, $allowedIdentifiers);
+                break;
         }
 
         return $data;
@@ -162,6 +165,27 @@ class cloudFlareProxy
 
             $json = json_encode($data);
         }
+
+        return $json;
+    }
+
+    /**
+     * Sends an /analytics request.
+     *
+     * @param string $method
+     * @param array $arguments
+     * @param string $parameters
+     * @param array $allowedIdentifiers
+     * @return string
+     */
+    protected function analytics($method, array $arguments, $parameters, array $allowedIdentifiers)
+    {
+        if (!empty($arguments) && !isset($allowedIdentifiers[$arguments[0]])) {
+            throw new \RuntimeException('Not Authorized', 1441355374);
+        }
+
+        // Proxy to CloudFlare
+        $json = $this->sendHttpRequest($method, 'analytics/' . implode('/', $arguments), $parameters);
 
         return $json;
     }
@@ -379,6 +403,20 @@ class cloudFlareProxy
         return $result;
     }
 
+}
+
+// When using nginx + Fast-CGI before PHP 5.4
+if (!function_exists('getallheaders')) {
+    function getallheaders()
+    {
+        $headers = '';
+        foreach ($_SERVER as $name => $value) {
+            if (substr($name, 0, 5) === 'HTTP_') {
+                $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+            }
+        }
+        return $headers;
+    }
 }
 
 // Enter your CloudFlare API credentials below

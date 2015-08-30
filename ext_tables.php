@@ -26,4 +26,24 @@ if (TYPO3_MODE === 'BE') {
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler('TxCloudflare::toggleDevelopmentMode', 'Causal\\Cloudflare\\Backend\\ToolbarItems\\CloudflareToolbarItem->toggleDevelopmentMode');
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler('TxCloudflare::purge', 'Causal\\Cloudflare\\Backend\\ToolbarItems\\CloudflareToolbarItem->purge');
     }
+
+    if (version_compare(TYPO3_version, '6.99.99', '<=')) {
+        $moduleIcon = 'ext_icon.png';
+    } else {
+        $moduleIcon = 'Resources/Public/Icons/module-cloudflare.png';
+    }
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+        'Causal.' . $_EXTKEY,
+        'system',
+        'cloudflare',
+        '',
+        array(
+            'Dashboard' => 'analytics, ajaxAnalytics',
+        ),
+        array(
+            'access' => 'user,group',
+            'icon' => 'EXT:' . $_EXTKEY . '/' . $moduleIcon,
+            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod_cloudflare.xlf',
+        )
+    );
 }

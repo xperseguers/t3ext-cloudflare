@@ -30,6 +30,13 @@ best method is to restore the originating IP at the Web Server level but sometim
 reason why, in addition to flushing cache on CloudFlare, this extension lets the user restore the originating IP by
 ticking a configuration checkbox.
 
+In addition, it provides a handy dashboard as a Backend module featuring some analytics.
+
+.. figure:: ../Images/dashboard.png
+	:alt: CloudFlare Analytics
+
+	Backend module featuring CloudFlare analytics for your domain(s) over a configurable period of time.
+
 
 .. _what-is-cloudflare:
 
@@ -43,7 +50,10 @@ and crawlers from wasting your bandwidth and server resources. The result: Cloud
 improvement in performance and a decrease in spam and other attacks.
 
 .. figure:: ../Images/overview-cloudflare.png
-	:alt: System overview with and without CloudFlare
+	:alt: System overview
+
+	System overview with and without CloudFlare.
+
 
 CloudFlare's system gets faster and smarter as their community of users grows larger. They have designed the system to
 scale with their goal in mind: helping power and protect the entire Internet.
