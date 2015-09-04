@@ -20,6 +20,8 @@ The following is a very high level overview of the changes in this extension. Fo
 =======  ======================================================
 Version  Changes
 =======  ======================================================
+2.0.x    - CloudFlare API v4
+         - Dashboard with analytics
 1.3.x    Compatibility with TYPO3 6.2 - 7.x
 1.2.x    Enhanced support of flexible SSL
 1.1.x    Toolbar menu to manage the domains / zones

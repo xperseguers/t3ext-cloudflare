@@ -1,7 +1,7 @@
 {
   "name": "causal/cloudflare",
   "description": "Implementation of the CloudFlare Client Interface API to flush content cache and restore originating IPs.",
-  "version": "1.4.0-dev",
+  "version": "2.0.0-dev",
   "type": "typo3-cms-extension",
   "keywords": [
     "TYPO3 CMS",
