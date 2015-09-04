@@ -32,6 +32,11 @@
   "replace": {
     "cloudflare": "*"
   },
+  "autoload": {
+    "psr-4": {
+      "Causal\\Cloudflare\\": "Classes/"
+    }
+  },
   "support": {
     "issues": "https://forge.typo3.org/projects/extension-cloudflare/issues"
   }
