@@ -135,6 +135,22 @@ class ToolbarMenu
     }
 
     /**
+     * Purges cache from all configured zones.
+     *
+     * @param array $params Array of parameters from the AJAX interface, currently unused
+     * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
+     * @return void
+     */
+    public function purge($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj = null)
+    {
+        /** @var \Causal\Cloudflare\Hooks\TCEmain $tceMain */
+        $tceMain = GeneralUtility::makeInstance('Causal\\Cloudflare\\Hooks\\TCEmain');
+        $tceMain->clearCache();
+
+        $ajaxObj->addContent('success', true);
+    }
+
+    /**
      * Returns the icon associated to a given CloudFlare status.
      *
      * @param string $status

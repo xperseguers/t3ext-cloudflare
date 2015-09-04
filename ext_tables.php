@@ -20,6 +20,9 @@ if (TYPO3_MODE === 'BE') {
             null,
             'admin'
         );
+
+        // Register AJAX calls
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler('TxCloudflare::purge', 'Causal\\Cloudflare\\ExtDirect\\ToolbarMenu->purge');
     } else {
         // Register AJAX calls
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler('TxCloudflare::renderMenu', 'Causal\\Cloudflare\\Backend\\ToolbarItems\\CloudflareToolbarItem->renderAjax');
