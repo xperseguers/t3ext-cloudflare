@@ -14,6 +14,7 @@ namespace Causal\Cloudflare\Hooks;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
@@ -46,6 +47,14 @@ class TYPO3backend implements \TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookIn
      */
     public function manipulateCacheActions(&$cacheActions, &$optionValues)
     {
+        if (version_compare(TYPO3_version, '6.99.99', '<=')) {
+            $icon = '<span class="t3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-cache-clear-impact-low"></span>';
+        } else {
+            /** @var \TYPO3\CMS\Core\Imaging\IconFactory $iconFactory */
+            $iconFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Imaging\\IconFactory');
+            $icon = $iconFactory->getIcon('actions-system-cache-clear-impact-low', \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL);
+        }
+
         $backendUser = $this->getBackendUser();
         if ($backendUser->isAdmin() || $backendUser->getTSConfigVal('options.clearCache.all') || $backendUser->getTSConfigVal('options.clearCache.cloudflare')) {
             // Add new cache menu item
@@ -55,7 +64,7 @@ class TYPO3backend implements \TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookIn
                 'id' => 'cloudflare',
                 'title' => $title,
                 'href' => $GLOBALS['BACK_PATH'] . BackendUtility::getAjaxUrl('TxCloudflare::purge'),
-                'icon' => '<span class="t3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-cache-clear-impact-low"></span>'
+                'icon' => $icon,
             );
             if ($clearAll !== null) {
                 $cacheActions = array_merge(array($clearAll, $clearCloudFlare), $cacheActions);
