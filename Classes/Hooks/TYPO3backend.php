@@ -47,7 +47,7 @@ class TYPO3backend implements \TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookIn
      */
     public function manipulateCacheActions(&$cacheActions, &$optionValues)
     {
-        if (version_compare(TYPO3_version, '6.99.99', '<=')) {
+        if (version_compare(TYPO3_version, '7.4.99', '<=')) {
             $icon = '<span class="t3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-cache-clear-impact-low"></span>';
         } else {
             /** @var \TYPO3\CMS\Core\Imaging\IconFactory $iconFactory */
