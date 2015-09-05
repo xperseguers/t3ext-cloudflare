@@ -188,6 +188,10 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
             ),
         ));
 
+        // Sort some data for better display as graphs
+        arsort($data['totals']['bandwidth']['content_type']);
+        arsort($data['totals']['requests']['content_type']);
+
         $this->returnAjax($data);
     }
 
