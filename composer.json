@@ -1,8 +1,7 @@
 {
   "name": "causal/cloudflare",
-  "description": "Implementation of the CloudFlare Client Interface API to flush content cache and restore originating IPs.",
-  "version": "2.0.0-dev",
   "type": "typo3-cms-extension",
+  "description": "Implementation of the CloudFlare Client Interface API to flush content cache and restore originating IPs.",
   "keywords": [
     "TYPO3 CMS",
     "cloudflare",
@@ -15,7 +14,9 @@
     "performance"
   ],
   "homepage": "https://forge.typo3.org/projects/extension-sphinx",
-  "license": "GPL-2.0+",
+  "support": {
+    "issues": "https://forge.typo3.org/projects/extension-cloudflare/issues"
+  },
   "authors": [
     {
       "name": "Xavier Perseguers",
@@ -25,19 +26,37 @@
       "role": "Developer"
     }
   ],
+  "license": "GPL-2.0+",
   "require": {
     "php": ">= 5.3.3, <= 5.6.99",
     "typo3/cms-core": ">= 6.2.0, <= 7.99.99"
-  },
-  "replace": {
-    "cloudflare": "*"
   },
   "autoload": {
     "psr-4": {
       "Causal\\Cloudflare\\": "Classes/"
     }
   },
-  "support": {
-    "issues": "https://forge.typo3.org/projects/extension-cloudflare/issues"
+  "replace": {
+    "cloudflare": "self.version",
+    "typo3-ter/cloudflare": "self.version"
+  },
+  "config": {
+    "vendor-dir": ".Build/vendor",
+    "bin-dir": ".Build/bin"
+  },
+  "scripts": {
+    "post-autoload-dump": [
+      "mkdir -p .Build/Web/typo3conf/ext/",
+      "[ -L .Build/Web/typo3conf/ext/cloudflare ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/cloudflare"
+    ]
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "2.0.x-dev"
+    },
+    "typo3/cms": {
+      "cms-package-dir": "{$vendor-dir}/typo3/cms",
+      "web-dir": ".Build/Web"
+    }
   }
 }
