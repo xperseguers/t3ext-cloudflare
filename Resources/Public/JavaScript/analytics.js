@@ -106,7 +106,7 @@ CloudflareAnalytics = {
         AmCharts.makeChart(elementId, {
             'type': 'serial',
             'theme': 'light',
-            'creditsPosition': 'top-right',
+            'creditsPosition': 'bottom-right',
             'categoryField': 'since',
             'dataDateFormat': 'YYYY-MM-DDTJJ:NN:SSZ',
             'categoryAxis': {
