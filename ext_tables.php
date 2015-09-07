@@ -30,15 +30,28 @@ if (TYPO3_MODE === 'BE') {
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler('TxCloudflare::purge', 'Causal\\Cloudflare\\Backend\\ToolbarItems\\CloudflareToolbarItem->purge');
     }
 
+    // Create a module section "CloudFlare" before 'Admin Tools'
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule('txcloudflare', '', '', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/Cloudflare/');
+    $temp_TBE_MODULES = array();
+    foreach ($GLOBALS['TBE_MODULES'] as $key => $val) {
+        if ($key === 'tools') {
+            $temp_TBE_MODULES['txcloudflare'] = '';
+            $temp_TBE_MODULES[$key] = $val;
+        } else {
+            $temp_TBE_MODULES[$key] = $val;
+        }
+    }
+    $GLOBALS['TBE_MODULES'] = $temp_TBE_MODULES;
+
     if (version_compare(TYPO3_version, '6.99.99', '<=')) {
         $moduleIcon = 'ext_icon.png';
     } else {
-        $moduleIcon = 'Resources/Public/Icons/module-cloudflare.png';
+        $moduleIcon = 'Resources/Public/Icons/module-analytics.png';
     }
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
         'Causal.' . $_EXTKEY,
-        'system',
-        'cloudflare',
+        'txcloudflare',
+        'analytics',
         '',
         array(
             'Dashboard' => 'analytics, ajaxAnalytics',
@@ -46,7 +59,7 @@ if (TYPO3_MODE === 'BE') {
         array(
             'access' => 'user,group',
             'icon' => 'EXT:' . $_EXTKEY . '/' . $moduleIcon,
-            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod_cloudflare.xlf',
+            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod_analytics.xlf',
         )
     );
 }
