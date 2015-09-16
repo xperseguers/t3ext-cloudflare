@@ -106,6 +106,12 @@ class TCEmain
                 $ret = $cloudflareService->send('/zones/' . $identifier . '/purge_cache', array(
                     'purge_everything' => true,
                 ), 'DELETE');
+                if (!is_array($ret)) {
+                    $ret = array(
+                        'success' => false,
+                        'errors' => array()
+                    );
+                }
 
                 if ($beUser !== null) {
                     if ($ret['success']) {
