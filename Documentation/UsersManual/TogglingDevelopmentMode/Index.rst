@@ -6,6 +6,9 @@
 .. include:: ../../Includes.txt
 
 
+
+.. _users-manual-development-mode:
+
 Toggling development mode
 -------------------------
 

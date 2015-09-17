@@ -6,15 +6,64 @@
 .. include:: ../../Includes.txt
 
 
+.. _admin-manual-install:
+
 Installing the extension
 ------------------------
 
-There are a few steps necessary to install the CloudFlare Client extension. If you have installed other extensions in
-the past, you will run into little new here.
+With thousands of sites on the internet using TYPO3, many TYPO3 sites have decided to use CloudFlare to make their site
+faster with this `free CDN <https://www.cloudflare.com/features-cdn>`__ and to make the site more secure with their
+`security services <https://www.cloudflare.com/features-security>`__.
+
+We will cover the recommended first steps so that any TYPO3 administrator should be able to get CloudFlare up and running
+in a few minutes.
 
 
-Install the extension from Extension Manager
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. _admin-manual-install-step1:
 
-The CloudFlare Client extension can ben installed through the typical TYPO3 installation process using the Extension
-Manager.
+Step 1
+^^^^^^
+
+Install the `CloudFlare TYPO3 extension <https://typo3.org/extensions/repository/view/cloudflare>`__ to restore visitor
+IP. Since CloudFlare acts as a proxy for sites, CloudFlare's IPs are going to show in your logs, unless you install
+something to restore the original visitor IP.
+
+This extension can be installed through the typical TYPO3 installation process using the Extension Manager or using
+`composer <https://packagist.org/packages/causal/cloudflare>`__, if you prefer.
+
+
+.. _admin-manual-install-step2:
+
+Step 2
+^^^^^^
+
+Review your basic security settings.
+
+If you have a site that is frequently the target of spam or botnet attacks, changing your security level to a higher
+setting will help further reduce the amount of spam you get on your site. CloudFlare defaults all users to a medium
+setting when you first add the domain to CloudFlare.
+
+Why do this? If you want your site to have less security and protection from various attacks, then you would want to
+change your setting to a lower level (please keep in mind this makes your site more vulnerable). If you want your site
+to have higher security, please keep in mind that you may get more false positives from visitors complaining about a
+challenge page that they have to pass to enter your site.
+
+
+.. _admin-manual-install-step3:
+
+Step 3
+^^^^^^
+
+If you configure CloudFlare to optimize your source code (by minifying HTML in the 'Speed' panel), please keep in mind
+that older versions of TYPO3 (up to 6.2 LTS) are relying on HTML comments to handle
+:abbr:`IRRE (Inline Relational Record Editing)`. When HTML coming from TYPO3 Backend is getting minified, HTML comments
+are stripped and IRRE does not work anymore.
+
+To do so, create a `Page Rule <https://support.cloudflare.com/hc/en-us/articles/200168306-Is-there-a-tutorial-for-Page-Rules->`__
+to exclude the `typo3` sections from CloudFlare's caching and performance features. You can access Page Rules in your
+CloudFlare dashboard.
+
+::
+
+    URL pattern: www.example.com/typo3/*
+    Performance: off

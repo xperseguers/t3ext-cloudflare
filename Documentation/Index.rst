@@ -24,7 +24,7 @@ CloudFlare Client
 		en
 
 	:Description:
-		Implementation of the CloudFlare Client Interface API to flush content cache and restore originating IPs.
+		The CloudFlare TYPO3 extension ensures your TYPO3 website is running optimally on the CloudFlare platform.
 
 	:Keywords:
 		cloud, content delivery network, cdn, proxy, reverse proxy, ssl, performance
@@ -62,8 +62,8 @@ CloudFlare Client
 	:titlesonly:
 
 	Introduction/Index
-	UsersManual/Index
 	AdministratorManual/Index
+	UsersManual/Index
 	KnownProblems/Index
 	ToDoList/Index
 	ChangeLog/Index

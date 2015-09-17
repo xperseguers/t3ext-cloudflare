@@ -12,7 +12,7 @@
 
 $EM_CONF[$_EXTKEY] = array(
     'title' => 'CloudFlare Client',
-    'description' => 'Implementation of the CloudFlare Client Interface API to flush content cache and restore originating IPs.',
+    'description' => 'The CloudFlare TYPO3 extension ensures your TYPO3 website is running optimally on the CloudFlare platform.',
     'category' => 'services',
     'author' => 'Xavier Perseguers (Causal)',
     'author_company' => 'Causal Sàrl',

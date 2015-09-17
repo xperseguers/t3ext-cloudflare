@@ -6,6 +6,8 @@
 .. include:: ../../Includes.txt
 
 
+.. _users-manual-flush:
+
 Flushing cache on CloudFlare
 ----------------------------
 

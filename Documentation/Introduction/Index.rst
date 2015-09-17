@@ -17,20 +17,25 @@ Introduction
 What does it do?
 ----------------
 
-This extension lets you flush cache on CloudFlare when content changes in your TYPO3 website and toggle "Development Mode"
-for your domains from within TYPO3 Backend.
+This extension ensures your TYPO3 website is running optimally on the CloudFlare platform. With it, you receive:
 
-CloudFlare introduced a mechanism to purge single files instead of only allowing to flush all caches of a domain. This
-feature must be explicitly activated in the advanced configuration section. Even if activated, a full cache flush will
-be sent whenever your ``TCEMAIN.clearCacheCmd`` is set to "``all``".
+- Correct IP address information for visitors
+- Better protection against common vectors of attacks
 
-As CloudFlare acts a reverse-proxy for your website, originating IPs get replaced by the ones from the CloudFlare's
-reverse proxies. TYPO3 lets you fix it but as they are numerous proxy servers, the configuration may be tedious. The
-best method is to restore the originating IP at the Web Server level but sometimes this is not possible. This is the
-reason why, in addition to flushing cache on CloudFlare, this extension lets the user restore the originating IP by
-ticking a configuration checkbox.
+Things you need to know:
 
-In addition, it provides a handy dashboard as a Backend module featuring some analytics.
+- The main purpose of this extension is to ensure you have no change to your originating IPs when using CloudFlare.
+  Since CloudFlare acts as a reverse proxy, connecting IPs now come from CloudFlare's range. This extension will ensure
+  you can continue to see the originating IP [#]_.
+
+- In addition, this extension lets you benefit from CloudFlare's caching mechanism transparently and will automatically
+  flush the cache for you, when it is needed.
+
+- This extension lets you manage multiple domains on CloudFlare, just as TYPO3 does, and lets you easily toggle
+  "Development Mode" from TYPO3 Backend whenever CloudFlare's optimizations should be temporarily bypassed.
+
+
+Finally, it provides a handy dashboard as a Backend module featuring some analytics.
 
 .. figure:: ../Images/dashboard.png
 	:alt: CloudFlare Analytics
@@ -65,3 +70,11 @@ your site's existing code. If you are ever unhappy you can turn CloudFlare off a
 service is free and they offer enhanced services for websites who need extra features like real time reporting or SSL.
 
 Read more on: https://www.cloudflare.com/overview.
+
+
+.. rubric:: Footnotes
+
+.. [#] TYPO3 lets you fix it but as they are numerous proxy servers, the configuration may be tedious. The best method
+   is to restore the originating IP at the Web Server level but sometimes this is not possible. This is the reason why,
+   in addition to flushing cache on CloudFlare, this extension lets the user restore the originating IP by ticking a
+   configuration checkbox.

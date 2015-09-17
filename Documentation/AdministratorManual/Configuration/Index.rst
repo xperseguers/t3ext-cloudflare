@@ -6,11 +6,15 @@
 .. include:: ../../Includes.txt
 
 
+.. _admin-manual-configuration:
+
 Configuration
 -------------
 
 This extension comes with a few settings available from the Extension Manager.
 
+
+.. _admin-manual-configuration-basic:
 
 Category Basic
 ^^^^^^^^^^^^^^
@@ -24,6 +28,8 @@ Category Basic
   corresponding check boxes to instruct TYPO3 which domains should get their cache flushed when clearing all caches in
   TYPO3 Backend.
 
+
+.. _admin-manual-configuration-advanced:
 
 Category Advanced
 ^^^^^^^^^^^^^^^^^
@@ -105,6 +111,8 @@ The configuration takes place at the end of the file:
 
 Feel free to enhance it to fit your needs!
 
+
+.. _admin-manual-configuration-clearcache:
 
 Allowing Backend users to clear cache on CloudFlare
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

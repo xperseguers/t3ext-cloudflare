@@ -6,6 +6,8 @@
 .. include:: ../../Includes.txt
 
 
+.. _users-manual-ssl:
+
 Support for SSL
 ---------------
 
@@ -22,6 +24,9 @@ is detected, allowing you to generate links containing the "``https://``" prefix
 You may enforce SSL either at the Web Server level or using Page Rules in CloudFlare. If using Apache, please read
 https://support.cloudflare.com/hc/en-us/articles/200170536-How-do-I-redirect-HTTPS-traffic-with-Flexible-SSL-and-Apache.
 
+
+
+.. _users-manual-ssl-full:
 
 Full SSL
 ^^^^^^^^
