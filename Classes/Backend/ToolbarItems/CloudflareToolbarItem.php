@@ -15,7 +15,6 @@ namespace Causal\Cloudflare\Backend\ToolbarItems;
  */
 
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -79,7 +78,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
         $title = $this->getLanguageService()->getLL('toolbarItem', true);
 
         $cloudflare = array();
-        $cloudflare[] = IconUtility::getSpriteIcon('actions-system-extension-configure', array('title' => $title));
+        $cloudflare[] = $this->getSpriteIcon('actions-system-extension-configure', array('title' => $title));
         $cloudflare[] = '<span class="badge" id="tx-cloudflare-counter">0</span>';
 
         return implode(LF, $cloudflare);
@@ -157,15 +156,38 @@ class CloudflareToolbarItem implements ToolbarItemInterface
         $languageService = $this->getLanguageService();
         switch ($status) {
             case 'active':
-                $icon = IconUtility::getSpriteIcon('extensions-cloudflare-online', array('title' => $languageService->getLL('zone_active')));
+                $icon = $this->getSpriteIcon('extensions-cloudflare-online', array('title' => $languageService->getLL('zone_active')));
                 break;
             case 'dev-mode':
-                $icon = IconUtility::getSpriteIcon('extensions-cloudflare-direct', array('title' => $languageService->getLL('zone_development')));
+                $icon = $this->getSpriteIcon('extensions-cloudflare-direct', array('title' => $languageService->getLL('zone_development')));
                 break;
             case 'deactivated':
             default:
-                $icon = IconUtility::getSpriteIcon('extensions-cloudflare-offline', array('title' => $languageService->getLL('zone_inactive')));
+                $icon = $this->getSpriteIcon('extensions-cloudflare-offline', array('title' => $languageService->getLL('zone_inactive')));
                 break;
+        }
+        return $icon;
+    }
+
+    /**
+     * Returns the HTML code for a sprite icon.
+     *
+     * @param string $iconName
+     * @param array $options
+     * @return string
+     */
+    protected function getSpriteIcon($iconName, array $options)
+    {
+        /** @var \TYPO3\CMS\Core\Imaging\IconFactory $iconFactory */
+        static $iconFactory = null;
+
+        if (version_compare(TYPO3_version, '7.5.0', '>=')) {
+            if ($iconFactory === null) {
+                $iconFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Imaging\\IconFactory');
+            }
+            $icon = (string)$iconFactory->getIcon($iconName, \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL);
+        } else {
+            $icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon($iconName, $options);
         }
         return $icon;
     }
