@@ -35,7 +35,7 @@ Category Advanced
 ^^^^^^^^^^^^^^^^^
 
 - **Cache content over SSL:** This checkbox implements a hook of extension
-  `nc\_staticfilecache <http://typo3.org/extensions/repository/view/nc_staticfilecache>`_ and should be ticked in case
+  `nc\_staticfilecache <https://typo3.org/extensions/repository/view/nc_staticfilecache>`_ and should be ticked in case
   you would like to cache content over SSL. This is typically useful when securing your website with CloudFlare's
   flexible SSL.
 
