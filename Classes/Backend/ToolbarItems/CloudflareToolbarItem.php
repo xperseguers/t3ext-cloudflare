@@ -185,7 +185,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
             if ($iconFactory === null) {
                 $iconFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Imaging\\IconFactory');
             }
-            $icon = (string)$iconFactory->getIcon($iconName, \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL);
+            $icon = $iconFactory->getIcon($iconName, \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL)->render('inline');
         } else {
             $icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon($iconName, $options);
         }
