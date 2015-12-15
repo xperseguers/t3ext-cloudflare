@@ -129,7 +129,8 @@ class CloudflareService implements \TYPO3\CMS\Core\SingletonInterface
     {
         if (true || $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] == '1') {
             if (!function_exists('curl_init') || !($ch = curl_init())) {
-                throw new \RuntimeException('cURL cannot be used', 1337673614);
+                list ($major, $_) = explode('.', phpversion(), 2);
+                throw new \RuntimeException('cURL cannot be used. Make sure php' . $major . '-curl is loaded.', 1337673614);
             }
 
             if ($method === 'GET') {

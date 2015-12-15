@@ -65,7 +65,15 @@ class Configuration
                 }
             }
         } catch (\RuntimeException $e) {
-            // Nothing to do
+            /** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
+            $flashMessage = GeneralUtility::makeInstance(
+                'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+                $e->getMessage(),
+                '',
+                \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR,
+                true
+            );
+            $out[] = $flashMessage->render();
         }
 
         $i = 0;
