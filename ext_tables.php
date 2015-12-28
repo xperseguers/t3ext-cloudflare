@@ -1,13 +1,35 @@
 <?php
 defined('TYPO3_MODE') || die();
 
+// Register additional sprite icons
 $icons = array(
-    'cloudflare' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/cloudflare-16.png',
-    'direct' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/direct-16.png',
-    'offline' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/offline-16.png',
-    'online' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/online-16.png',
+    'cloudflare' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/cloudflare-16.png',
+    'direct' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/direct-16.png',
+    'offline' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/offline-16.png',
+    'online' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/online-16.png',
 );
-\TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons($icons, $_EXTKEY);
+if (version_compare(TYPO3_version, '7.6.0', '>=')) {
+    /** @var \TYPO3\CMS\Core\Imaging\IconRegistry $iconRegistry */
+    $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Imaging\\IconRegistry');
+    foreach ($icons as $key => $icon) {
+        $iconRegistry->registerIcon('extensions-' . $_EXTKEY . '-' . $key,
+            'TYPO3\\CMS\\Core\\Imaging\\IconProvider\\BitmapIconProvider',
+            array(
+                'source' => $icon
+            )
+        );
+    }
+    unset($iconRegistry);
+} else {
+    $extensionRelativePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY);
+    $icons = array_map(
+        function ($e) use ($_EXTKEY, $extensionRelativePath) {
+            return str_replace('EXT:' . $_EXTKEY . '/', $extensionRelativePath, $e);
+        },
+        $icons
+    );
+    \TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons($icons, $_EXTKEY);
+}
 
 // Register our custom CSS
 $GLOBALS['TBE_STYLES']['skins'][$_EXTKEY]['stylesheetDirectories']['visual'] = 'EXT:' . $_EXTKEY . '/Resources/Public/Css/visual/';
