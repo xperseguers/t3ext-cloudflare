@@ -8,7 +8,7 @@ $icons = array(
     'offline' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/offline-16.png',
     'online' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/online-16.png',
 );
-if (version_compare(TYPO3_version, '7.6.0', '>=')) {
+if (version_compare(TYPO3_version, '7.6', '>=')) {
     /** @var \TYPO3\CMS\Core\Imaging\IconRegistry $iconRegistry */
     $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Imaging\\IconRegistry');
     foreach ($icons as $key => $icon) {

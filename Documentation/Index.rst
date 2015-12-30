@@ -30,7 +30,7 @@ CloudFlare Client
 		cloud, content delivery network, cdn, proxy, reverse proxy, ssl, performance
 
 	:Copyright:
-		2012-2015
+		2012-2016
 
 	:Author:
 		Xavier Perseguers
