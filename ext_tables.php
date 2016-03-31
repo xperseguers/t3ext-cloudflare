@@ -7,6 +7,7 @@ $icons = array(
     'direct' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/direct-16.png',
     'offline' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/offline-16.png',
     'online' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/online-16.png',
+    'module' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module-cloudflare.png',
 );
 if (version_compare(TYPO3_version, '7.6', '>=')) {
     /** @var \TYPO3\CMS\Core\Imaging\IconRegistry $iconRegistry */
@@ -64,6 +65,10 @@ if (TYPO3_MODE === 'BE') {
         }
     }
     $GLOBALS['TBE_MODULES'] = $temp_TBE_MODULES;
+    $GLOBALS['TBE_MODULES']['_configuration']['txcloudflare'] = array(
+        'labels' => 'LLL:EXT:cloudflare/Resources/Private/Language/locallang_mod_cloudflare.xlf',
+        'iconIdentifier' => 'extensions-cloudflare-module',
+    );
 
     if (version_compare(TYPO3_version, '6.99.99', '<=')) {
         $moduleIcon = 'ext_icon.png';
