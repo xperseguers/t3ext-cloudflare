@@ -78,7 +78,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
         $title = $this->getLanguageService()->getLL('toolbarItem', true);
 
         $cloudflare = array();
-        $cloudflare[] = $this->getSpriteIcon('actions-system-extension-configure', array('title' => $title));
+        $cloudflare[] = $this->getSpriteIcon('actions-system-extension-configure', array('title' => $title), 'inline');
         $cloudflare[] = '<span class="badge" id="tx-cloudflare-counter">0</span>';
 
         return implode(LF, $cloudflare);
@@ -174,21 +174,22 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      *
      * @param string $iconName
      * @param array $options
+     * @param string $alternativeMarkupIdentifier
      * @return string
      */
-    protected function getSpriteIcon($iconName, array $options)
+    protected function getSpriteIcon($iconName, array $options, $alternativeMarkupIdentifier = null)
     {
         /** @var \TYPO3\CMS\Core\Imaging\IconFactory $iconFactory */
         static $iconFactory = null;
 
-        if (version_compare(TYPO3_version, '7.5.0', '>=')) {
-            if ($iconFactory === null) {
-                $iconFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Imaging\\IconFactory');
-            }
-            $icon = $iconFactory->getIcon($iconName, \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL)->render('inline');
-        } else {
-            $icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon($iconName, $options);
+        if ($iconFactory === null) {
+            $iconFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Imaging\\IconFactory');
         }
+        $icon = $iconFactory->getIcon($iconName, \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL)->render($alternativeMarkupIdentifier);
+        if (strpos($icon, '<img ') !== false) {
+            $icon = str_replace('<img ', '<img title="' . htmlspecialchars($options['title']) . '" ', $icon);
+        }
+
         return $icon;
     }
 
