@@ -299,13 +299,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      */
     protected function getPageRenderer()
     {
-        if (version_compare(TYPO3_version, '7.4', '>=')) {
-            $pageRenderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
-        } else {
-            /** @var \TYPO3\CMS\Backend\Template\DocumentTemplate $documentTemplate */
-            $documentTemplate = $GLOBALS['TBE_TEMPLATE'];
-            $pageRenderer = $documentTemplate->getPageRenderer();
-        }
+        $pageRenderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
         return $pageRenderer;
     }
 
