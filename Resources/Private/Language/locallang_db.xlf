@@ -10,25 +10,25 @@
 				<source>API Key: This is the API key made available on your account page (https://www.cloudflare.com/a/account/my-account)</source>
 			</trans-unit>
 			<trans-unit id="settings.domains">
-				<source>Domains: Please tick the domains whose cache should be flushed on CloudFlare upon clearing all caches in TYPO3.</source>
+				<source>Domains: Please tick the domains whose cache should be flushed on Cloudflare upon clearing all caches in TYPO3.</source>
 			</trans-unit>
 			<trans-unit id="settings.enableOriginatingIPs">
 				<source>Originating IPs: Tick this checkbox in case you cannot restore the originating IPs at the webserver level.</source>
 			</trans-unit>
 			<trans-unit id="settings.cacheSslContent">
-				<source>Cache content over SSL: Requires EXT:nc_staticfilecache. Tick this checkbox in case you would to cache content over SSL. Typically useful when securing your website with CloudFlare's flexible SSL.</source>
+				<source>Cache content over SSL: Requires EXT:nc_staticfilecache. Tick this checkbox in case you would to cache content over SSL. Typically useful when securing your website with Cloudflare's flexible SSL.</source>
 			</trans-unit>
 			<trans-unit id="settings.enablePurgeSingleFile">
-				<source>Purge single files (experimental): Tick this checkbox to try to purge single files on CloudFlare. Beware: Highly experimental!</source>
+				<source>Purge single files (experimental): Tick this checkbox to try to purge single files on Cloudflare. Beware: Highly experimental!</source>
 			</trans-unit>
 			<trans-unit id="settings.apiEndpoint">
 				<source>API Endpoint: Alternate API endpoint/proxy. Beware: DO NOT change unless you know what you do!</source>
 			</trans-unit>
 			<trans-unit id="settings.labels.emptyList">
-				<source>Empty list fetched from CloudFlare, please check your credentials.</source>
+				<source>Empty list fetched from Cloudflare, please check your credentials.</source>
 			</trans-unit>
 			<trans-unit id="settings.labels.zoneIdentifiers">
-				<source>CloudFlare API Zone Identifiers</source>
+				<source>Cloudflare API Zone Identifiers</source>
 			</trans-unit>
 		</body>
 	</file>

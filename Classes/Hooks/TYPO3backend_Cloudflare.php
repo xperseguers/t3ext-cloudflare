@@ -17,7 +17,7 @@ if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
 }
 
 /**
- * Class to render the CloudFlare toolbar menu (TYPO3 6.2).
+ * Class to render the Cloudflare toolbar menu (TYPO3 6.2).
  *
  * @category    Hooks
  * @package     TYPO3
@@ -75,9 +75,9 @@ class Tx_Cloudflare_Hooks_TYPO3backend_Cloudflare implements \TYPO3\CMS\Backend\
     }
 
     /**
-     * Creates the CloudFlare toolbar icon with popup menu.
+     * Creates the Cloudflare toolbar icon with popup menu.
      *
-     * @return string CloudFlare menu as HTML select
+     * @return string Cloudflare menu as HTML select
      */
     public function render()
     {

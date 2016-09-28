@@ -146,7 +146,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
     }
 
     /**
-     * Returns the icon associated to a given CloudFlare status.
+     * Returns the icon associated to a given Cloudflare status.
      *
      * @param string $status
      * @return string

@@ -1,7 +1,7 @@
 {
   "name": "causal/cloudflare",
   "type": "typo3-cms-extension",
-  "description": "The CloudFlare TYPO3 extension ensures your TYPO3 website is running optimally on the CloudFlare platform.",
+  "description": "The Cloudflare TYPO3 extension ensures your TYPO3 website is running optimally on the Cloudflare platform.",
   "keywords": [
     "TYPO3 CMS",
     "cloudflare",

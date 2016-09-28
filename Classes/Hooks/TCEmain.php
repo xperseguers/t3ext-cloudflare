@@ -17,7 +17,7 @@ namespace Causal\Cloudflare\Hooks;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Hook for clearing cache on CloudFlare.
+ * Hook for clearing cache on Cloudflare.
  *
  * @category    Hooks
  * @package     TYPO3
@@ -56,14 +56,14 @@ class TCEmain
         static $handledPageUids = array();
 
         if (GeneralUtility::inList('all,pages', $params['cacheCmd'])) {
-            $this->clearCloudFlareCache($pObj->BE_USER);
+            $this->clearCloudflareCache($pObj->BE_USER);
         } elseif (!empty($this->config['enablePurgeSingleFile'])) {
             $pageUid = intval($params['cacheCmd']);
             if ($pageUid && !in_array($pageUid, $handledPageUids)) {
                 $handledPageUids[] = $pageUid;
                 $url = $this->getFrontendUrl($pageUid);
                 if ($url) {
-                    $this->purgeCloudFlareSingleFile(
+                    $this->purgeCloudflareSingleFile(
                         isset($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER'] : null,
                         $url
                     );
@@ -73,7 +73,7 @@ class TCEmain
     }
 
     /**
-     * Answers to AJAX call invoked when clearing only CloudFlare cache.
+     * Answers to AJAX call invoked when clearing only Cloudflare cache.
      *
      * @return void
      */
@@ -83,17 +83,17 @@ class TCEmain
             return;
         }
         if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.all') || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.cloudflare')) {
-            $this->clearCloudFlareCache($GLOBALS['BE_USER']);
+            $this->clearCloudflareCache($GLOBALS['BE_USER']);
         }
     }
 
     /**
-     * Clears the CloudFlare cache.
+     * Clears the Cloudflare cache.
      *
      * @param \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication $beUser
      * @return void
      */
-    protected function clearCloudFlareCache(\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication $beUser = null)
+    protected function clearCloudflareCache(\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication $beUser = null)
     {
         $domains = $this->config['domains'] ? GeneralUtility::trimExplode(',', $this->config['domains'], true) : array();
 
@@ -115,9 +115,9 @@ class TCEmain
 
                 if ($beUser !== null) {
                     if ($ret['success']) {
-                        $beUser->writelog(4, 1, 0, 0, 'User %s cleared the cache on CloudFlare (domain: "%s")', array($beUser->user['username'], $zoneName));
+                        $beUser->writelog(4, 1, 0, 0, 'User %s cleared the cache on Cloudflare (domain: "%s")', array($beUser->user['username'], $zoneName));
                     } else {
-                        $beUser->writelog(4, 1, 1, 0, 'User %s failed to clear the cache on CloudFlare (domain: "%s"): %s', array($beUser->user['username'], $zoneName, implode(LF, $ret['errors'])));
+                        $beUser->writelog(4, 1, 1, 0, 'User %s failed to clear the cache on Cloudflare (domain: "%s"): %s', array($beUser->user['username'], $zoneName, implode(LF, $ret['errors'])));
                     }
                 }
             } catch (\RuntimeException $e) {
@@ -237,13 +237,13 @@ class TCEmain
     }
 
     /**
-     * Purges a single file in CloudFlare cache.
+     * Purges a single file in Cloudflare cache.
      *
      * @param \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication $beUser
      * @param string $url
      * @return void
      */
-    protected function purgeCloudFlareSingleFile(\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication $beUser = null, $url)
+    protected function purgeCloudflareSingleFile(\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication $beUser = null, $url)
     {
         $domains = $this->config['domains'] ? GeneralUtility::trimExplode(',', $this->config['domains'], true) : array();
 
@@ -280,9 +280,9 @@ class TCEmain
 
             if ($beUser !== null) {
                 if ($ret['result'] === 'error') {
-                    $beUser->writelog(4, 1, 1, 0, 'User %s failed to clear the cache on CloudFlare (domain: "%s") for "%s": %s', array($beUser->user['username'], $domain, $url, $ret['msg']));
+                    $beUser->writelog(4, 1, 1, 0, 'User %s failed to clear the cache on Cloudflare (domain: "%s") for "%s": %s', array($beUser->user['username'], $domain, $url, $ret['msg']));
                 } else {
-                    $beUser->writelog(4, 1, 0, 0, 'User %s cleared the cache on CloudFlare (domain: "%s") for "%s"', array($beUser->user['username'], $domain, $url));
+                    $beUser->writelog(4, 1, 0, 0, 'User %s cleared the cache on Cloudflare (domain: "%s") for "%s"', array($beUser->user['username'], $domain, $url));
                 }
             }
         } catch (\RuntimeException $e) {

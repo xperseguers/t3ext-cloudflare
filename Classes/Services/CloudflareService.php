@@ -15,7 +15,7 @@ namespace Causal\Cloudflare\Services;
  */
 
 /**
- * Service to talk to CloudFlare.
+ * Service to talk to Cloudflare.
  *
  * @category    Services
  * @package     TYPO3
@@ -48,7 +48,7 @@ class CloudflareService implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * Sends data to CloudFlare.
+     * Sends data to Cloudflare.
      *
      * @param string $route
      * @param array $parameters
@@ -59,9 +59,9 @@ class CloudflareService implements \TYPO3\CMS\Core\SingletonInterface
     public function send($route, array $parameters = array(), $request = 'GET')
     {
         if (!trim($this->config['apiKey'])) {
-            throw new \RuntimeException('Cannot clear cache on CloudFlare: Invalid apiKey for EXT:cloudflare', 1337770232);
+            throw new \RuntimeException('Cannot clear cache on Cloudflare: Invalid apiKey for EXT:cloudflare', 1337770232);
         } elseif (!\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail(trim($this->config['email']))) {
-            throw new \RuntimeException('Cannot clear cache on CloudFlare: Invalid email for EXT:cloudflare', 1337770383);
+            throw new \RuntimeException('Cannot clear cache on Cloudflare: Invalid email for EXT:cloudflare', 1337770383);
         }
 
         $url = rtrim($this->apiEndpoint, '/') . '/' . ltrim($route, '/');
@@ -116,13 +116,13 @@ class CloudflareService implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * Sends a custom HTTP request to CloudFlare.
+     * Sends a custom HTTP request to Cloudflare.
      *
      * @param string $method
      * @param string $url
      * @param array $headers
      * @param array $data
-     * @return array JSON payload returned by CloudFlare
+     * @return array JSON payload returned by Cloudflare
      * @throws \RuntimeException
      */
     protected function sendHttpRequest($method, $url, array $headers, array $data)

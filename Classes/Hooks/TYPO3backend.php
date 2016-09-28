@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
- * Hook for clearing cache on CloudFlare.
+ * Hook for clearing cache on Cloudflare.
  *
  * @category    Hooks
  * @package     TYPO3
@@ -60,16 +60,16 @@ class TYPO3backend implements \TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookIn
             // Add new cache menu item
             $title = $this->getLanguageService()->getLL('clear_cache');
             $clearAll = array_shift($cacheActions);
-            $clearCloudFlare = array(
+            $clearCloudflare = array(
                 'id' => 'cloudflare',
                 'title' => $title,
                 'href' => $GLOBALS['BACK_PATH'] . BackendUtility::getAjaxUrl('TxCloudflare::purge'),
                 'icon' => $icon,
             );
             if ($clearAll !== null) {
-                $cacheActions = array_merge(array($clearAll, $clearCloudFlare), $cacheActions);
+                $cacheActions = array_merge(array($clearAll, $clearCloudflare), $cacheActions);
             } else {
-                $cacheActions[] = $clearCloudFlare;
+                $cacheActions[] = $clearCloudflare;
             }
             $optionValues[] = 'cloudflare';
         }

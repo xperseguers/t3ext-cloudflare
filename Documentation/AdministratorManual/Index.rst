@@ -14,8 +14,8 @@ Administrator Manual
 This chapter describes how to manage the extension from a superuser point of view.
 
 
-Before installing the extension, make sure you have a CloudFlare account and your website's domain (e.g.,
-``example.com``) is configured on CloudFlare. You may quickly and easily sign up for a free account on
+Before installing the extension, make sure you have a Cloudflare account and your website's domain (e.g.,
+``example.com``) is configured on Cloudflare. You may quickly and easily sign up for a free account on
 https://www.cloudflare.com/a/account/my-account.
 
 

@@ -47,13 +47,13 @@ class ToolbarMenu
     }
 
     /**
-     * Retrieves the CloudFlare status of selected domains.
+     * Retrieves the Cloudflare status of selected domains.
      *
      * @param $parameter
      * @return array
      * @throws \RuntimeException
      */
-    public function retrieveCloudFlareStatus($parameter)
+    public function retrieveCloudflareStatus($parameter)
     {
         if (!$this->getBackendUser()->isAdmin()) {
             throw new \RuntimeException('Unauthorized call', 1366652032);
@@ -151,7 +151,7 @@ class ToolbarMenu
     }
 
     /**
-     * Returns the icon associated to a given CloudFlare status.
+     * Returns the icon associated to a given Cloudflare status.
      *
      * @param string $status
      * @return string

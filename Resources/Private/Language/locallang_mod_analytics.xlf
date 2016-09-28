@@ -7,10 +7,10 @@
 				<source>Analytics</source>
 			</trans-unit>
 			<trans-unit id="mlang_labels_tabdescr">
-				<source>This module allows you to show CloudFlare's analytics.</source>
+				<source>This module allows you to show Cloudflare's analytics.</source>
 			</trans-unit>
 			<trans-unit id="mlang_labels_tablabel">
-				<source>CloudFlare Analytics</source>
+				<source>Cloudflare Analytics</source>
 			</trans-unit>
 		</body>
 	</file>

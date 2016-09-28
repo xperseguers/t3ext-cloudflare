@@ -11,17 +11,17 @@
 Support for SSL
 ---------------
 
-SSL support for CloudFlare originally required a Business plan (formerly "Pro account") but is now freely available to
+SSL support for Cloudflare originally required a Business plan (formerly "Pro account") but is now freely available to
 everyone, including free accounts. Please read
 https://support.cloudflare.com/hc/en-us/articles/200170336-How-do-I-upgrade-to-a-Business-Plan if you want to upgrade
 your FREE account.
 
-CloudFlare supports either Full SSL (strict) or Flexible SSL. Full SSL requires your web server to run over SSL whereas
-Flexible SSL will only use SSL from the client to CloudFlare but then your web server will still operate on port 80.
+Cloudflare supports either Full SSL (strict) or Flexible SSL. Full SSL requires your web server to run over SSL whereas
+Flexible SSL will only use SSL from the client to Cloudflare but then your web server will still operate on port 80.
 This extension is able to deal with Flexible SSL and will automatically set the HTTPS header to "``on``" if Flexible SSL
 is detected, allowing you to generate links containing the "``https://``" prefix.
 
-You may enforce SSL either at the Web Server level or using Page Rules in CloudFlare. If using Apache, please read
+You may enforce SSL either at the Web Server level or using Page Rules in Cloudflare. If using Apache, please read
 https://support.cloudflare.com/hc/en-us/articles/200170536-How-do-I-redirect-HTTPS-traffic-with-Flexible-SSL-and-Apache.
 
 
@@ -31,11 +31,11 @@ https://support.cloudflare.com/hc/en-us/articles/200170536-How-do-I-redirect-HTT
 Full SSL
 ^^^^^^^^
 
-As explained full SSL means CloudFlare provides its own wildcard certificate for your end-users but still connects using
+As explained full SSL means Cloudflare provides its own wildcard certificate for your end-users but still connects using
 SSL to your server. This is of course the most secured option. The common problem with SSL on your own servers is when
 having virtual hosts (multiple domains on the same IP).
 
-I recently successfully checked if CloudFlare would support :abbr:`SNI (Server Name Indication)` (an extension to the
+Months ago I successfully checked if Cloudflare would support :abbr:`SNI (Server Name Indication)` (an extension to the
 TLS protocol that indicates what hostname the client is attempting to connect to at the start of the handshaking
 process) and self-signed certificates and this is the case.
 

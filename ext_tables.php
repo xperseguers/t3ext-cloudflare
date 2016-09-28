@@ -53,7 +53,7 @@ if (TYPO3_MODE === 'BE') {
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler('TxCloudflare::purge', 'Causal\\Cloudflare\\Backend\\ToolbarItems\\CloudflareToolbarItem->purge');
     }
 
-    // Create a module section "CloudFlare" before 'Admin Tools'
+    // Create a module section "Cloudflare" before 'Admin Tools'
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule('txcloudflare', '', '', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/Cloudflare/');
     $temp_TBE_MODULES = array();
     foreach ($GLOBALS['TBE_MODULES'] as $key => $val) {

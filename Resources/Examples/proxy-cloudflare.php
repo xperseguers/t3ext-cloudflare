@@ -13,7 +13,7 @@
  */
 
 /**
- * Implementation example of a proxy to CloudFlare API.
+ * Implementation example of a proxy to Cloudflare API.
  *
  * Should naturally be copied outside of this directory and adapted
  * as needed. This script is intended to be used as-this and does not
@@ -24,7 +24,7 @@
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class cloudFlareProxy
+class cloudflareProxy
 {
 
     protected $email = '';
@@ -49,7 +49,7 @@ class cloudFlareProxy
      * @param string $email
      * @param string $key
      * @param array $allowedIdentifiers
-     * @return cloudFlareProxy this instance for method chaining
+     * @return cloudflareProxy this instance for method chaining
      */
     public function addClient($email, $key, array $allowedIdentifiers)
     {
@@ -76,7 +76,7 @@ class cloudFlareProxy
     }
 
     /**
-     * Handles a proxy request with CloudFlare API v4.
+     * Handles a proxy request with Cloudflare API v4.
      *
      * @return string JSON-encoded answer
      * @throws \RuntimeException
@@ -145,7 +145,7 @@ class cloudFlareProxy
             }
         }
 
-        // Proxy to CloudFlare
+        // Proxy to Cloudflare
         $json = $this->sendHttpRequest($method, 'zones/' . implode('/', $arguments), $parameters);
 
         if (empty($arguments)) {
@@ -184,14 +184,14 @@ class cloudFlareProxy
             throw new \RuntimeException('Not Authorized', 1441355374);
         }
 
-        // Proxy to CloudFlare
+        // Proxy to Cloudflare
         $json = $this->sendHttpRequest($method, 'analytics/' . implode('/', $arguments), $parameters);
 
         return $json;
     }
 
     /**
-     * This methods sends a custom HTTP request to CloudFlare.
+     * This methods sends a custom HTTP request to Cloudflare.
      *
      * @param string $method
      * @param string $url
@@ -239,7 +239,7 @@ class cloudFlareProxy
     }
 
     /**
-     * Handles a proxy request with CloudFlare API v1.
+     * Handles a proxy request with Cloudflare API v1.
      *
      * @return string JSON-encoded answer
      * @throws \RuntimeException
@@ -285,7 +285,7 @@ class cloudFlareProxy
     }
 
     /**
-     * This lists all domains in a CloudFlare account along with other data.
+     * This lists all domains in a Cloudflare account along with other data.
      *
      * @param array $allowedDomains
      * @return string
@@ -333,7 +333,7 @@ class cloudFlareProxy
     }
 
     /**
-     * This function will purge CloudFlare of any cached files. It may take up to
+     * This function will purge Cloudflare of any cached files. It may take up to
      * 48 hours for the cache to rebuild and optimum performance to be achieved
      * so this function should be used sparingly.
      *
@@ -351,7 +351,7 @@ class cloudFlareProxy
     }
 
     /**
-     * This function will purge a single file from CloudFlare's cache.
+     * This function will purge a single file from Cloudflare's cache.
      *
      * @param array $parameters
      * @return string
@@ -368,7 +368,7 @@ class cloudFlareProxy
     }
 
     /**
-     * This methods POSTs data to CloudFlare.
+     * This methods POSTs data to Cloudflare.
      *
      * @param array $data
      * @return string
@@ -419,8 +419,8 @@ if (!function_exists('getallheaders')) {
     }
 }
 
-// Enter your CloudFlare API credentials below
-$proxy = new cloudFlareProxy(
+// Enter your Cloudflare API credentials below
+$proxy = new cloudflareProxy(
     'api-email@your-domain.tld',
     '000111222333444555666777888999aaabbbc'
 );
@@ -443,7 +443,7 @@ $proxy
         )
     );
 
-// Actually proxy the request to CloudFlare API
+// Actually proxy the request to Cloudflare API
 try {
     echo $proxy->handleRequest();
 } catch (Exception $e) {

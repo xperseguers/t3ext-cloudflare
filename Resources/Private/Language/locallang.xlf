@@ -4,7 +4,7 @@
 		<header/>
 		<body>
 			<trans-unit id="toolbarItem">
-				<source>CloudFlare</source>
+				<source>Cloudflare</source>
 			</trans-unit>
 			<trans-unit id="no_domains">
 				<source>No domains configured.</source>
@@ -22,7 +22,7 @@
 				<source>This zone is in development mode</source>
 			</trans-unit>
 			<trans-unit id="clear_cache">
-				<source>Clear CloudFlare cache</source>
+				<source>Clear Cloudflare cache</source>
 			</trans-unit>
 
 			<!-- dashboard -->
@@ -49,7 +49,7 @@
 				<source>Requests</source>
 			</trans-unit>
 			<trans-unit id="dashboard.requests.long">
-				<source>Requests Through CloudFlare</source>
+				<source>Requests Through Cloudflare</source>
 			</trans-unit>
 			<trans-unit id="dashboard.requests.total">
 				<source>Total Requests</source>

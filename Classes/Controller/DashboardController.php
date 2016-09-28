@@ -130,7 +130,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
                 'type' => array(),
             );
 
-            // Fix info from CloudFlare API
+            // Fix info from Cloudflare API
             if (!is_array($info['threats']['type'])) {
                 $info['threats']['type'] = array();
             }
@@ -216,7 +216,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     }
 
     /**
-     * Returns the available periods for a given zone (depends on the CloudFlare plan).
+     * Returns the available periods for a given zone (depends on the Cloudflare plan).
      *
      * @param string $zone
      * @return array

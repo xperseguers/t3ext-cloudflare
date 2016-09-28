@@ -13,7 +13,7 @@
 
 /**
  * main JS part taking care of
- *  - operating on CloudFlare domains
+ *  - operating on Cloudflare domains
  *  - updating the menu
  */
 define('TYPO3/CMS/Cloudflare/Toolbar/CloudflareMenu', ['jquery'], function ($) {

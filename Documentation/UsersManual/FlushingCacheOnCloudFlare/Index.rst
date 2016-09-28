@@ -8,11 +8,11 @@
 
 .. _users-manual-flush:
 
-Flushing cache on CloudFlare
+Flushing cache on Cloudflare
 ----------------------------
 
-When you clear frontend caches in the Backend, the cache on CloudFlare will
+When you clear frontend caches in the Backend, the cache on Cloudflare will
 be flushed as well:
 
 .. figure:: ../../Images/flush-cache.png
-	:alt: Flushing cache on CloudFlare
+	:alt: Flushing cache on Cloudflare

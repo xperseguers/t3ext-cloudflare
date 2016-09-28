@@ -9,7 +9,7 @@
 .. _start:
 
 =================
-CloudFlare Client
+Cloudflare Client
 =================
 
 .. only:: html
@@ -24,7 +24,7 @@ CloudFlare Client
 		en
 
 	:Description:
-		The CloudFlare TYPO3 extension ensures your TYPO3 website is running optimally on the CloudFlare platform.
+		The Cloudflare TYPO3 extension ensures your TYPO3 website is running optimally on the Cloudflare platform.
 
 	:Keywords:
 		cloud, content delivery network, cdn, proxy, reverse proxy, ssl, performance

@@ -18,6 +18,6 @@ This chapter describes how to use the extension from a user point of view.
 	:titlesonly:
 	:glob:
 
-	FlushingCacheOnCloudFlare/Index
+	FlushingCacheOnCloudflare/Index
 	TogglingDevelopmentMode/Index
 	SupportForSSL/Index

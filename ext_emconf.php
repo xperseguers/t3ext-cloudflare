@@ -11,8 +11,8 @@
  ***************************************************************/
 
 $EM_CONF[$_EXTKEY] = array(
-    'title' => 'CloudFlare Client',
-    'description' => 'The CloudFlare TYPO3 extension ensures your TYPO3 website is running optimally on the CloudFlare platform.',
+    'title' => 'Cloudflare Client',
+    'description' => 'The Cloudflare TYPO3 extension ensures your TYPO3 website is running optimally on the Cloudflare platform.',
     'category' => 'services',
     'author' => 'Xavier Perseguers (Causal)',
     'author_company' => 'Causal Sàrl',

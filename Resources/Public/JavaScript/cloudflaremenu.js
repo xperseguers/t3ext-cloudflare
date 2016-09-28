@@ -14,7 +14,7 @@
 Ext.ns('TYPO3', 'TYPO3.configuration');
 
 /**
- * Class to handle the CloudFlare menu (TYPO3 6.2)
+ * Class to handle the Cloudflare menu (TYPO3 6.2)
  */
 var CloudflareMenu = Class.create({
 
@@ -45,7 +45,7 @@ var CloudflareMenu = Class.create({
 
         if (!toolbarItem.hasClassName('toolbar-item-active')) {
             toolbarItem.addClassName('toolbar-item-active');
-            TYPO3.Ajax.ExtDirect.CloudflareToolbarMenu.retrieveCloudFlareStatus({}, function (response) {
+            TYPO3.Ajax.ExtDirect.CloudflareToolbarMenu.retrieveCloudflareStatus({}, function (response) {
                 menu.innerHTML = response.html;
                 Effect.Appear(menu, {duration: 0.2});
                 TYPO3BackendToolbarManager.hideOthers(toolbarItem);
