@@ -69,7 +69,7 @@ your domain's DNS settings. There is no hardware or software to install or maint
 your site's existing code. If you are ever unhappy you can turn Cloudflare off as easily as you turned it on. Their core
 service is free and they offer enhanced services for websites who need extra features like real time reporting or SSL.
 
-Read more on: https://www.cloudflare.com/overview.
+Read more on: https://www.cloudflare.com/.
 
 
 .. rubric:: Footnotes

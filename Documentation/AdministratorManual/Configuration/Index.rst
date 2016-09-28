@@ -45,7 +45,8 @@ Category Advanced
 - **Originating IPs** : This checkbox allows you to restore the originating IPs.
 
 You should consider restoring originating IPs at the Web Server level instead. If using Nginx, please read
-https://www.cloudflare.com/wiki/Nginx for instructions.
+https://support.cloudflare.com/hc/en-us/articles/200170706-Does-CloudFlare-have-an-IP-module-for-Nginx- for
+instructions.
 
 The official list of Cloudflare's reverse-proxy IPs (both IPv4 and IPv6) can be found on https://www.cloudflare.com/ips.
 

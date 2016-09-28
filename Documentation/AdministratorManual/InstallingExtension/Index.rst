@@ -12,8 +12,8 @@ Installing the extension
 ------------------------
 
 With thousands of sites on the internet using TYPO3, many TYPO3 sites have decided to use Cloudflare to make their site
-faster with this `free CDN <https://www.cloudflare.com/features-cdn>`__ and to make the site more secure with their
-`security services <https://www.cloudflare.com/features-security>`__.
+faster with this `free CDN <https://www.cloudflare.com/cdn/>`__ and to make the site more secure with their
+`security services <https://www.cloudflare.com/security/>`__.
 
 We will cover the recommended first steps so that any TYPO3 administrator should be able to get Cloudflare up and running
 in a few minutes.
