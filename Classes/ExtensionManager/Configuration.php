@@ -73,7 +73,11 @@ class Configuration
                 \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR,
                 true
             );
-            $out[] = $flashMessage->render();
+            if (version_compare(TYPO3_version, '7.99.99', '<=')) {
+                $out[] = $flashMessage->render();
+            } else {
+                $out[] = $flashMessage->getMessageAsMarkup();
+            }
         }
 
         $i = 0;
