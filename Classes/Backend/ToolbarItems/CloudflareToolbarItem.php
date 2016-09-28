@@ -78,7 +78,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
         $title = $this->getLanguageService()->getLL('toolbarItem', true);
 
         $cloudflare = array();
-        $cloudflare[] = $this->getSpriteIcon('actions-system-extension-configure', array('title' => $title), 'inline');
+        $cloudflare[] = '<span title="' . htmlspecialchars($title) . '">' . $this->getSpriteIcon('actions-system-extension-configure', array(), 'inline') . '</span>';
         $cloudflare[] = '<span class="badge" id="tx-cloudflare-counter">0</span>';
 
         return implode(LF, $cloudflare);
