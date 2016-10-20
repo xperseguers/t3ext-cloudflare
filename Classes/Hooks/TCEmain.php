@@ -55,6 +55,10 @@ class TCEmain
     {
         static $handledPageUids = array();
 
+        if (!isset($params['cacheCmd'])) {
+            return;
+        }
+
         if (GeneralUtility::inList('all,pages', $params['cacheCmd'])) {
             $this->clearCloudflareCache($pObj->BE_USER);
         } elseif (!empty($this->config['enablePurgeSingleFile'])) {
