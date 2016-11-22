@@ -41,7 +41,7 @@ class TCEmain
     public function __construct()
     {
         $config = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey];
-        $this->config = $config ? unserialize($config) : array();
+        $this->config = $config ? unserialize($config) : [];
     }
 
     /**
@@ -53,7 +53,7 @@ class TCEmain
      */
     public function clear_cacheCmd(array $params, \TYPO3\CMS\Core\DataHandling\DataHandler $pObj)
     {
-        static $handledPageUids = array();
+        static $handledPageUids = [];
 
         if (!isset($params['cacheCmd'])) {
             return;
@@ -99,7 +99,7 @@ class TCEmain
      */
     protected function clearCloudflareCache(\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication $beUser = null)
     {
-        $domains = $this->config['domains'] ? GeneralUtility::trimExplode(',', $this->config['domains'], true) : array();
+        $domains = $this->config['domains'] ? GeneralUtility::trimExplode(',', $this->config['domains'], true) : [];
 
         /** @var $cloudflareService \Causal\Cloudflare\Services\CloudflareService */
         $cloudflareService = GeneralUtility::makeInstance('Causal\\Cloudflare\\Services\\CloudflareService', $this->config);
@@ -107,26 +107,26 @@ class TCEmain
         foreach ($domains as $domain) {
             try {
                 list($identifier, $zoneName) = explode('|', $domain, 2);
-                $ret = $cloudflareService->send('/zones/' . $identifier . '/purge_cache', array(
+                $ret = $cloudflareService->send('/zones/' . $identifier . '/purge_cache', [
                     'purge_everything' => true,
-                ), 'DELETE');
+                ], 'DELETE');
                 if (!is_array($ret)) {
-                    $ret = array(
+                    $ret = [
                         'success' => false,
-                        'errors' => array()
-                    );
+                        'errors' => []
+                    ];
                 }
 
                 if ($beUser !== null) {
                     if ($ret['success']) {
-                        $beUser->writelog(4, 1, 0, 0, 'User %s cleared the cache on Cloudflare (domain: "%s")', array($beUser->user['username'], $zoneName));
+                        $beUser->writelog(4, 1, 0, 0, 'User %s cleared the cache on Cloudflare (domain: "%s")', [$beUser->user['username'], $zoneName]);
                     } else {
-                        $beUser->writelog(4, 1, 1, 0, 'User %s failed to clear the cache on Cloudflare (domain: "%s"): %s', array($beUser->user['username'], $zoneName, implode(LF, $ret['errors'])));
+                        $beUser->writelog(4, 1, 1, 0, 'User %s failed to clear the cache on Cloudflare (domain: "%s"): %s', [$beUser->user['username'], $zoneName, implode(LF, $ret['errors'])]);
                     }
                 }
             } catch (\RuntimeException $e) {
                 if ($beUser !== null) {
-                    $beUser->writelog(4, 1, 1, 0, $e->getMessage(), array());
+                    $beUser->writelog(4, 1, 1, 0, $e->getMessage(), []);
                 }
             }
         }
@@ -228,13 +228,13 @@ class TCEmain
 
         /** @var $contentObj \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
         $contentObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
-        $contentObj->start(array(), '');
+        $contentObj->start([], '');
 
         // Create the URL
-        $link = $contentObj->typolink('', array(
+        $link = $contentObj->typolink('', [
             'parameter' => $uid,
             'forceAbsoluteUrl' => 1,
-        ));
+        ]);
         $url = $contentObj->lastTypoLinkUrl;
 
         return $url;
@@ -249,7 +249,7 @@ class TCEmain
      */
     protected function purgeCloudflareSingleFile(\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication $beUser = null, $url)
     {
-        $domains = $this->config['domains'] ? GeneralUtility::trimExplode(',', $this->config['domains'], true) : array();
+        $domains = $this->config['domains'] ? GeneralUtility::trimExplode(',', $this->config['domains'], true) : [];
 
         $domain = null;
         $zoneIdentifier = null;
@@ -278,20 +278,20 @@ class TCEmain
         $cloudflareService = GeneralUtility::makeInstance('Causal\\Cloudflare\\Services\\CloudflareService', $this->config);
 
         try {
-            $ret = $cloudflareService->send('/zones/' . $zoneIdentifier . '/purge_cache', array(
-                'files' => array($url),
-            ), 'DELETE');
+            $ret = $cloudflareService->send('/zones/' . $zoneIdentifier . '/purge_cache', [
+                'files' => [$url],
+            ], 'DELETE');
 
             if ($beUser !== null) {
                 if ($ret['result'] === 'error') {
-                    $beUser->writelog(4, 1, 1, 0, 'User %s failed to clear the cache on Cloudflare (domain: "%s") for "%s": %s', array($beUser->user['username'], $domain, $url, $ret['msg']));
+                    $beUser->writelog(4, 1, 1, 0, 'User %s failed to clear the cache on Cloudflare (domain: "%s") for "%s": %s', [$beUser->user['username'], $domain, $url, $ret['msg']]);
                 } else {
-                    $beUser->writelog(4, 1, 0, 0, 'User %s cleared the cache on Cloudflare (domain: "%s") for "%s"', array($beUser->user['username'], $domain, $url));
+                    $beUser->writelog(4, 1, 0, 0, 'User %s cleared the cache on Cloudflare (domain: "%s") for "%s"', [$beUser->user['username'], $domain, $url]);
                 }
             }
         } catch (\RuntimeException $e) {
             if ($beUser !== null) {
-                $beUser->writelog(4, 1, 1, 0, $e->getMessage(), array());
+                $beUser->writelog(4, 1, 1, 0, $e->getMessage(), []);
             }
         }
     }

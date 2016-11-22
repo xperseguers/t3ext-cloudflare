@@ -57,11 +57,11 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         parent::__construct();
 
         $config = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey];
-        $this->config = $config ? unserialize($config) : array();
+        $this->config = $config ? unserialize($config) : [];
         $this->cloudflareService = GeneralUtility::makeInstance('Causal\\Cloudflare\\Services\\CloudflareService', $this->config);
 
         $domains = GeneralUtility::trimExplode(',', $this->config['domains'], true);
-        $this->zones = array();
+        $this->zones = [];
         foreach ($domains as $domain) {
             list($identifier, $zone) = explode('|', $domain);
             $this->zones[$identifier] = $zone;
@@ -79,13 +79,13 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         if (!empty($this->zones)) {
             $defaultIdentifier = key($this->zones);
         }
-        $this->view->assignMultiple(array(
+        $this->view->assignMultiple([
             'zones' => $this->zones,
             'defaultIdentifier' => $defaultIdentifier,
             'defaultZone' => $defaultIdentifier !== null ? $this->zones[$defaultIdentifier] : null,
             'periods' => $this->getAvailablePeriods($defaultIdentifier),
             'typo3version' => version_compare(TYPO3_version, '6.99.99', '<=') ? 'v6' : 'v7',
-        ));
+        ]);
     }
 
     /**
@@ -105,16 +105,16 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         if (!isset($availablePeriods[$since])) {
             $since = key($availablePeriods);
         }
-        $cfData = $this->cloudflareService->send('/zones/' . $zone . '/analytics/dashboard', array('since' => -$since));
+        $cfData = $this->cloudflareService->send('/zones/' . $zone . '/analytics/dashboard', ['since' => -$since]);
         if (!$cfData['success']) {
             $this->returnAjax(null);
         }
 
-        $data = array(
+        $data = [
             'periods' => $availablePeriods,
             'period' => $this->translate('period.' . $since),
             'timeseries' => $cfData['result']['timeseries'],
-        );
+        ];
 
         // Compute some additional statistics
         $uniquesMinimum = PHP_INT_MAX;
@@ -125,17 +125,17 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         $threatsTopType = 'N/A';
 
         foreach ($data['timeseries'] as $tsKey => $info) {
-            $threats = array(
+            $threats = [
                 'all' => $info['threats']['all'],
-                'type' => array(),
-            );
+                'type' => [],
+            ];
 
             // Fix info from Cloudflare API
             if (!is_array($info['threats']['type'])) {
-                $info['threats']['type'] = array();
+                $info['threats']['type'] = [];
             }
             if (!is_array($info['threats']['country'])) {
-                $info['threats']['country'] = array();
+                $info['threats']['country'] = [];
             }
 
             if ($info['uniques']['all'] < $uniquesMinimum) {
@@ -156,37 +156,37 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
                     $threatsMaximumType = $count;
                     $threatsTopType = $threatName;
                 }
-                $threats['type'][$type] = array(
+                $threats['type'][$type] = [
                     'name' => $threatName,
                     'all' => $count,
-                );
+                ];
             }
 
             $data['timeseries'][$tsKey]['threats'] = $threats;
         }
 
-        $data['totals'] = array_merge_recursive($cfData['result']['totals'], array(
-            'requests' => array(
+        $data['totals'] = array_merge_recursive($cfData['result']['totals'], [
+            'requests' => [
                 'c1' => number_format($cfData['result']['totals']['requests']['all']),
                 'c2' => number_format($cfData['result']['totals']['requests']['cached']),
                 'c3' => number_format($cfData['result']['totals']['requests']['uncached']),
-            ),
-            'bandwidth' => array(
+            ],
+            'bandwidth' => [
                 'c1' => GeneralUtility::formatSize($cfData['result']['totals']['bandwidth']['all']),
                 'c2' => GeneralUtility::formatSize($cfData['result']['totals']['bandwidth']['cached']),
                 'c3' => GeneralUtility::formatSize($cfData['result']['totals']['bandwidth']['uncached']),
-            ),
-            'uniques' => array(
+            ],
+            'uniques' => [
                 'c1' => number_format($cfData['result']['totals']['uniques']['all']),
                 'c2' => $uniquesMaximum,
                 'c3' => $uniquesMinimum,
-            ),
-            'threats' => array(
+            ],
+            'threats' => [
                 'c1' => number_format($cfData['result']['totals']['threats']['all']),
                 'c2' => $threatsTopCountry,
                 'c3' => $threatsTopType,
-            ),
-        ));
+            ],
+        ]);
 
         // Sort some data for better display as graphs
         arsort($data['totals']['bandwidth']['content_type']);
@@ -224,17 +224,17 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     protected function getAvailablePeriods($zone)
     {
         if ($zone === null) {
-            return array();
+            return [];
         }
 
-        $periods = array(
+        $periods = [
             '30' => $this->translate('period.30'),
             '360' => $this->translate('period.360'),
             '720' => $this->translate('period.720'),
             '1440' => $this->translate('period.1440'),
             '10080' => $this->translate('period.10080'),
             '43200' => $this->translate('period.43200'),
-        );
+        ];
 
         $info = $this->cloudflareService->send('/zones/' . $zone);
         if ($info['success']) {

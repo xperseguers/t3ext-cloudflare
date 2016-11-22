@@ -83,10 +83,10 @@ class Tx_Cloudflare_Hooks_TYPO3backend_Cloudflare implements \TYPO3\CMS\Backend\
     {
         $title = $this->getLanguageService()->getLL('toolbarItem', true);
         $this->addJavascriptToBackend();
-        $cloudflareMenu = array();
+        $cloudflareMenu = [];
 
         $cloudflareMenu[] = '<a href="#" class="toolbar-item">' .
-            \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-cloudflare-cloudflare', array('title' => $title)) .
+            \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-cloudflare-cloudflare', ['title' => $title]) .
             '</a>';
         $cloudflareMenu[] = '<ul class="toolbar-item-menu" style="display: none;">';
         $cloudflareMenu[] = '</ul>';

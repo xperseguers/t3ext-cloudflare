@@ -51,7 +51,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
     public function __construct()
     {
         $config = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey];
-        $this->config = $config ? unserialize($config) : array();
+        $this->config = $config ? unserialize($config) : [];
         $this->cloudflareService = GeneralUtility::makeInstance('Causal\\Cloudflare\\Services\\CloudflareService', $this->config);
         $this->getLanguageService()->includeLLFile('EXT:cloudflare/Resources/Private/Language/locallang.xlf');
         $pageRenderer = $this->getPageRenderer();
@@ -77,8 +77,8 @@ class CloudflareToolbarItem implements ToolbarItemInterface
     {
         $title = $this->getLanguageService()->getLL('toolbarItem', true);
 
-        $cloudflare = array();
-        $cloudflare[] = '<span title="' . htmlspecialchars($title) . '">' . $this->getSpriteIcon('actions-system-extension-configure', array(), 'inline') . '</span>';
+        $cloudflare = [];
+        $cloudflare[] = '<span title="' . htmlspecialchars($title) . '">' . $this->getSpriteIcon('actions-system-extension-configure', [], 'inline') . '</span>';
         $cloudflare[] = '<span class="badge" id="tx-cloudflare-counter">0</span>';
 
         return implode(LF, $cloudflare);
@@ -92,7 +92,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
     public function getDropDown()
     {
         $languageService = $this->getLanguageService();
-        $entries = array();
+        $entries = [];
 
         $domains = GeneralUtility::trimExplode(',', $this->config['domains'], true);
         if (count($domains)) {
@@ -156,14 +156,14 @@ class CloudflareToolbarItem implements ToolbarItemInterface
         $languageService = $this->getLanguageService();
         switch ($status) {
             case 'active':
-                $icon = $this->getSpriteIcon('extensions-cloudflare-online', array('title' => $languageService->getLL('zone_active')));
+                $icon = $this->getSpriteIcon('extensions-cloudflare-online', ['title' => $languageService->getLL('zone_active')]);
                 break;
             case 'dev-mode':
-                $icon = $this->getSpriteIcon('extensions-cloudflare-direct', array('title' => $languageService->getLL('zone_development')));
+                $icon = $this->getSpriteIcon('extensions-cloudflare-direct', ['title' => $languageService->getLL('zone_development')]);
                 break;
             case 'deactivated':
             default:
-                $icon = $this->getSpriteIcon('extensions-cloudflare-offline', array('title' => $languageService->getLL('zone_inactive')));
+                $icon = $this->getSpriteIcon('extensions-cloudflare-offline', ['title' => $languageService->getLL('zone_inactive')]);
                 break;
         }
         return $icon;
@@ -200,7 +200,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      */
     public function getAdditionalAttributes()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -234,7 +234,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
      * @return void
      */
-    public function renderAjax($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj = null)
+    public function renderAjax($params = [], \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj = null)
     {
         $ajaxObj->addContent('cloudflareMenu', $this->getDropDown());
     }
@@ -246,15 +246,15 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
      * @return void
      */
-    public function toggleDevelopmentMode($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj = null)
+    public function toggleDevelopmentMode($params = [], \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj = null)
     {
         $zone = GeneralUtility::_GP('zone');
         $active = GeneralUtility::_GP('active');
 
         try {
-            $ret = $this->cloudflareService->send('/zones/' . $zone . '/settings/development_mode', array(
+            $ret = $this->cloudflareService->send('/zones/' . $zone . '/settings/development_mode', [
                 'value' => $active ? 'on' : 'off',
-            ), 'PATCH');
+            ], 'PATCH');
         } catch (\RuntimeException $e) {
             // Nothing to do
         }
@@ -269,7 +269,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
      * @return void
      */
-    public function purge($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj = null)
+    public function purge($params = [], \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj = null)
     {
         /** @var \Causal\Cloudflare\Hooks\TCEmain $tceMain */
         $tceMain = GeneralUtility::makeInstance('Causal\\Cloudflare\\Hooks\\TCEmain');

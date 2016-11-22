@@ -3,7 +3,7 @@ defined('TYPO3_MODE') || die();
 
 $config = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY]);
 if (!is_array($config)) {
-    $config = array();
+    $config = [];
 }
 
 // Register additional clear_cache method
@@ -12,7 +12,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clea
 $remoteIp = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR');
 
 // @see https://www.cloudflare.com/ips
-$whiteListIPv4s = array(
+$whiteListIPv4s = [
     '103.21.244.0/22',
     '103.22.200.0/22',
     '103.31.4.0/22',
@@ -28,8 +28,8 @@ $whiteListIPv4s = array(
     '197.234.240.0/22',
     '198.41.128.0/17',
     '199.27.128.0/21',
-);
-$whiteListIPv6s = array(
+];
+$whiteListIPv6s = [
     '2400:cb00::/32',
     '2405:8100::/32',
     '2405:b500::/32',
@@ -37,7 +37,7 @@ $whiteListIPv6s = array(
     '2803:f800::/32',
     '2c0f:f248::/32',
     '2a06:98c0::/29',
-);
+];
 
 $isProxied = false;
 if (isset($config['enableOriginatingIPs']) && $config['enableOriginatingIPs'] == 1) {

@@ -60,14 +60,14 @@ class TYPO3backend implements \TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookIn
             // Add new cache menu item
             $title = $this->getLanguageService()->getLL('clear_cache');
             $clearAll = array_shift($cacheActions);
-            $clearCloudflare = array(
+            $clearCloudflare = [
                 'id' => 'cloudflare',
                 'title' => $title,
                 'href' => $GLOBALS['BACK_PATH'] . BackendUtility::getAjaxUrl('TxCloudflare::purge'),
                 'icon' => $icon,
-            );
+            ];
             if ($clearAll !== null) {
-                $cacheActions = array_merge(array($clearAll, $clearCloudflare), $cacheActions);
+                $cacheActions = array_merge([$clearAll, $clearCloudflare], $cacheActions);
             } else {
                 $cacheActions[] = $clearCloudflare;
             }

@@ -38,7 +38,7 @@ class CloudflareService implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param array $config
      */
-    public function __construct(array $config = array())
+    public function __construct(array $config = [])
     {
         $this->config = $config;
 
@@ -56,7 +56,7 @@ class CloudflareService implements \TYPO3\CMS\Core\SingletonInterface
      * @return array
      * @throws \RuntimeException
      */
-    public function send($route, array $parameters = array(), $request = 'GET')
+    public function send($route, array $parameters = [], $request = 'GET')
     {
         if (!trim($this->config['apiKey'])) {
             throw new \RuntimeException('Cannot clear cache on Cloudflare: Invalid apiKey for EXT:cloudflare', 1337770232);
@@ -65,11 +65,11 @@ class CloudflareService implements \TYPO3\CMS\Core\SingletonInterface
         }
 
         $url = rtrim($this->apiEndpoint, '/') . '/' . ltrim($route, '/');
-        $headers = array(
+        $headers = [
             'Content-Type: application/json',
             'X-Auth-Key: ' . trim($this->config['apiKey']),
             'X-Auth-Email: ' . trim($this->config['email']),
-        );
+        ];
 
         if ($request === 'GET') {
             $data = $this->sendHttpRequest($request, $url, $headers, $parameters);
@@ -105,7 +105,7 @@ class CloudflareService implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function sort(array $data, $resultSortingKey)
     {
-        $keyValues = array();
+        $keyValues = [];
         foreach ($data['result'] as $key => $arr) {
             $keyValues[$key] = $arr[$resultSortingKey];
         }
@@ -173,6 +173,7 @@ class CloudflareService implements \TYPO3\CMS\Core\SingletonInterface
                 trigger_error(curl_errno($ch));
             }
             curl_close($ch);
+
             return json_decode($result, true);
         } else {
             // TODO with fsockopen()

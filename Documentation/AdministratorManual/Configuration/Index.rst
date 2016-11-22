@@ -96,17 +96,17 @@ The configuration takes place at the end of the file:
 	    ->addClient(
 	        'domain@mydomain.tld',
 	        '1234567890ABCDEF',
-	        array(
+	        [
 	            '627aaac32cbff7210660f400a6451ccc' => 'mydomain.tld',
-	        )
+	        ]
 	    )
 	    ->addClient(
 	        'other@somedomain.tld',
 	        'an-arbitrary-k3y',
-	        array(
+	        [
 	            '627aaac32cbff7210660f400a6451ccc' => 'somedomain.tld',
 	            '123aaac32cbff7150660f999a1d2addd' => 'someotherdomain.tld',
-	        )
+	        ]
 	    )
 	;
 

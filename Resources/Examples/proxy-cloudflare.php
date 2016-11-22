@@ -29,7 +29,7 @@ class cloudflareProxy
 
     protected $email = '';
     protected $key = '';
-    protected $clients = array();
+    protected $clients = [];
 
     /**
      * Default constructor.
@@ -53,10 +53,10 @@ class cloudflareProxy
      */
     public function addClient($email, $key, array $allowedIdentifiers)
     {
-        $this->clients[$email] = array(
+        $this->clients[$email] = [
             'key' => $key,
             'identifiers' => $allowedIdentifiers,
-        );
+        ];
         return $this;
     }
 
@@ -108,7 +108,7 @@ class cloudflareProxy
         $arguments = explode('/', $route);
         $object = array_shift($arguments);
         if (empty($arguments[0])) {
-            $arguments = array();
+            $arguments = [];
         }
 
         switch ($object) {
@@ -152,7 +152,7 @@ class cloudflareProxy
             // Keep only allowed identifiers
             $data = json_decode($json, true);
 
-            $newResult = array();
+            $newResult = [];
             foreach ($data['result'] as $zone) {
                 if (isset($allowedIdentifiers[$zone['id']])) {
                     $newResult[] = $zone;
@@ -202,11 +202,11 @@ class cloudflareProxy
      */
     protected function sendHttpRequest($method, $route, $data)
     {
-        $headers = array(
+        $headers = [
             'Content-Type: application/json',
             'X-Auth-Key: ' . $this->key,
             'X-Auth-Email: ' . $this->email
-        );
+        ];
         $url = 'https://api.cloudflare.com/client/v4/' . $route;
 
         if (!function_exists('curl_init') || !($ch = curl_init())) {
@@ -293,11 +293,11 @@ class cloudflareProxy
      */
     protected function zone_load_multi(array $allowedDomains)
     {
-        $args = array(
+        $args = [
             'a' => 'zone_load_multi',
-        );
+        ];
         $data = json_decode($this->POSTv1($args), true);
-        $objs = array();
+        $objs = [];
         if ($data['result'] === 'success') {
             foreach ($data['response']['zones']['objs'] as $zone) {
                 if (in_array($zone['zone_name'], $allowedDomains)) {
@@ -324,11 +324,11 @@ class cloudflareProxy
      */
     protected function devmode(array $parameters)
     {
-        $args = array(
+        $args = [
             'a' => 'devmode',
             'z' => $parameters['z'],
             'v' => $parameters['v'] ? 1 : 0,
-        );
+        ];
         return $this->POSTv1($args);
     }
 
@@ -342,11 +342,11 @@ class cloudflareProxy
      */
     protected function fpurge_ts(array $parameters)
     {
-        $args = array(
+        $args = [
             'a' => 'fpurge_ts',
             'z' => $parameters['z'],
             'v' => 1,
-        );
+        ];
         return $this->POSTv1($args);
     }
 
@@ -359,11 +359,11 @@ class cloudflareProxy
      */
     protected function zone_file_purge(array $parameters)
     {
-        $args = array(
+        $args = [
             'a' => 'zone_file_purge',
             'z' => $parameters['z'],
             'url' => $parameters['url'],
-        );
+        ];
         return $this->POSTv1($args);
     }
 
@@ -430,25 +430,25 @@ $proxy
     ->addClient(
         'domain@mydomain.tld',
         '1234567890ABCDEF',
-        array(
+        [
             '627aaac32cbff7210660f400a6451ccc' => 'mydomain.tld',
-        )
+        ]
     )
     ->addClient(
         'other@somedomain.tld',
         'an-arbitrary-k3y',
-        array(
+        [
             '627aaac32cbff7210660f400a6451ccc' => 'somedomain.tld',
             '123aaac32cbff7150660f999a1d2addd' => 'someotherdomain.tld',
-        )
+        ]
     );
 
 // Actually proxy the request to Cloudflare API
 try {
     echo $proxy->handleRequest();
 } catch (Exception $e) {
-    echo json_encode(array(
+    echo json_encode([
         'result' => 'failure',
         'message' => $e->getMessage(),
-    ));
+    ]);
 }

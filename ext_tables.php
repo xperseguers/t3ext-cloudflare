@@ -2,22 +2,22 @@
 defined('TYPO3_MODE') || die();
 
 // Register additional sprite icons
-$icons = array(
+$icons = [
     'cloudflare' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/cloudflare-16.png',
     'direct' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/direct-16.png',
     'offline' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/offline-16.png',
     'online' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/online-16.png',
     'module' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module-cloudflare.png',
-);
+];
 if (version_compare(TYPO3_version, '7.6', '>=')) {
     /** @var \TYPO3\CMS\Core\Imaging\IconRegistry $iconRegistry */
     $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Imaging\\IconRegistry');
     foreach ($icons as $key => $icon) {
         $iconRegistry->registerIcon('extensions-' . $_EXTKEY . '-' . $key,
             'TYPO3\\CMS\\Core\\Imaging\\IconProvider\\BitmapIconProvider',
-            array(
+            [
                 'source' => $icon
-            )
+            ]
         );
     }
     unset($iconRegistry);
@@ -55,7 +55,7 @@ if (TYPO3_MODE === 'BE') {
 
     // Create a module section "Cloudflare" before 'Admin Tools'
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule('txcloudflare', '', '', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/Cloudflare/');
-    $temp_TBE_MODULES = array();
+    $temp_TBE_MODULES = [];
     foreach ($GLOBALS['TBE_MODULES'] as $key => $val) {
         if ($key === 'tools') {
             $temp_TBE_MODULES['txcloudflare'] = '';
@@ -65,10 +65,10 @@ if (TYPO3_MODE === 'BE') {
         }
     }
     $GLOBALS['TBE_MODULES'] = $temp_TBE_MODULES;
-    $GLOBALS['TBE_MODULES']['_configuration']['txcloudflare'] = array(
+    $GLOBALS['TBE_MODULES']['_configuration']['txcloudflare'] = [
         'labels' => 'LLL:EXT:cloudflare/Resources/Private/Language/locallang_mod_cloudflare.xlf',
         'iconIdentifier' => 'extensions-cloudflare-module',
-    );
+    ];
 
     if (version_compare(TYPO3_version, '6.99.99', '<=')) {
         $moduleIcon = 'ext_icon.png';
@@ -80,13 +80,13 @@ if (TYPO3_MODE === 'BE') {
         'txcloudflare',
         'analytics',
         '',
-        array(
+        [
             'Dashboard' => 'analytics, ajaxAnalytics',
-        ),
-        array(
+        ],
+        [
             'access' => 'user,group',
             'icon' => 'EXT:' . $_EXTKEY . '/' . $moduleIcon,
             'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod_analytics.xlf',
-        )
+        ]
     );
 }

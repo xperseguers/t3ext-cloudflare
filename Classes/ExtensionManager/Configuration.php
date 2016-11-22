@@ -38,7 +38,7 @@ class Configuration
     public function __construct()
     {
         $config = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey];
-        $this->config = $config ? unserialize($config) : array();
+        $this->config = $config ? unserialize($config) : [];
     }
 
     /**
@@ -50,8 +50,8 @@ class Configuration
      */
     public function getDomains(array $params, $pObj)
     {
-        $domains = array();
-        $out = array();
+        $domains = [];
+        $out = [];
 
         /** @var $cloudflareService \Causal\Cloudflare\Services\CloudflareService */
         $cloudflareService = GeneralUtility::makeInstance('Causal\\Cloudflare\\Services\\CloudflareService', $this->config);
@@ -113,7 +113,7 @@ class Configuration
             $out[] = '</table>';
         }
 
-        $fieldId = str_replace(array('[', ']'), '_', $params['fieldName']);
+        $fieldId = str_replace(['[', ']'], '_', $params['fieldName']);
         $out[] = '<script type="text/javascript">';
         $out[] = <<<JS
 

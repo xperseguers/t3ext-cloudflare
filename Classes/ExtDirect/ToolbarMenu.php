@@ -42,7 +42,7 @@ class ToolbarMenu
     public function __construct()
     {
         $config = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey];
-        $this->config = $config ? unserialize($config) : array();
+        $this->config = $config ? unserialize($config) : [];
         $this->getLanguageService()->includeLLFile('EXT:cloudflare/Resources/Private/Language/locallang.xlf');
     }
 
@@ -59,7 +59,7 @@ class ToolbarMenu
             throw new \RuntimeException('Unauthorized call', 1366652032);
         }
         $languageService = $this->getLanguageService();
-        $out = array();
+        $out = [];
         $domains = GeneralUtility::trimExplode(',', $this->config['domains'], true);
         if (count($domains)) {
             /** @var $cloudflareService \Causal\Cloudflare\Services\CloudflareService */
@@ -104,7 +104,7 @@ class ToolbarMenu
             $out[] = '<li>' . $languageService->getLL('no_domains') . '</li>';
         }
 
-        return array('html' => implode('', $out));
+        return ['html' => implode('', $out)];
     }
 
     /**
@@ -124,14 +124,14 @@ class ToolbarMenu
         $cloudflareService = GeneralUtility::makeInstance('Causal\\Cloudflare\\Services\\CloudflareService', $this->config);
 
         try {
-            $ret = $cloudflareService->send('/zones/' . $parameter->zone . '/settings/development_mode', array(
+            $ret = $cloudflareService->send('/zones/' . $parameter->zone . '/settings/development_mode', [
                 'value' => $parameter->active ? 'on' : 'off',
-            ), 'PATCH');
+            ], 'PATCH');
         } catch (\RuntimeException $e) {
             // Nothing to do
         }
 
-        return array('result' => 'success');
+        return ['result' => 'success'];
     }
 
     /**
@@ -141,7 +141,7 @@ class ToolbarMenu
      * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
      * @return void
      */
-    public function purge($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj = null)
+    public function purge($params = [], \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj = null)
     {
         /** @var \Causal\Cloudflare\Hooks\TCEmain $tceMain */
         $tceMain = GeneralUtility::makeInstance('Causal\\Cloudflare\\Hooks\\TCEmain');
@@ -161,14 +161,14 @@ class ToolbarMenu
         $languageService = $this->getLanguageService();
         switch ($status) {
             case 'active':
-                $icon = IconUtility::getSpriteIcon('extensions-cloudflare-online', array('title' => $languageService->getLL('zone_active')));
+                $icon = IconUtility::getSpriteIcon('extensions-cloudflare-online', ['title' => $languageService->getLL('zone_active')]);
                 break;
             case 'dev-mode':
-                $icon = IconUtility::getSpriteIcon('extensions-cloudflare-direct', array('title' => $languageService->getLL('zone_development')));
+                $icon = IconUtility::getSpriteIcon('extensions-cloudflare-direct', ['title' => $languageService->getLL('zone_development')]);
                 break;
             case 'deactivated':
             default:
-                $icon = IconUtility::getSpriteIcon('extensions-cloudflare-offline', array('title' => $languageService->getLL('zone_inactive')));
+                $icon = IconUtility::getSpriteIcon('extensions-cloudflare-offline', ['title' => $languageService->getLL('zone_inactive')]);
                 break;
         }
         return $icon;
