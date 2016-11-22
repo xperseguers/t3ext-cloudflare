@@ -102,7 +102,7 @@ class TCEmain
         $domains = $this->config['domains'] ? GeneralUtility::trimExplode(',', $this->config['domains'], true) : [];
 
         /** @var $cloudflareService \Causal\Cloudflare\Services\CloudflareService */
-        $cloudflareService = GeneralUtility::makeInstance('Causal\\Cloudflare\\Services\\CloudflareService', $this->config);
+        $cloudflareService = GeneralUtility::makeInstance(\Causal\Cloudflare\Services\CloudflareService::class, $this->config);
 
         foreach ($domains as $domain) {
             try {
@@ -149,14 +149,14 @@ class TCEmain
 
         /** @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $tsfe */
         $tsfe = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-            'TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController',
+            \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class,
             $GLOBALS['TYPO3_CONF_VARS'],
             $uid,
             ''
         );
         $GLOBALS['TSFE'] = $tsfe;
 
-        $GLOBALS['TT'] = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TimeTracker\\TimeTracker');
+        $GLOBALS['TT'] = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TimeTracker\TimeTracker::class);
         $GLOBALS['TT']->start();
         $GLOBALS['TSFE']->config['config']['language'] = 'default';
 
@@ -171,14 +171,14 @@ class TCEmain
         $GLOBALS['TSFE']->initFEuser();
 
         // Look up the page
-        $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+        $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
         $GLOBALS['TSFE']->sys_page->init($GLOBALS['TSFE']->showHiddenPage);
 
         // If the page is not found (if the page is a sysfolder, etc), then return no URL,
         // preventing any further processing which would result in an error page.
         $page = $GLOBALS['TSFE']->sys_page->getPage($uid);
 
-        if (count($page) == 0) {
+        if (empty($page)) {
             return null;
         }
 
@@ -227,7 +227,7 @@ class TCEmain
         \TYPO3\CMS\Frontend\Page\PageGenerator::pagegenInit();
 
         /** @var $contentObj \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
-        $contentObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+        $contentObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
         $contentObj->start([], '');
 
         // Create the URL
@@ -275,7 +275,7 @@ class TCEmain
         }
 
         /** @var $cloudflareService \Causal\Cloudflare\Services\CloudflareService */
-        $cloudflareService = GeneralUtility::makeInstance('Causal\\Cloudflare\\Services\\CloudflareService', $this->config);
+        $cloudflareService = GeneralUtility::makeInstance(\Causal\Cloudflare\Services\CloudflareService::class, $this->config);
 
         try {
             $ret = $cloudflareService->send('/zones/' . $zoneIdentifier . '/purge_cache', [

@@ -54,7 +54,7 @@ class Configuration
         $out = [];
 
         /** @var $cloudflareService \Causal\Cloudflare\Services\CloudflareService */
-        $cloudflareService = GeneralUtility::makeInstance('Causal\\Cloudflare\\Services\\CloudflareService', $this->config);
+        $cloudflareService = GeneralUtility::makeInstance(\Causal\Cloudflare\Services\CloudflareService::class, $this->config);
 
         try {
             $ret = $cloudflareService->send('/zones/');
@@ -67,7 +67,7 @@ class Configuration
         } catch (\RuntimeException $e) {
             /** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
             $flashMessage = GeneralUtility::makeInstance(
-                'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+                \TYPO3\CMS\Core\Messaging\FlashMessage::class,
                 $e->getMessage(),
                 '',
                 \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR,

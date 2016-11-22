@@ -16,6 +16,7 @@ namespace Causal\Cloudflare\Backend\ToolbarItems;
 
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 
 /**
  * Toolbar Menu handler.
@@ -52,7 +53,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
     {
         $config = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey];
         $this->config = $config ? unserialize($config) : [];
-        $this->cloudflareService = GeneralUtility::makeInstance('Causal\\Cloudflare\\Services\\CloudflareService', $this->config);
+        $this->cloudflareService = GeneralUtility::makeInstance(\Causal\Cloudflare\Services\CloudflareService::class, $this->config);
         $this->getLanguageService()->includeLLFile('EXT:cloudflare/Resources/Private/Language/locallang.xlf');
         $pageRenderer = $this->getPageRenderer();
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Cloudflare/Toolbar/CloudflareMenu');
@@ -95,7 +96,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
         $entries = [];
 
         $domains = GeneralUtility::trimExplode(',', $this->config['domains'], true);
-        if (count($domains)) {
+        if (!empty($domains)) {
             $entries[] = '<li class="divider"></li>';
 
             foreach ($domains as $domain) {
@@ -137,7 +138,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
             }
         }
 
-        if (count($entries)) {
+        if (!empty($entries)) {
             $content = '<ul class="dropdown-list">' . implode('', $entries) . '</ul>';
         } else {
             $content = '<p>' . $languageService->getLL('no_domains', true) . '</p>';
@@ -179,11 +180,11 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      */
     protected function getSpriteIcon($iconName, array $options, $alternativeMarkupIdentifier = null)
     {
-        /** @var \TYPO3\CMS\Core\Imaging\IconFactory $iconFactory */
+        /** @var IconFactory $iconFactory */
         static $iconFactory = null;
 
         if ($iconFactory === null) {
-            $iconFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Imaging\\IconFactory');
+            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         }
         $icon = $iconFactory->getIcon($iconName, \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL)->render($alternativeMarkupIdentifier);
         if (strpos($icon, '<img ') !== false) {
@@ -272,7 +273,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
     public function purge($params = [], \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj = null)
     {
         /** @var \Causal\Cloudflare\Hooks\TCEmain $tceMain */
-        $tceMain = GeneralUtility::makeInstance('Causal\\Cloudflare\\Hooks\\TCEmain');
+        $tceMain = GeneralUtility::makeInstance(\Causal\Cloudflare\Hooks\TCEmain::class);
         $tceMain->clearCache();
 
         $ajaxObj->addContent('success', true);
@@ -299,7 +300,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      */
     protected function getPageRenderer()
     {
-        $pageRenderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
+        $pageRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
         return $pageRenderer;
     }
 

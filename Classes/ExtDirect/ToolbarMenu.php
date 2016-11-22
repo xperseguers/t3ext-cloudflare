@@ -61,9 +61,9 @@ class ToolbarMenu
         $languageService = $this->getLanguageService();
         $out = [];
         $domains = GeneralUtility::trimExplode(',', $this->config['domains'], true);
-        if (count($domains)) {
+        if (!empty($domains)) {
             /** @var $cloudflareService \Causal\Cloudflare\Services\CloudflareService */
-            $cloudflareService = GeneralUtility::makeInstance('Causal\\Cloudflare\\Services\\CloudflareService', $this->config);
+            $cloudflareService = GeneralUtility::makeInstance(\Causal\Cloudflare\Services\CloudflareService::class, $this->config);
 
             foreach ($domains as $domain) {
                 list($identifier,) = explode('|', $domain, 2);
@@ -121,7 +121,7 @@ class ToolbarMenu
         }
 
         /** @var $cloudflareService \Causal\Cloudflare\Services\CloudflareService */
-        $cloudflareService = GeneralUtility::makeInstance('Causal\\Cloudflare\\Services\\CloudflareService', $this->config);
+        $cloudflareService = GeneralUtility::makeInstance(\Causal\Cloudflare\Services\CloudflareService::class, $this->config);
 
         try {
             $ret = $cloudflareService->send('/zones/' . $parameter->zone . '/settings/development_mode', [
@@ -144,7 +144,7 @@ class ToolbarMenu
     public function purge($params = [], \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj = null)
     {
         /** @var \Causal\Cloudflare\Hooks\TCEmain $tceMain */
-        $tceMain = GeneralUtility::makeInstance('Causal\\Cloudflare\\Hooks\\TCEmain');
+        $tceMain = GeneralUtility::makeInstance(\Causal\Cloudflare\Hooks\TCEmain::class);
         $tceMain->clearCache();
 
         $ajaxObj->addContent('success', true);

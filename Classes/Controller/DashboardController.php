@@ -58,7 +58,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
 
         $config = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey];
         $this->config = $config ? unserialize($config) : [];
-        $this->cloudflareService = GeneralUtility::makeInstance('Causal\\Cloudflare\\Services\\CloudflareService', $this->config);
+        $this->cloudflareService = GeneralUtility::makeInstance(\Causal\Cloudflare\Services\CloudflareService::class, $this->config);
 
         $domains = GeneralUtility::trimExplode(',', $this->config['domains'], true);
         $this->zones = [];
