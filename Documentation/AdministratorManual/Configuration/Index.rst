@@ -69,10 +69,9 @@ The official list of Cloudflare's reverse-proxy IPs (both IPv4 and IPv6) can be 
 - **API Endpoint:** An alternate API endpoint/proxy for Cloudflare.
 
 The goal of a proxy for Cloudflare is to solve the problematic of having your client's domains all managed with a single
-Cloudflare account. This is interesting because it lets you lower the fees of the "Pro" accounts (which are typically
-useful to secure the connection with a wildcard SSL certificate). However, Cloudflare does not provide API credentials
-on a domain/zone basis but for the whole account which forces you to use "administrator credentials" when configuring
-this TYPO3 extension.
+Cloudflare account without having to share your "administrator credentials" with your clients. In fact, Cloudflare does
+not provide API credentials on a domain/zone basis but for the whole account which is why you are forced to use
+"administrator credentials" when configuring this TYPO3 extension.
 
 This proxy setting lets you use a proxy for Cloudflare instead of the real endpoint. The proxy should provide its own
 authentication mechanism and then forward the request to the real Cloudflare endpoint using the administrator credentials.
