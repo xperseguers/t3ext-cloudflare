@@ -39,8 +39,11 @@ Category Advanced
   you would like to cache content over SSL. This is typically useful when securing your website with Cloudflare's
   flexible SSL.
 
-- **Purge single files:** This checkbox allows you to purge single files on Cloudflare.  **Beware:** *This is still
-  highly experimental.*
+- **Purge individual files by URL:** This checkbox allows you to purge individual files on Cloudflare's cache using an
+  URL.  **Beware:** *This is still highly experimental.*
+
+- **Purge cache by Cache-Tag:** This checkbox allows you to purge individual files on Cloudflare's cache using the
+  associated Cache-Tag.  **Beware: This option requires an Enterprise account.**
 
 - **Originating IPs** : This checkbox allows you to restore the originating IPs.
 

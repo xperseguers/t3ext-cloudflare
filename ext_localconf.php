@@ -8,7 +8,7 @@ $boot = function ($_EXTKEY) {
     }
 
     // Register additional clear_cache method
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'][] = 'EXT:' . $_EXTKEY . '/Classes/Hooks/TCEmain.php:Causal\\Cloudflare\\Hooks\\TCEmain->clear_cacheCmd';
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'][] = \Causal\Cloudflare\Hooks\TCEmain::class . '->clear_cacheCmd';
 
     $remoteIp = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR');
 
@@ -41,7 +41,7 @@ $boot = function ($_EXTKEY) {
     ];
 
     $isProxied = false;
-    if (isset($config['enableOriginatingIPs']) && $config['enableOriginatingIPs'] == 1) {
+    if (isset($config['enableOriginatingIPs']) && (bool)$config['enableOriginatingIPs']) {
         if (\TYPO3\CMS\Core\Utility\GeneralUtility::validIPv6($remoteIp)) {
             $isProxied |= \TYPO3\CMS\Core\Utility\GeneralUtility::cmpIPv6($remoteIp, implode(',', $whiteListIPv6s));
         } else {
@@ -64,15 +64,20 @@ $boot = function ($_EXTKEY) {
         }
 
         // Cache SSL content
-        if (isset($config['cacheSslContent']) && $config['cacheSslContent'] == 1) {
+        if (isset($config['cacheSslContent']) && (bool)$config['cacheSslContent']) {
             $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['nc_staticfilecache/class.tx_ncstaticfilecache.php']['createFile_initializeVariables'][] = 'EXT:' . $_EXTKEY . '/Classes/Hooks/tx_ncstaticfilecache.php:Tx_Cloudflare_Hooks_NcStaticfilecache->createFile_initializeVariables';
         }
 
-        if (isset($config['enableOriginatingIPs']) && $config['enableOriginatingIPs'] == 1) {
+        if (isset($config['enableOriginatingIPs']) && (bool)$config['enableOriginatingIPs']) {
             if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
                 $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CF_CONNECTING_IP'];
             }
         }
+    }
+
+    if (isset($config['enablePurgeByTags']) && (bool)$config['enablePurgeByTags']) {
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['insertPageIncache'][$_EXTKEY] =
+            \Causal\Cloudflare\Hooks\ContentProcessor::class;
     }
 
     if (TYPO3_MODE === 'BE' && !empty($config['apiKey'])) {

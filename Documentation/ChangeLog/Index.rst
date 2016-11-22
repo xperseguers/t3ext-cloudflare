@@ -20,6 +20,7 @@ The following is a very high level overview of the changes in this extension. Fo
 =======  ======================================================
 Version  Changes
 =======  ======================================================
+2.1.x    Support for purging cache by Cache-Tags (entreprise)
 2.0.x    - Cloudflare API v4
          - Dashboard with analytics
 1.3.x    Compatibility with TYPO3 6.2 - 7.x

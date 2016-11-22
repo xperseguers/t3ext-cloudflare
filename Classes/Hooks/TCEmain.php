@@ -14,6 +14,7 @@ namespace Causal\Cloudflare\Hooks;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Causal\Cloudflare\Services\CloudflareService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 
@@ -55,23 +56,44 @@ class TCEmain
     public function clear_cacheCmd(array $params, \TYPO3\CMS\Core\DataHandling\DataHandler $pObj)
     {
         static $handledPageUids = [];
+        static $handledTags = [];
+
+        $enablePurgeByUrl = isset($this->config['enablePurgeSingleFile']) && (bool)$this->config['enablePurgeSingleFile'];
+        $enablePurgeByTags = isset($this->config['enablePurgeByTags']) && (bool)$this->config['enablePurgeByTags'];
 
         if (!isset($params['cacheCmd'])) {
+            if ($params['table'] === 'pages' && $enablePurgeByTags) {
+                $this->purgeIndividualFileByCacheTag(
+                    isset($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER'] : null,
+                    'pageId_' . (int)$params['uid']
+                );
+            }
             return;
         }
 
         if (GeneralUtility::inList('all,pages', $params['cacheCmd'])) {
             $this->clearCloudflareCache($pObj->BE_USER);
-        } elseif (!empty($this->config['enablePurgeSingleFile'])) {
-            $pageUid = intval($params['cacheCmd']);
-            if ($pageUid && !in_array($pageUid, $handledPageUids)) {
-                $handledPageUids[] = $pageUid;
-                $url = $this->getFrontendUrl($pageUid);
-                if ($url) {
-                    $this->purgeIndividualFileByUrl(
+        } else {
+            if (strpos(strtolower($params['cacheCmd']), 'cachetag:') !== false && $enablePurgeByTags) {
+                $cacheTag = substr($params['cacheCmd'], 9);
+                if (!in_array($cacheTag, $handledTags)) {
+                    $handledTags[] = $cacheTag;
+                    $this->purgeIndividualFileByCacheTag(
                         isset($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER'] : null,
-                        $url
+                        $cacheTag
                     );
+                }
+            } elseif ($enablePurgeByUrl) {
+                $pageUid = (int)$params['cacheCmd'];
+                if ($pageUid && !in_array($pageUid, $handledPageUids)) {
+                    $handledPageUids[] = $pageUid;
+                    $url = $this->getFrontendUrl($pageUid);
+                    if ($url) {
+                        $this->purgeIndividualFileByUrl(
+                            isset($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER'] : null,
+                            $url
+                        );
+                    }
                 }
             }
         }
@@ -102,8 +124,8 @@ class TCEmain
     {
         $domains = $this->config['domains'] ? GeneralUtility::trimExplode(',', $this->config['domains'], true) : [];
 
-        /** @var $cloudflareService \Causal\Cloudflare\Services\CloudflareService */
-        $cloudflareService = GeneralUtility::makeInstance(\Causal\Cloudflare\Services\CloudflareService::class, $this->config);
+        /** @var CloudflareService $cloudflareService */
+        $cloudflareService = GeneralUtility::makeInstance(CloudflareService::class, $this->config);
 
         foreach ($domains as $domain) {
             try {
@@ -275,8 +297,8 @@ class TCEmain
             return;
         }
 
-        /** @var $cloudflareService \Causal\Cloudflare\Services\CloudflareService */
-        $cloudflareService = GeneralUtility::makeInstance(\Causal\Cloudflare\Services\CloudflareService::class, $this->config);
+        /** @var CloudflareService $cloudflareService */
+        $cloudflareService = GeneralUtility::makeInstance(CloudflareService::class, $this->config);
 
         try {
             $ret = $cloudflareService->send('/zones/' . $zoneIdentifier . '/purge_cache', [
@@ -297,4 +319,45 @@ class TCEmain
         }
     }
 
+    /**
+     * Granularly removes an individual file from Cloudflare's cache by specifying the associated Cache-Tag.
+     *
+     * @param AbstractUserAuthentication|null $beUser
+     * @param string $cacheTag
+     * @return void
+     */
+    protected function purgeIndividualFileByCacheTag(AbstractUserAuthentication $beUser = null, $cacheTag)
+    {
+        $domains = $this->config['domains'] ? GeneralUtility::trimExplode(',', $this->config['domains'], true) : [];
+
+        /** @var CloudflareService $cloudflareService */
+        $cloudflareService = GeneralUtility::makeInstance(CloudflareService::class, $this->config);
+
+        foreach ($domains as $domain) {
+            try {
+                list($identifier, $zoneName) = explode('|', $domain, 2);
+                $ret = $cloudflareService->send('/zones/' . $identifier . '/purge_cache', [
+                    'tags' => [$cacheTag],
+                ], 'DELETE');
+                if (!is_array($ret)) {
+                    $ret = [
+                        'success' => false,
+                        'errors' => []
+                    ];
+                }
+
+                if ($beUser !== null) {
+                    if ($ret['success']) {
+                        $beUser->writelog(4, 1, 0, 0, 'User %s cleared the cache on Cloudflare using Cache-Tag (domain: "%s")', [$beUser->user['username'], $zoneName]);
+                    } else {
+                        $beUser->writelog(4, 1, 1, 0, 'User %s failed to clear the cache on Cloudflare using Cache-Tag (domain: "%s"): %s', [$beUser->user['username'], $zoneName, implode(LF, $ret['errors'])]);
+                    }
+                }
+            } catch (\RuntimeException $e) {
+                if ($beUser !== null) {
+                    $beUser->writelog(4, 1, 1, 0, $e->getMessage(), []);
+                }
+            }
+        }
+    }
 }

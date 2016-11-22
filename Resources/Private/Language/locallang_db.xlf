@@ -21,6 +21,9 @@
 			<trans-unit id="settings.enablePurgeSingleFile">
 				<source>[EXPERIMENTAL] Purge individual files by URL: Granularly remove individual files from Cloudflare's cache by specifying the URL. BEWARE: Highly experimental!</source>
 			</trans-unit>
+			<trans-unit id="settings.enablePurgeByTags">
+				<source>Purge cache by Cache-Tag: Granularly remove individual files from Cloudflare's cache by specifying the associated Cache-Tag. BEWARE: This option requires an Enterprise account.</source>
+			</trans-unit>
 			<trans-unit id="settings.apiEndpoint">
 				<source>API Endpoint: Alternate API endpoint/proxy. Beware: DO NOT change unless you know what you do!</source>
 			</trans-unit>

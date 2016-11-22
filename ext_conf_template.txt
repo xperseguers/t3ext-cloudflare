@@ -16,5 +16,8 @@ cacheSslContent = 0
 # cat=advanced/enable/30; type=boolean; label=LLL:EXT:cloudflare/Resources/Private/Language/locallang_db.xlf:settings.enablePurgeSingleFile
 enablePurgeSingleFile = 0
 
+# cat=advanced/enable/40; type=boolean; label=LLL:EXT:cloudflare/Resources/Private/Language/locallang_db.xlf:settings.enablePurgeByTags
+enablePurgeByTags = 0
+
 # customsubcategory=proxy=Proxy Settings; cat=advanced/proxy; type=string; label=LLL:EXT:cloudflare/Resources/Private/Language/locallang_db.xlf:settings.apiEndpoint
 apiEndpoint =
