@@ -15,6 +15,7 @@ namespace Causal\Cloudflare\Hooks;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 
 /**
  * Hook for clearing cache on Cloudflare.
@@ -67,7 +68,7 @@ class TCEmain
                 $handledPageUids[] = $pageUid;
                 $url = $this->getFrontendUrl($pageUid);
                 if ($url) {
-                    $this->purgeCloudflareSingleFile(
+                    $this->purgeIndividualFileByUrl(
                         isset($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER'] : null,
                         $url
                     );
@@ -94,10 +95,10 @@ class TCEmain
     /**
      * Clears the Cloudflare cache.
      *
-     * @param \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication $beUser
+     * @param AbstractUserAuthentication $beUser
      * @return void
      */
-    protected function clearCloudflareCache(\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication $beUser = null)
+    protected function clearCloudflareCache(AbstractUserAuthentication $beUser = null)
     {
         $domains = $this->config['domains'] ? GeneralUtility::trimExplode(',', $this->config['domains'], true) : [];
 
@@ -241,13 +242,13 @@ class TCEmain
     }
 
     /**
-     * Purges a single file in Cloudflare cache.
+     * Granularly removes an individual file from Cloudflare's cache by specifying the URL.
      *
-     * @param \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication $beUser
+     * @param AbstractUserAuthentication $beUser
      * @param string $url
      * @return void
      */
-    protected function purgeCloudflareSingleFile(\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication $beUser = null, $url)
+    protected function purgeIndividualFileByUrl(AbstractUserAuthentication $beUser = null, $url)
     {
         $domains = $this->config['domains'] ? GeneralUtility::trimExplode(',', $this->config['domains'], true) : [];
 
