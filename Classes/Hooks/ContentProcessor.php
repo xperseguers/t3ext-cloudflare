@@ -29,6 +29,15 @@ class ContentProcessor extends \TYPO3\CMS\Frontend\Controller\TypoScriptFrontend
 {
 
     /**
+     * Default constructor to prevent a PHP warning due to missing initialization
+     * arguments for parent constructor.
+     */
+    public function __construct()
+    {
+
+    }
+
+    /**
      * Sends Cache-Tags header for Cloudflare.
      *
      * @param TypoScriptFrontendController $parentObject
