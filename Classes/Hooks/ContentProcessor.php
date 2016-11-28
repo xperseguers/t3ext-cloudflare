@@ -56,4 +56,24 @@ class ContentProcessor extends \TYPO3\CMS\Frontend\Controller\TypoScriptFrontend
             }
         }
     }
+
+    /**
+     * Sends Cache-Tag header for current page.
+     *
+     * This method is called when the page is read from TYPO3 cache and does not
+     * go through the whole page generation process. Other possible associated
+     * cache tags are not available for reading and are thus not considered. This
+     * would probably need a query to the database to do so and is probably not
+     * a must have.
+     *
+     * @param array $params
+     * @return void
+     */
+    public function sendPageCacheTag(array $params)
+    {
+        $cacheTag = 'Cache-Tag: pageId_' . $params['pObj']->id;
+        if (!in_array($cacheTag, headers_list())) {
+            header($cacheTag);
+        };
+    }
 }

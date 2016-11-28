@@ -78,6 +78,8 @@ $boot = function ($_EXTKEY) {
     if (isset($config['enablePurgeByTags']) && (bool)$config['enablePurgeByTags']) {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['insertPageIncache'][$_EXTKEY] =
             \Causal\Cloudflare\Hooks\ContentProcessor::class;
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output'][$_EXTKEY] =
+            \Causal\Cloudflare\Hooks\ContentProcessor::class . '->sendPageCacheTag';
     }
 
     if (TYPO3_MODE === 'BE' && !empty($config['apiKey'])) {
