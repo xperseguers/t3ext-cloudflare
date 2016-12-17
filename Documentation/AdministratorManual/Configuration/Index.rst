@@ -45,6 +45,10 @@ Category Advanced
 - **Purge cache by Cache-Tag:** This checkbox allows you to purge individual files on Cloudflare's cache using the
   associated Cache-Tag.  **Beware: This option requires an Enterprise account.**
 
+  .. note::
+     In addition you will need to create a page rule asking to cache **everything** because HTML content is not
+     cached by default.
+
 - **Originating IPs** : This checkbox allows you to restore the originating IPs.
 
 You should consider restoring originating IPs at the Web Server level instead. If using Nginx, please read
