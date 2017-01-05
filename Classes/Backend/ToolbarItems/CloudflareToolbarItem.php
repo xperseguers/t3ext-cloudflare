@@ -80,8 +80,12 @@ class CloudflareToolbarItem implements ToolbarItemInterface
 
         $cloudflare = [];
         $cloudflare[] = '<span title="' . htmlspecialchars($title) . '">' . $this->getSpriteIcon('actions-system-extension-configure', [], 'inline') . '</span>';
-        $cloudflare[] = '<span class="badge" id="tx-cloudflare-counter">0</span>';
+        $badgeClasses = ['badge', 'badge-danger'];
+        if (version_compare(TYPO3_branch, '8', '>=')) {
+            $badgeClasses[] = 'toolbar-item-badge';
+        }
 
+        $cloudflare[] = '<span class="' . implode(' ', $badgeClasses) . '" id="tx-cloudflare-counter" style="display:none">0</span>';
         return implode(LF, $cloudflare);
     }
 
