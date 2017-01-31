@@ -97,12 +97,11 @@ class CloudflareToolbarItem implements ToolbarItemInterface
     public function getDropDown()
     {
         $languageService = $this->getLanguageService();
+        $isTypo3v8 = version_compare(TYPO3_branch, '8', '>=');
         $entries = [];
 
         $domains = GeneralUtility::trimExplode(',', $this->config['domains'], true);
         if (!empty($domains)) {
-            $entries[] = '<li class="divider"></li>';
-
             foreach ($domains as $domain) {
                 list($identifier, ) = explode('|', $domain, 2);
                 try {
@@ -127,7 +126,8 @@ class CloudflareToolbarItem implements ToolbarItemInterface
                                 break;
                         }
 
-                        $entries[] = '<li class="dropdown-header" data-zone-status="' . $status . '">' . $this->getZoneIcon($status) . ' ' . htmlspecialchars($zone['name']) . '</li>';
+                        $class = $isTypo3v8 ? '' : 'dropdown-header';
+                        $entries[] = '<li class="' . $class . '" data-zone-status="' . $status . '">' . $this->getZoneIcon($status) . ' ' . htmlspecialchars($zone['name']) . '</li>';
 
                         if ($active !== null) {
                             $onClickCode = 'TYPO3.CloudflareMenu.toggleDevelopmentMode(\'' . $identifier . '\', ' . $active . '); return false;';
@@ -142,11 +142,17 @@ class CloudflareToolbarItem implements ToolbarItemInterface
             }
         }
 
+        $content = '';
         if (!empty($entries)) {
-            $content = '<ul class="dropdown-list">' . implode('', $entries) . '</ul>';
+            if ($isTypo3v8) {
+                $content .= '<h3 class="dropdown-headline">Cloudflare</h3>';
+                $content .= '<hr />';
+            }
+            $content .= '<ul class="dropdown-list">' . implode('', $entries) . '</ul>';
         } else {
-            $content = '<p>' . $languageService->getLL('no_domains', true) . '</p>';
+            $content .= '<p>' . $languageService->getLL('no_domains', true) . '</p>';
         }
+
         return $content;
     }
 
