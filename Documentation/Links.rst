@@ -14,6 +14,9 @@ Links
 :TER:
 	https://typo3.org/extensions/repository/view/cloudflare
 
+:Packagist:
+	https://packagist.org/packages/causal/cloudflare
+
 :Bug Tracker:
 	https://forge.typo3.org/projects/extension-cloudflare/issues
 
