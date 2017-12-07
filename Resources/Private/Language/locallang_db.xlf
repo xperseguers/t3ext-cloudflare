@@ -43,7 +43,7 @@
 				<source>On fly mode</source>
 			</trans-unit>
 			<trans-unit id="settings.labels.options.scheduler">
-				<source>Scheduler mode.</source>
+				<source>Scheduler mode</source>
 			</trans-unit>
 		</body>
 	</file>

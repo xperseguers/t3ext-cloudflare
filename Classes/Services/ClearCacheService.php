@@ -2,6 +2,7 @@
 
 namespace Causal\Cloudflare\Services;
 
+use Causal\Cloudflare\Domain\Model\QueueItem;
 use Causal\Cloudflare\Utility\ConfigurationUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -68,9 +69,9 @@ class ClearCacheService
     /**
      * Main clear cache function
      *
-     * @param array $params
+     * @param QueueItem $queueItem
      */
-    public function clearCache(array $params)
+    public function clearCache(QueueItem $queueItem)
     {
         static $handledPageUids = [];
         static $handledTags = [];
@@ -79,31 +80,28 @@ class ClearCacheService
             && (bool)$this->config['enablePurgeSingleFile'];
         $enablePurgeByTags = isset($this->config['enablePurgeByTags']) && (bool)$this->config['enablePurgeByTags'];
 
-        if (!isset($params['cacheCmd'])) {
-            if ($params['table'] === 'pages' && $enablePurgeByTags) {
-                $this->purgeIndividualFilesByCacheTag(
-                    ['pageId_' . (int)$params['uid']]
-                );
-            }
-            return;
-        }
-
-        if (GeneralUtility::inList('all,pages', $params['cacheCmd'])) {
-            $this->clearCloudflareCache();
-        } else {
-            if (strpos(strtolower($params['cacheCmd']), 'cachetag:') !== false && $enablePurgeByTags) {
-                $cacheTag = substr($params['cacheCmd'], 9);
-                if (!in_array($cacheTag, $handledTags)) {
+        switch ($queueItem->getCacheCommand()) {
+            // Clear all
+            case QueueItem::CLEAR_CACHE_COMMAND_ALL:
+                $this->clearCloudflareCache();
+                break;
+            // Clear by tag
+            case QueueItem::CLEAR_CACHE_COMMAND_CACHE_TAG:
+                $cacheTag = $queueItem->getCacheTag();
+                if ($enablePurgeByTags && !in_array($cacheTag, $handledTags)) {
                     $handledTags[] = $cacheTag;
                     $this->purgeIndividualFilesByCacheTag([$cacheTag]);
                 }
-            } elseif ($enablePurgeByUrl) {
-                $pageUid = (int)$params['cacheCmd'];
-                if ($pageUid && !in_array($pageUid, $handledPageUids)) {
+                break;
+            // Clear page
+            case QueueItem::CLEAR_CACHE_COMMAND_PAGE:
+                $pageUid = $queueItem->getPageUid();
+                if ($enablePurgeByUrl && !in_array($pageUid, $handledPageUids)) {
                     $handledPageUids[] = $pageUid;
                     $this->clearPagesCache([$pageUid]);
                 }
-            }
+                break;
+            // No default action
         }
     }
 
@@ -211,24 +209,17 @@ class ClearCacheService
 
         // Purge cache on cloud flare
         foreach ($groupedByDomain as $domain => $domainGroup) {
-            $urlsGroup = [];
-            $i = 0;
-            foreach ($domainGroup['urls'] as $url) {
-                $i++;
-                $urlsGroup[] = $url;
-                // Cloudflare has limit for clear files at once
-                if ($i === self::CLEAR_CACHE_URLS_LIMIT) {
-                    $this->purgeIndividualFilesByUrl(
-                        $urlsGroup,
-                        $domain,
-                        $domainGroup['uids'],
-                        $domainGroup['zoneIdentifier']
-                    );
-                    $i = 0;
-                    $urlsGroup = [];
-                }
+            // Cloudflare has limit for clear files at once
+            foreach (array_chunk($domainGroup['urls'], self::CLEAR_CACHE_URLS_LIMIT) as $urlChunk) {
+                $this->purgeIndividualFilesByUrl(
+                    $urlChunk,
+                    $domain,
+                    $domainGroup['uids'],
+                    $domainGroup['zoneIdentifier']
+                );
             }
         }
+        die;
     }
 
     /**

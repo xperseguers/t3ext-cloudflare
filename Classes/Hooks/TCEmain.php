@@ -14,10 +14,13 @@ namespace Causal\Cloudflare\Hooks;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Causal\Cloudflare\Domain\Model\QueueItem;
+use Causal\Cloudflare\Domain\Repository\QueueItemRepository;
 use Causal\Cloudflare\Services\ClearCacheService;
 use Causal\Cloudflare\Utility\ConfigurationUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * Hook for clearing cache on Cloudflare.
@@ -37,6 +40,11 @@ class TCEmain
     protected $clearCacheService = null;
 
     /**
+     * @var QueueItemRepository
+     */
+    protected $queueItemRepository = null;
+
+    /**
      * Default constructor.
      */
     public function __construct()
@@ -46,6 +54,9 @@ class TCEmain
             ConfigurationUtility::getExtensionConfiguration(),
             $GLOBALS['BE_USER']
         );
+
+        $this->queueItemRepository = GeneralUtility::makeInstance(ObjectManager::class)
+            ->get(QueueItemRepository::class);
     }
 
     /**
@@ -57,12 +68,13 @@ class TCEmain
      */
     public function clear_cacheCmd(array $params, DataHandler $pObj)
     {
+        /** @var QueueItem $queueItem */
+        $queueItem = GeneralUtility::makeInstance(QueueItem::class, $params);
+
         if (ConfigurationUtility::isFlyMode()) {
-            $this->clearCacheService->clearCache($params);
+            $this->clearCacheService->clearCache($queueItem);
         } else {
-            /**
-             * @TODO implement enqueue
-             */
+            $this->queueItemRepository->add($queueItem);
         }
     }
 
