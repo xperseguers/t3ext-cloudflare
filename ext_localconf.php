@@ -2,10 +2,7 @@
 defined('TYPO3_MODE') || die();
 
 $boot = function ($_EXTKEY) {
-    $config = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY]);
-    if (!is_array($config)) {
-        $config = [];
-    }
+    $config = \Causal\Cloudflare\Utility\ConfigurationUtility::getExtensionConfiguration();
 
     // Register additional clear_cache method
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'][] = \Causal\Cloudflare\Hooks\TCEmain::class . '->clear_cacheCmd';
@@ -95,6 +92,9 @@ $boot = function ($_EXTKEY) {
             $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['cloudflare::clearCache'] = 'EXT:' . $_EXTKEY . '/Classes/Hooks/TCEmain.php:Causal\\Cloudflare\\Hooks\\TCEmain->clearCache';
         }
     }
+
+    # Register EID
+    $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include'][$_EXTKEY] = 'EXT:' . $_EXTKEY . '/Classes/Eid/LinkGeneratorEid.php';
 };
 
 $boot($_EXTKEY);

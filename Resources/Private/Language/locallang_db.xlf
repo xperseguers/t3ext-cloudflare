@@ -33,6 +33,18 @@
 			<trans-unit id="settings.labels.zoneIdentifiers">
 				<source>Cloudflare API Zone Identifiers</source>
 			</trans-unit>
+			<trans-unit id="settings.labels.clearCacheCategory">
+				<source>Clear cache settings</source>
+			</trans-unit>
+			<trans-unit id="settings.labels.clearCacheMode">
+			    <source>Choose CDN clear cache mode: "On fly mode" - will try to clear cache instantly when cache is cleared in TYPO3. "Scheduler mode" - will enqueue clear cache command and run on next run of scheduler task.</source>
+			</trans-unit>
+			<trans-unit id="settings.labels.options.onFly">
+				<source>On fly mode</source>
+			</trans-unit>
+			<trans-unit id="settings.labels.options.scheduler">
+				<source>Scheduler mode.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
