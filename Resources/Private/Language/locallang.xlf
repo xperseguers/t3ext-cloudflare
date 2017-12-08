@@ -24,6 +24,9 @@
 			<trans-unit id="clear_cache">
 				<source>Clear Cloudflare cache</source>
 			</trans-unit>
+			<trans-unit id="clear_cache_description">
+			    <source>Purge Cloudflare CDN caches for all domains.</source>
+			</trans-unit>
 
 			<!-- dashboard -->
 			<trans-unit id="period.30">
