@@ -14,6 +14,7 @@ namespace Causal\Cloudflare\Backend\ToolbarItems;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Causal\Cloudflare\Utility\ConfigurationUtility;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -30,12 +31,6 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
  */
 class CloudflareToolbarItem implements ToolbarItemInterface
 {
-
-    /**
-     * @var string
-     */
-    protected $extKey = 'cloudflare';
-
     /**
      * @var array
      */
@@ -51,8 +46,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      */
     public function __construct()
     {
-        $config = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey];
-        $this->config = $config ? unserialize($config) : [];
+        $this->config = ConfigurationUtility::getExtensionConfiguration();
         $this->cloudflareService = GeneralUtility::makeInstance(\Causal\Cloudflare\Services\CloudflareService::class, $this->config);
         $this->getLanguageService()->includeLLFile('EXT:cloudflare/Resources/Private/Language/locallang.xlf');
         $pageRenderer = $this->getPageRenderer();

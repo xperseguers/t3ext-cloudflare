@@ -2,6 +2,7 @@
 
 namespace Causal\Cloudflare\Services;
 
+use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -64,15 +65,20 @@ class PagePathResolverService
             $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
 
             foreach ($this->pageUids as $pageId) {
-                $typoLinkConf = [
-                    'parameter' => $pageId,
-                    'forceAbsoluteUrl' => 1
-                ];
+                $languages = $this->getAvailableLanguages($pageId);
 
-                $url = $cObj->typoLink_URL($typoLinkConf);
-                if (!empty($url)) {
-                    $host = parse_url($url, PHP_URL_HOST);
-                    $result[$pageId] = $host ? $url : GeneralUtility::locationHeaderUrl($url);
+                foreach ($languages as $languageUid) {
+                    $typoLinkConf = [
+                        'parameter' => $pageId,
+                        'additionalParams' => '&L=' . $languageUid,
+                        'forceAbsoluteUrl' => 1
+                    ];
+
+                    $url = $cObj->typoLink_URL($typoLinkConf);
+                    if (!empty($url)) {
+                        $host = parse_url($url, PHP_URL_HOST);
+                        $result[] = $host ? $url : GeneralUtility::locationHeaderUrl($url);
+                    }
                 }
             }
         }
@@ -104,5 +110,39 @@ class PagePathResolverService
 
         // Set linkVars, absRefPrefix, etc
         PageGenerator::pagegenInit();
+    }
+
+    /**
+     * Get available translations for page
+     *
+     * @param $pageUid
+     * @return array Array of language uids
+     */
+    protected function getAvailableLanguages($pageUid)
+    {
+        $languages = [0];
+        /** @var DatabaseConnection $db */
+        $db = $GLOBALS['TYPO3_DB'];
+
+        $join = 'sys_language INNER JOIN pages_language_overlay overlay';
+        $join .= ' ON overlay.sys_language_uid = sys_language.uid';
+
+        $where = 'overlay.pid = ' . (int)$pageUid;
+        $where .= ' AND overlay.hidden=0 AND overlay.deleted=0 AND sys_language.hidden=0';
+
+
+        $result = $db->exec_SELECTquery(
+            'sys_language.uid',
+            $join,
+            $where
+        );
+
+        if ($result !== false) {
+            while ($row = $result->fetch_assoc()) {
+                $languages[] = (int)$row['uid'];
+            }
+        }
+
+        return $languages;
     }
 }

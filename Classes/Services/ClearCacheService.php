@@ -71,14 +71,10 @@ class ClearCacheService
      *
      * @param QueueItem $queueItem
      */
-    public function clearCache(QueueItem $queueItem)
+    public function clearSingleItemCache(QueueItem $queueItem)
     {
         static $handledPageUids = [];
         static $handledTags = [];
-
-        $enablePurgeByUrl = isset($this->config['enablePurgeSingleFile'])
-            && (bool)$this->config['enablePurgeSingleFile'];
-        $enablePurgeByTags = isset($this->config['enablePurgeByTags']) && (bool)$this->config['enablePurgeByTags'];
 
         switch ($queueItem->getCacheCommand()) {
             // Clear all
@@ -88,7 +84,7 @@ class ClearCacheService
             // Clear by tag
             case QueueItem::CLEAR_CACHE_COMMAND_CACHE_TAG:
                 $cacheTag = $queueItem->getCacheTag();
-                if ($enablePurgeByTags && !in_array($cacheTag, $handledTags)) {
+                if (!in_array($cacheTag, $handledTags)) {
                     $handledTags[] = $cacheTag;
                     $this->purgeIndividualFilesByCacheTag([$cacheTag]);
                 }
@@ -96,7 +92,7 @@ class ClearCacheService
             // Clear page
             case QueueItem::CLEAR_CACHE_COMMAND_PAGE:
                 $pageUid = $queueItem->getPageUid();
-                if ($enablePurgeByUrl && !in_array($pageUid, $handledPageUids)) {
+                if (!in_array($pageUid, $handledPageUids)) {
                     $handledPageUids[] = $pageUid;
                     $this->clearPagesCache([$pageUid]);
                 }
@@ -219,7 +215,18 @@ class ClearCacheService
                 );
             }
         }
-        die;
+    }
+
+    /**
+     * Purge cdn caches by tags
+     *
+     * @param array $cacheTags
+     */
+    public function clearCacheTags(array $cacheTags)
+    {
+        foreach (array_chunk($cacheTags, self::CLEAR_CACHE_URLS_LIMIT) as $cacheTagsChunk) {
+            $this->purgeIndividualFilesByCacheTag($cacheTagsChunk);
+        }
     }
 
     /**

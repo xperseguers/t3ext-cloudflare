@@ -93,8 +93,15 @@ $boot = function ($_EXTKEY) {
         }
     }
 
-    # Register EID
+    // Register EID
     $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include'][$_EXTKEY] = 'EXT:' . $_EXTKEY . '/Classes/Eid/LinkGeneratorEid.php';
+
+    // Register scheduler task
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\Causal\Cloudflare\Task\ClearCacheTask::class] = [
+        'extension' => $_EXTKEY,
+        'title' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_be.xlf:scheduler.title',
+        'description' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_be.xlf:scheduler.description',
+    ];
 };
 
 $boot($_EXTKEY);

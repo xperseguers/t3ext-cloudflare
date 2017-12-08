@@ -16,6 +16,7 @@ namespace Causal\Cloudflare\Domain\Repository;
 
 use Causal\Cloudflare\Domain\Model\QueueItem;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
@@ -31,10 +32,7 @@ class QueueItemRepository extends Repository
      */
     public function add($queueItem)
     {
-        /** @var DatabaseConnection $db */
-        $db = $GLOBALS['TYPO3_DB'];
-
-        $db->exec_INSERTquery(
+        $this->getDBConnection()->exec_INSERTquery(
             'tx_cloudflare_domain_model_queueitem',
             [
                 'crdate' => time(),
@@ -43,5 +41,35 @@ class QueueItemRepository extends Repository
                 'cache_tag' => $queueItem->getCacheTag(),
             ]
         );
+    }
+
+    /**
+     * @param array|QueryResultInterface $queueItems
+     */
+    public function removeQueueItems($queueItems)
+    {
+        if (count($queueItems) > 0) {
+            $uids = [];
+            /** @var QueueItem $queueItem */
+            foreach ($queueItems as $queueItem) {
+                $uids[] = $queueItem->getUid();
+            }
+
+            $this->getDBConnection()->exec_DELETEquery(
+                'tx_cloudflare_domain_model_queueitem',
+                sprintf(
+                    'uid IN (%s)',
+                    implode(',', $uids)
+                )
+            );
+        }
+    }
+
+    /**
+     * @return DatabaseConnection
+     */
+    protected function getDBConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
     }
 }

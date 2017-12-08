@@ -71,8 +71,12 @@ class TCEmain
         /** @var QueueItem $queueItem */
         $queueItem = GeneralUtility::makeInstance(QueueItem::class, $params);
 
+        if (!$queueItem->isValid()) {
+            return;
+        }
+
         if (ConfigurationUtility::isFlyMode()) {
-            $this->clearCacheService->clearCache($queueItem);
+            $this->clearCacheService->clearSingleItemCache($queueItem);
         } else {
             $this->queueItemRepository->add($queueItem);
         }

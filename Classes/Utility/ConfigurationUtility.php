@@ -69,4 +69,36 @@ class ConfigurationUtility
 
         return isset($config['clearCacheMode']) && (int)$config['clearCacheMode'] === self::MODE_ON_FLY;
     }
+
+    /**
+     * Check if purge by tags is enabled
+     *
+     * @return bool
+     */
+    public static function isEnablePurgeByTags()
+    {
+        static $enablePurgeByTags;
+        if ($enablePurgeByTags === null) {
+            $enablePurgeByTags = isset(self::getExtensionConfiguration()['enablePurgeByTags'])
+                && (bool)self::getExtensionConfiguration()['enablePurgeByTags'];
+        }
+
+        return $enablePurgeByTags;
+    }
+
+    /**
+     * Check if purge by urls is enabled
+     *
+     * @return bool
+     */
+    public static function isEnablePurgeByUrl()
+    {
+        static $enablePurgeByUrl;
+        if ($enablePurgeByUrl === null) {
+            $enablePurgeByUrl = isset(self::getExtensionConfiguration()['enablePurgeSingleFile'])
+                && (bool)self::getExtensionConfiguration()['enablePurgeSingleFile'];
+        }
+
+        return $enablePurgeByUrl;
+    }
 }

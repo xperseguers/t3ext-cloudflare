@@ -14,6 +14,7 @@ namespace Causal\Cloudflare\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Causal\Cloudflare\Utility\ConfigurationUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
@@ -115,6 +116,18 @@ class QueueItem extends AbstractEntity
     public function setCacheTag($cacheTag)
     {
         $this->cacheTag = $cacheTag;
+    }
+
+    /**
+     * Check if it's valid queue item
+     *
+     * @return bool
+     */
+    public function isValid()
+    {
+        return $this->getCacheCommand() === self::CLEAR_CACHE_COMMAND_ALL
+            || ConfigurationUtility::isEnablePurgeByTags() && $this->getCacheCommand() === self::CLEAR_CACHE_COMMAND_CACHE_TAG && !empty($this->getCacheTag())
+            || ConfigurationUtility::isEnablePurgeByUrl() && $this->getCacheCommand() === self::CLEAR_CACHE_COMMAND_PAGE && $this->getPageUid() !== 0;
     }
 
     /**

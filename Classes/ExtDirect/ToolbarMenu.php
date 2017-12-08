@@ -14,6 +14,7 @@ namespace Causal\Cloudflare\ExtDirect;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Causal\Cloudflare\Utility\ConfigurationUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 
@@ -29,10 +30,6 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
  */
 class ToolbarMenu
 {
-
-    /** @var string */
-    protected $extKey = 'cloudflare';
-
     /** @var array */
     protected $config;
 
@@ -41,8 +38,7 @@ class ToolbarMenu
      */
     public function __construct()
     {
-        $config = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey];
-        $this->config = $config ? unserialize($config) : [];
+        $this->config = ConfigurationUtility::getExtensionConfiguration();
         $this->getLanguageService()->includeLLFile('EXT:cloudflare/Resources/Private/Language/locallang.xlf');
     }
 
