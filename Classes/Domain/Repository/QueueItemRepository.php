@@ -1,4 +1,5 @@
 <?php
+
 namespace Causal\Cloudflare\Domain\Repository;
 
 /*
@@ -26,7 +27,11 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  */
 class QueueItemRepository extends Repository
 {
-    public function initializeObject() {
+    /**
+     * Disable storage by default
+     */
+    public function initializeObject()
+    {
         /** @var Typo3QuerySettings $defaultQuerySettings */
         $defaultQuerySettings = $this->objectManager->get(Typo3QuerySettings::class);
         // disable storage

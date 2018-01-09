@@ -15,6 +15,7 @@ namespace Causal\Cloudflare\Domain\Model;
  */
 
 use Causal\Cloudflare\Utility\ConfigurationUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
@@ -141,6 +142,17 @@ class QueueItem extends AbstractEntity
             if ($params['table'] === 'pages') {
                 $this->setCacheCommand(self::CLEAR_CACHE_COMMAND_CACHE_TAG);
                 $this->setCacheTag('pageId_' . (int)$params['uid']);
+            } elseif (isset($params['uid_page']) && ($pageUid = (int)$params['uid_page'])) {
+                // If content was update on page and it's standard page
+                $pageRecord = BackendUtility::getRecord(
+                    'pages',
+                    $pageUid,
+                    'doktype'
+                );
+                if (is_array($pageRecord) && (int)$pageRecord['doktype'] === 1) {
+                    $this->setCacheCommand(self::CLEAR_CACHE_COMMAND_PAGE);
+                    $this->setPageUid($pageUid);
+                }
             }
         } elseif (GeneralUtility::inList('all,pages', $params['cacheCmd'])) {
             $this->setCacheCommand(self::CLEAR_CACHE_COMMAND_ALL);

@@ -237,10 +237,17 @@ class ClearCacheService
      */
     protected function determinateDomainZoneIdentifier($domain)
     {
-        foreach ($this->domains as $cdnDomain) {
-            list($identifier, $z) = explode('|', $cdnDomain, 2);
-            if ($z === $domain) {
-                return $identifier;
+        $domainParts = explode('.', $domain);
+        $size = count($domainParts);
+
+        if ($size > 1) {
+            $zoneName = $domainParts[$size - 2] . '.' . $domainParts[$size - 1];
+
+            foreach ($this->domains as $cdnDomain) {
+                list($identifier, $z) = explode('|', $cdnDomain, 2);
+                if ($z === $zoneName) {
+                    return $identifier;
+                }
             }
         }
 
