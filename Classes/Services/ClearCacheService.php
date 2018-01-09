@@ -199,7 +199,7 @@ class ClearCacheService
             $result = json_decode(GeneralUtility::getURL($eidUrl, false, $headers), true);
 
             if (is_array($result)) {
-                $groupedByDomain[$domain]['urls'] = $result;
+                $groupedByDomain[$domain]['urls'] = $this->formatUrls($result);
             }
         }
 
@@ -341,6 +341,26 @@ class ClearCacheService
                 $this->writelog(1, $e->getMessage(), []);
             }
         }
+    }
+
+    /**
+     * Flush each url with and without ending "/"
+     * "host/url/" and "host/url" is different urls for cloudflare
+     *
+     * @param array $urls
+     * @return array
+     */
+    protected function formatUrls(array $urls)
+    {
+        $formattedUrls = [];
+
+        foreach ($urls as $url) {
+            $url = rtrim($url, '/');
+            $formattedUrls[] = $url;
+            $formattedUrls[] = $url . '/';
+        }
+
+        return $formattedUrls;
     }
 
     /**
