@@ -100,13 +100,13 @@ class PagePathResolverService
             $this->pageUids[0],
             ''
         );
+        $GLOBALS['TSFE'] = $tsfe;
+
         $tsfe->connectToDB();
         $tsfe->initFEuser();
         $tsfe->determineId();
         $tsfe->initTemplate();
         $tsfe->getConfigArray();
-
-        $GLOBALS['TSFE'] = $tsfe;
 
         // Set linkVars, absRefPrefix, etc
         PageGenerator::pagegenInit();
