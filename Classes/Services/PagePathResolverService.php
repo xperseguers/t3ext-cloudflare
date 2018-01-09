@@ -70,7 +70,7 @@ class PagePathResolverService
                 foreach ($languages as $languageUid) {
                     $typoLinkConf = [
                         'parameter' => $pageId,
-                        'additionalParams' => '&L=' . $languageUid,
+                        'additionalParams' => $languageUid > 0 ? ('&L=' . $languageUid) : '',
                         'forceAbsoluteUrl' => 1
                     ];
 
