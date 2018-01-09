@@ -13,16 +13,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+/** @var \Causal\Cloudflare\Services\PagePathResolverService $pagePathResolverService */
+$pagePathResolverService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+    \Causal\Cloudflare\Services\PagePathResolverService::class
+);
 
-if (\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR') != $_SERVER['SERVER_ADDR']) {
-    header('HTTP/1.0 403 Access denied');
-    // Empty output!!!
-} else {
-    /** @var \Causal\Cloudflare\Services\PagePathResolverService $pagePathResolverService */
-    $pagePathResolverService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-        \Causal\Cloudflare\Services\PagePathResolverService::class
-    );
-
-    header('Content-Type: application/json');
-    echo $pagePathResolverService->getLinks();
-}
+header('Content-Type: application/json');
+echo $pagePathResolverService->getLinks();
