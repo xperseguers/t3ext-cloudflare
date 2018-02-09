@@ -13,9 +13,9 @@
     "ssl",
     "performance"
   ],
-  "homepage": "https://forge.typo3.org/projects/extension-sphinx",
+  "homepage": "https://github.com/xperseguers/t3ext-cloudflare",
   "support": {
-    "issues": "https://forge.typo3.org/projects/extension-cloudflare/issues"
+    "issues": "https://github.com/xperseguers/t3ext-cloudflare/issues"
   },
   "authors": [
     {
@@ -27,8 +27,8 @@
   ],
   "license": "GPL-2.0-or-later",
   "require": {
-    "php": ">= 5.5.0, <= 7.1.99",
-    "typo3/cms-core": ">= 6.2.0, <= 8.7.99"
+    "php": ">= 5.5.0, <= 7.2.99",
+    "typo3/cms-core": "^7.6 || ^8.7",
   },
   "autoload": {
     "psr-4": {
@@ -51,7 +51,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "2.1.x-dev"
+      "dev-master": "2.2.x-dev"
     },
     "typo3/cms": {
       "cms-package-dir": "{$vendor-dir}/typo3/cms",
