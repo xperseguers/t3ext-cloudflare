@@ -71,7 +71,17 @@ $boot = function ($_EXTKEY) {
             'txcloudflare', // main module key
             '',             // submodule key
             '',             // position
-            \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/Cloudflare/'
+            '',
+            [
+                'access' => 'user,group',
+                'name' => 'txcloudflare',
+                'labels' => [
+                    'tabs_images' => [
+                        'tab' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module-cloudflare.png',
+                    ],
+                    'll_ref' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod_cloudflare.xlf',
+                ],
+            ]
         );
         $temp_TBE_MODULES = [];
         foreach ($GLOBALS['TBE_MODULES'] as $key => $val) {
@@ -83,16 +93,7 @@ $boot = function ($_EXTKEY) {
             }
         }
         $GLOBALS['TBE_MODULES'] = $temp_TBE_MODULES;
-        $GLOBALS['TBE_MODULES']['_configuration']['txcloudflare'] = [
-            'labels' => 'LLL:EXT:cloudflare/Resources/Private/Language/locallang_mod_cloudflare.xlf',
-            'iconIdentifier' => 'extensions-cloudflare-module',
-        ];
 
-        if (version_compare(TYPO3_version, '6.99.99', '<=')) {
-            $moduleIcon = 'ext_icon.png';
-        } else {
-            $moduleIcon = 'Resources/Public/Icons/module-analytics.png';
-        }
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
             'Causal.' . $_EXTKEY,
             'txcloudflare',
@@ -103,7 +104,7 @@ $boot = function ($_EXTKEY) {
             ],
             [
                 'access' => 'user,group',
-                'icon' => 'EXT:' . $_EXTKEY . '/' . $moduleIcon,
+                'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module-analytics.png',
                 'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod_analytics.xlf',
             ]
         );
