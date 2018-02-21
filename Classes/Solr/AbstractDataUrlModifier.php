@@ -17,19 +17,6 @@ abstract class AbstractDataUrlModifier
     protected static $cloudFlareDomainsCache = [];
 
     /**
-     * @var int
-     */
-    protected $time = 0;
-
-    /**
-     * Initialize
-     */
-    public function __construct()
-    {
-        $this->time = time();
-    }
-
-    /**
      * Add time parameter to request
      *
      * @param string $pageUrl
@@ -39,7 +26,7 @@ abstract class AbstractDataUrlModifier
     public function modifyDataUrl($pageUrl, array $urlData)
     {
         if ($this->isCloudflareDomain($urlData['host'])) {
-            $pageUrl = rtrim($pageUrl, '&') . '&_=' . $this->time;
+            $pageUrl = rtrim($pageUrl, '&') . '&_=' . time();
         }
 
         return $pageUrl;
