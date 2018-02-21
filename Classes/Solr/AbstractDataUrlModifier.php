@@ -1,0 +1,84 @@
+<?php
+namespace Causal\Cloudflare\Solr;
+use Causal\Cloudflare\Utility\ConfigurationUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+/**
+ * Class AbstractDataUrlModifier
+ * @package Causal\Cloudflare\Solr
+ */
+abstract class AbstractDataUrlModifier
+{
+    /**
+     * Cloudflare domains
+     *
+     * @var array
+     */
+    protected static $cloudFlareDomainsCache = [];
+
+    /**
+     * @var int
+     */
+    protected $time = 0;
+
+    /**
+     * Initialize
+     */
+    public function __construct()
+    {
+        $this->time = time();
+    }
+
+    /**
+     * Add time parameter to request
+     *
+     * @param string $pageUrl
+     * @param array $urlData
+     * @return string
+     */
+    public function modifyDataUrl($pageUrl, array $urlData)
+    {
+        if ($this->isCloudflareDomain($urlData['host'])) {
+            $pageUrl = rtrim($pageUrl, '&') . '&_=' . $this->time;
+        }
+
+        return $pageUrl;
+    }
+
+    /**
+     * Check if domain is CDN domain
+     *
+     * @param string $domain
+     * @return bool
+     */
+    protected function isCloudflareDomain($domain)
+    {
+        if (array_key_exists($domain, self::$cloudFlareDomainsCache)) {
+            return self::$cloudFlareDomainsCache[$domain];
+        }
+
+        $isCloudFlareDomain = false;
+
+        $settings = ConfigurationUtility::getExtensionConfiguration();
+        $domains = GeneralUtility::trimExplode(',', $settings['domains'], true);
+
+        $domainParts = explode('.', $domain);
+        $size = count($domainParts);
+
+        if ($size > 1) {
+            $zoneName = $domainParts[$size - 2] . '.' . $domainParts[$size - 1];
+
+            foreach ($domains as $cdnDomain) {
+                list(, $z) = explode('|', $cdnDomain, 2);
+                if ($z === $zoneName) {
+                    $isCloudFlareDomain = true;
+                    break;
+                }
+            }
+        }
+
+        self::$cloudFlareDomainsCache[$domain] = $isCloudFlareDomain;
+
+        return $isCloudFlareDomain;
+    }
+}

@@ -102,6 +102,16 @@ $boot = function ($_EXTKEY) {
         'title' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_be.xlf:scheduler.title',
         'description' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_be.xlf:scheduler.description',
     ];
+
+    // Register URL modifier for solr to get parameter in page url. Otherwise it could get cached pages.
+    if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('solr')) {
+        if (class_exists('Tx_Solr_IndexQueuePageIndexerDataUrlModifier')) {
+
+        } else {
+            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['solr']['IndexQueuePageIndexer']['dataUrlModifier'] =
+                \Causal\Cloudflare\Solr\DataUrlModifier::class;
+        }
+    }
 };
 
 $boot($_EXTKEY);
