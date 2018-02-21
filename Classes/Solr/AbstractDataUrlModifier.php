@@ -26,7 +26,7 @@ abstract class AbstractDataUrlModifier
     public function modifyDataUrl($pageUrl, array $urlData)
     {
         if ($this->isCloudflareDomain($urlData['host'])) {
-            $pageUrl = rtrim($pageUrl, '&') . '&_=' . time();
+            $pageUrl = rtrim($pageUrl, '&') . '&_=' . microtime(true);
         }
 
         return $pageUrl;
