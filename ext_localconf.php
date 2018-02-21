@@ -105,8 +105,9 @@ $boot = function ($_EXTKEY) {
 
     // Register URL modifier for solr to get parameter in page url. Otherwise it could get cached pages.
     if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('solr')) {
-        if (class_exists('Tx_Solr_IndexQueuePageIndexerDataUrlModifier')) {
-
+        if (@file_exists(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('solr') . 'Interfaces/IndexQueuePageIndexerDataUrlModifier.php')) {
+            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['solr']['IndexQueuePageIndexer']['dataUrlModifier'] =
+                \Causal\Cloudflare\Solr\DataUrlModifierBackwardCompatibility::class;
         } else {
             $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['solr']['IndexQueuePageIndexer']['dataUrlModifier'] =
                 \Causal\Cloudflare\Solr\DataUrlModifier::class;
