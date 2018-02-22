@@ -1,5 +1,7 @@
 <?php
+
 namespace Causal\Cloudflare\Solr;
+
 use Causal\Cloudflare\Utility\ConfigurationUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -9,6 +11,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 abstract class AbstractDataUrlModifier
 {
+    const GET_PARAM_NAME = '_cf';
+
     /**
      * Cloudflare domains
      *
@@ -25,8 +29,10 @@ abstract class AbstractDataUrlModifier
      */
     public function modifyDataUrl($pageUrl, array $urlData)
     {
+        list($microsec, $sec) = explode(' ', microtime());
+
         if ($this->isCloudflareDomain($urlData['host'])) {
-            $pageUrl = rtrim($pageUrl, '&') . '&_=' . microtime(true);
+            $pageUrl = rtrim($pageUrl, '&') . '&' . self::GET_PARAM_NAME . '=' . $sec . $microsec;
         }
 
         return $pageUrl;
