@@ -112,11 +112,13 @@ $boot = function ($_EXTKEY) {
             $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['solr']['IndexQueuePageIndexer']['dataUrlModifier'] =
                 \Causal\Cloudflare\Solr\DataUrlModifier::class;
         }
-    }
-    // Register typolink post processor
-    if (TYPO3_MODE === 'FE' && isset($_SERVER['HTTP_X_TX_SOLR_IQ'])) {
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typoLink_PostProc'][$_EXTKEY] =
-            \Causal\Cloudflare\Hooks\TypoLinkPostProcessor::class . '->processTypoLink';
+
+        // Register typolink post processor
+        // If indexed page is shortcut it will redirect to cached page and cause request id mismatch
+        if (TYPO3_MODE === 'FE' && isset($_SERVER['HTTP_X_TX_SOLR_IQ'])) {
+            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typoLink_PostProc'][$_EXTKEY] =
+                \Causal\Cloudflare\Hooks\TypoLinkPostProcessor::class . '->processTypoLink';
+        }
     }
 };
 
