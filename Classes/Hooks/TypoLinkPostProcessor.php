@@ -33,7 +33,7 @@ class TypoLinkPostProcessor
         // Also this hook is called only on
         if (isset($_GET[AbstractDataUrlModifier::GET_PARAM_NAME])
             && isset($_SERVER['HTTP_X_TX_SOLR_IQ'])
-            && ((int)$params['parameter'] === (int)$this->tsfe->page['uid'])
+            && ((int)$params['conf']['parameter'] === (int)$this->tsfe->page['uid'])
         ) {
             $urlInfo = parse_url($pObj->lastTypoLinkUrl);
             $pObj->lastTypoLinkUrl = sprintf(
