@@ -203,6 +203,8 @@ class ClearCacheService
             }
         }
 
+        $groupedByDomain = $this->regroupGroupedByDomain($groupedByDomain);
+        
         // Purge cache on cloud flare
         foreach ($groupedByDomain as $domain => $domainGroup) {
             // Cloudflare has limit for clear files at once
@@ -227,6 +229,53 @@ class ClearCacheService
         foreach (array_chunk($cacheTags, self::CLEAR_CACHE_URLS_LIMIT) as $cacheTagsChunk) {
             $this->purgeIndividualFilesByCacheTag($cacheTagsChunk);
         }
+    }
+
+    /**
+     * Some language pages could have different domain
+     * Need to regroup
+     *
+     * @param array $groupedByDomain
+     * @return array
+     */
+    protected function regroupGroupedByDomain(array $groupedByDomain)
+    {
+        $additionalGroups = [];
+        $filteredGroups = [];
+
+        // Create two arrays, with new groups and filtered out groups
+        foreach ($groupedByDomain as $domain => $domainGroup) {
+            foreach ($domainGroup['urls'] as $urlKey => $url) {
+                $domainFromUrl = parse_url($url, PHP_URL_HOST);
+                // Might be that language domain differs
+                // So it should have it's own cloudflare zone key
+                if ($domainFromUrl !== $domain
+                    && ($zoneId = $this->determinateDomainZoneIdentifier($domainFromUrl))
+                ) {
+                    if (!is_array($additionalGroups[$domainFromUrl])) {
+                        $additionalGroups[$domainFromUrl] = [
+                            'uids' => $domainGroup['uids'],
+                            'urls' => [],
+                            'zoneIdentifier' => $zoneId
+                        ];
+                    }
+
+                    $additionalGroups[$domainFromUrl]['urls'][] = $url;
+                } else {
+                    if (!is_array($filteredGroups[$domain])) {
+                        $filteredGroups[$domain] = [
+                            'uids' => $domainGroup['uids'],
+                            'urls' => [],
+                            'zoneIdentifier' => $domainGroup['zoneIdentifier']
+                        ];
+                    }
+
+                    $filteredGroups[$domain]['urls'][] = $url;
+                }
+            }
+        }
+
+        return array_merge($filteredGroups, $additionalGroups);
     }
 
     /**
