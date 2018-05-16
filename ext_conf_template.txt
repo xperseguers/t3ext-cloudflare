@@ -21,3 +21,6 @@ enablePurgeByTags = 0
 
 # customsubcategory=proxy=Proxy Settings; cat=advanced/proxy; type=string; label=LLL:EXT:cloudflare/Resources/Private/Language/locallang_db.xlf:settings.apiEndpoint
 apiEndpoint =
+
+# customsubcategory=clear_cache=LLL:EXT:cloudflare/Resources/Private/Language/locallang_db.xlf:settings.labels.clearCacheCategory; cat=advanced/clear_cache; type=options[LLL:EXT:cloudflare/Resources/Private/Language/locallang_db.xlf:settings.labels.options.onFly=1,LLL:EXT:cloudflare/Resources/Private/Language/locallang_db.xlf:settings.labels.options.scheduler=2]; label=LLL:EXT:cloudflare/Resources/Private/Language/locallang_db.xlf:settings.labels.clearCacheMode
+clearCacheMode = 1

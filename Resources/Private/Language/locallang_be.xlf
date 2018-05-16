@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2014-12-30T17:07:23Z" product-name="cloudflare">
+		<header/>
+		<body>
+			<trans-unit id="scheduler.title">
+				<source>Cloudflare CDN clear cache</source>
+			</trans-unit>
+			<trans-unit id="scheduler.description">
+			    <source>Purge Cloudflare CDN cache items queue.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

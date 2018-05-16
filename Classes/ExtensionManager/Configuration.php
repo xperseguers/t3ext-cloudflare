@@ -14,6 +14,7 @@ namespace Causal\Cloudflare\ExtensionManager;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Causal\Cloudflare\Utility\ConfigurationUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -28,17 +29,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class Configuration
 {
-
-    /** @var string */
-    protected $extKey = 'cloudflare';
-
     /**
      * Default constructor.
      */
     public function __construct()
     {
-        $config = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey];
-        $this->config = $config ? unserialize($config) : [];
+        $this->config = ConfigurationUtility::getExtensionConfiguration();
     }
 
     /**
@@ -149,7 +145,7 @@ JS;
      */
     protected function sL($key)
     {
-        $message = $this->getLanguageService()->sL('LLL:EXT:' . $this->extKey . '/Resources/Private/Language/locallang_db.xlf:' . $key);
+        $message = $this->getLanguageService()->sL('LLL:EXT:' . ConfigurationUtility::EXT_KEY . '/Resources/Private/Language/locallang_db.xlf:' . $key);
         return $message;
     }
 

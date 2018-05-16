@@ -2,10 +2,7 @@
 defined('TYPO3_MODE') || die();
 
 $boot = function ($_EXTKEY) {
-    $config = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY]);
-    if (!is_array($config)) {
-        $config = [];
-    }
+    $config = \Causal\Cloudflare\Utility\ConfigurationUtility::getExtensionConfiguration();
 
     // Register additional clear_cache method
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'][] = \Causal\Cloudflare\Hooks\TCEmain::class . '->clear_cacheCmd';
@@ -93,6 +90,34 @@ $boot = function ($_EXTKEY) {
         if ($config['domains'] !== '') {
             $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['additionalBackendItems']['cacheActions']['clearCloudflareCache'] = 'EXT:' . $_EXTKEY . '/Classes/Hooks/TYPO3backend.php:Causal\\Cloudflare\\Hooks\\TYPO3backend';
             $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['cloudflare::clearCache'] = 'EXT:' . $_EXTKEY . '/Classes/Hooks/TCEmain.php:Causal\\Cloudflare\\Hooks\\TCEmain->clearCache';
+        }
+    }
+
+    // Register EID
+    $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include'][$_EXTKEY] = 'EXT:' . $_EXTKEY . '/Classes/Eid/LinkGeneratorEid.php';
+
+    // Register scheduler task
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\Causal\Cloudflare\Task\ClearCacheTask::class] = [
+        'extension' => $_EXTKEY,
+        'title' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_be.xlf:scheduler.title',
+        'description' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_be.xlf:scheduler.description',
+    ];
+
+    // Register URL modifier for solr to get parameter in page url. Otherwise it could get cached pages.
+    if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('solr')) {
+        if (@file_exists(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('solr') . 'Interfaces/IndexQueuePageIndexerDataUrlModifier.php')) {
+            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['solr']['IndexQueuePageIndexer']['dataUrlModifier'] =
+                \Causal\Cloudflare\Solr\DataUrlModifierBackwardCompatibility::class;
+        } else {
+            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['solr']['IndexQueuePageIndexer']['dataUrlModifier'] =
+                \Causal\Cloudflare\Solr\DataUrlModifier::class;
+        }
+
+        // Register typolink post processor
+        // If indexed page is shortcut it will redirect to cached page and cause request id mismatch
+        if (TYPO3_MODE === 'FE' && isset($_SERVER['HTTP_X_TX_SOLR_IQ'])) {
+            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typoLink_PostProc'][$_EXTKEY] =
+                \Causal\Cloudflare\Hooks\TypoLinkPostProcessor::class . '->processTypoLink';
         }
     }
 };
