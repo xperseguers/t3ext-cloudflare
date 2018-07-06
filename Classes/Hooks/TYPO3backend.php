@@ -35,7 +35,9 @@ class TYPO3backend implements \TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookIn
      */
     public function __construct()
     {
-        $this->getLanguageService()->includeLLFile('EXT:cloudflare/Resources/Private/Language/locallang.xlf');
+        if (version_compare(TYPO3_branch, '8.7', '<=')) {
+            $this->getLanguageService()->includeLLFile('EXT:cloudflare/Resources/Private/Language/locallang.xlf');
+        }
     }
 
     /**

@@ -54,11 +54,6 @@ challenge page that they have to pass to enter your site.
 Step 3
 ^^^^^^
 
-If you configure Cloudflare to optimize your source code (by minifying HTML in the 'Speed' panel), please keep in mind
-that older versions of TYPO3 (up to 6.2 LTS) are relying on HTML comments to handle
-:abbr:`IRRE (Inline Relational Record Editing)`. When HTML coming from TYPO3 Backend is getting minified, HTML comments
-are stripped and IRRE does not work anymore.
-
 To do so, create a `Page Rule <https://support.cloudflare.com/hc/en-us/articles/200168306-Is-there-a-tutorial-for-Page-Rules->`__
 to exclude the `typo3` sections from Cloudflare's caching and performance features. You can access Page Rules in your
 Cloudflare dashboard.

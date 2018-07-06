@@ -37,34 +37,19 @@ $boot = function ($_EXTKEY) {
     $GLOBALS['TBE_STYLES']['skins'][$_EXTKEY]['stylesheetDirectories']['visual'] = 'EXT:' . $_EXTKEY . '/Resources/Public/Css/visual/';
 
     if (TYPO3_MODE === 'BE') {
-        if (version_compare(TYPO3_version, '6.99.99', '<=')) {
-            \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerExtDirectComponent(
-                'TYPO3.Ajax.ExtDirect.CloudflareToolbarMenu',
-                \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Classes/ExtDirect/ToolbarMenu.php:Causal\\Cloudflare\\ExtDirect\\ToolbarMenu',
-                null,
-                'admin'
-            );
-
-            // Register AJAX calls
-            \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
-                'TxCloudflare::purge',
-                'Causal\\Cloudflare\\ExtDirect\\ToolbarMenu->purge'
-            );
-        } else {
-            // Register AJAX calls
-            \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
-                'TxCloudflare::renderMenu',
-                'Causal\\Cloudflare\\Backend\\ToolbarItems\\CloudflareToolbarItem->renderAjax'
-            );
-            \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
-                'TxCloudflare::toggleDevelopmentMode',
-                'Causal\\Cloudflare\\Backend\\ToolbarItems\\CloudflareToolbarItem->toggleDevelopmentMode'
-            );
-            \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
-                'TxCloudflare::purge',
-                'Causal\\Cloudflare\\Backend\\ToolbarItems\\CloudflareToolbarItem->purge'
-            );
-        }
+        // Register AJAX calls
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
+            'TxCloudflare::renderMenu',
+            'Causal\\Cloudflare\\Backend\\ToolbarItems\\CloudflareToolbarItem->renderAjax'
+        );
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
+            'TxCloudflare::toggleDevelopmentMode',
+            'Causal\\Cloudflare\\Backend\\ToolbarItems\\CloudflareToolbarItem->toggleDevelopmentMode'
+        );
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
+            'TxCloudflare::purge',
+            'Causal\\Cloudflare\\Backend\\ToolbarItems\\CloudflareToolbarItem->purge'
+        );
 
         // Create a module section "Cloudflare" before 'Admin Tools'
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(

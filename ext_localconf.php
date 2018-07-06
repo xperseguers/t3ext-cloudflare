@@ -83,12 +83,7 @@ $boot = function ($_EXTKEY) {
     }
 
     if (TYPO3_MODE === 'BE' && !empty($config['apiKey'])) {
-        if (version_compare(TYPO3_version, '6.99.99', '<=')) {
-            $cloudflareToolbarItemClassPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY, 'Classes/Hooks/TYPO3backend_Cloudflare.php');
-            $GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'][] = $cloudflareToolbarItemClassPath;
-        } else {
-            $GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'][] = 'Causal\\Cloudflare\\Backend\\ToolbarItems\\CloudflareToolbarItem';
-        }
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'][] = \Causal\Cloudflare\Backend\ToolbarItems\CloudflareToolbarItem::class;
 
         if ($config['domains'] !== '') {
             $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['additionalBackendItems']['cacheActions']['clearCloudflareCache'] = 'EXT:' . $_EXTKEY . '/Classes/Hooks/TYPO3backend.php:Causal\\Cloudflare\\Hooks\\TYPO3backend';
