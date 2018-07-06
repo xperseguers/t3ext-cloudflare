@@ -47,25 +47,30 @@ class TYPO3backend implements \TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookIn
      */
     public function manipulateCacheActions(&$cacheActions, &$optionValues)
     {
-        if (version_compare(TYPO3_version, '7.4.99', '<=')) {
-            $icon = '<span class="t3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-cache-clear-impact-low"></span>';
-        } else {
-            /** @var \TYPO3\CMS\Core\Imaging\IconFactory $iconFactory */
-            $iconFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Imaging\\IconFactory');
-            $icon = $iconFactory->getIcon('actions-system-cache-clear-impact-low', \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL);
-        }
-
         $backendUser = $this->getBackendUser();
         if ($backendUser->isAdmin() || $backendUser->getTSConfigVal('options.clearCache.all') || $backendUser->getTSConfigVal('options.clearCache.cloudflare')) {
             // Add new cache menu item
-            $title = $this->getLanguageService()->getLL('clear_cache');
             $clearAll = array_shift($cacheActions);
-            $clearCloudflare = [
-                'id' => 'cloudflare',
-                'title' => $title,
-                'href' => $GLOBALS['BACK_PATH'] . BackendUtility::getAjaxUrl('TxCloudflare::purge'),
-                'icon' => $icon,
-            ];
+            if (version_compare(TYPO3_branch, '8.7', '>=')) {
+                $clearCloudflare = [
+                    'id' => 'cloudflare',
+                    'title' => 'LLL:EXT:cloudflare/Resources/Private/Language/locallang.xlf:clear_cache',
+                    'description' => 'LLL:EXT:cloudflare/Resources/Private/Language/locallang.xlf:clear_cache.description',
+                    'href' => $GLOBALS['BACK_PATH'] . BackendUtility::getAjaxUrl('TxCloudflare::purge'),
+                    'iconIdentifier' => 'actions-system-cache-clear-impact-low',
+                ];
+            } else {
+                /** @var \TYPO3\CMS\Core\Imaging\IconFactory $iconFactory */
+                $iconFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconFactory::class);
+                $icon = $iconFactory->getIcon('actions-system-cache-clear-impact-low', \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL);
+
+                $clearCloudflare = [
+                    'id' => 'cloudflare',
+                    'title' => $this->getLanguageService()->getLL('clear_cache'),
+                    'href' => $GLOBALS['BACK_PATH'] . BackendUtility::getAjaxUrl('TxCloudflare::purge'),
+                    'icon' => $icon,
+                ];
+            }
             if ($clearAll !== null) {
                 $cacheActions = array_merge([$clearAll, $clearCloudflare], $cacheActions);
             } else {
