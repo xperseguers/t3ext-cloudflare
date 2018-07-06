@@ -30,7 +30,7 @@ Cloudflare Client
 		cloud, content delivery network, cdn, proxy, reverse proxy, ssl, performance
 
 	:Copyright:
-		2012-2017
+		2012-2018
 
 	:Author:
 		Xavier Perseguers
@@ -52,7 +52,7 @@ Cloudflare Client
 	**Other version of this document**
 
 	:PDF:
-		https://docs.typo3.org/typo3cms/extensions/cloudflare/2.1.1/_pdf/
+		https://docs.typo3.org/typo3cms/extensions/cloudflare/2.2.0/_pdf/
 
 
 	**Table of Contents**
