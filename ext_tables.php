@@ -10,28 +10,18 @@ $boot = function ($_EXTKEY) {
         'online' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/online-16.png',
         'module' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module-cloudflare.png',
     ];
-    if (version_compare(TYPO3_version, '7.6', '>=')) {
-        /** @var \TYPO3\CMS\Core\Imaging\IconRegistry $iconRegistry */
-        $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Imaging\\IconRegistry');
-        foreach ($icons as $key => $icon) {
-            $iconRegistry->registerIcon('extensions-' . $_EXTKEY . '-' . $key,
-                'TYPO3\\CMS\\Core\\Imaging\\IconProvider\\BitmapIconProvider',
-                [
-                    'source' => $icon
-                ]
-            );
-        }
-        unset($iconRegistry);
-    } else {
-        $extensionRelativePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY);
-        $icons = array_map(
-            function ($e) use ($_EXTKEY, $extensionRelativePath) {
-                return str_replace('EXT:' . $_EXTKEY . '/', $extensionRelativePath, $e);
-            },
-            $icons
+
+    /** @var \TYPO3\CMS\Core\Imaging\IconRegistry $iconRegistry */
+    $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
+    foreach ($icons as $key => $icon) {
+        $iconRegistry->registerIcon('extensions-' . $_EXTKEY . '-' . $key,
+            \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+            [
+                'source' => $icon
+            ]
         );
-        \TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons($icons, $_EXTKEY);
     }
+    unset($iconRegistry);
 
     // Register our custom CSS
     $GLOBALS['TBE_STYLES']['skins'][$_EXTKEY]['stylesheetDirectories']['visual'] = 'EXT:' . $_EXTKEY . '/Resources/Public/Css/visual/';
@@ -40,15 +30,15 @@ $boot = function ($_EXTKEY) {
         // Register AJAX calls
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
             'TxCloudflare::renderMenu',
-            'Causal\\Cloudflare\\Backend\\ToolbarItems\\CloudflareToolbarItem->renderAjax'
+            \Causal\Cloudflare\Backend\ToolbarItems\CloudflareToolbarItem::class . '->renderAjax'
         );
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
             'TxCloudflare::toggleDevelopmentMode',
-            'Causal\\Cloudflare\\Backend\\ToolbarItems\\CloudflareToolbarItem->toggleDevelopmentMode'
+            \Causal\Cloudflare\Backend\ToolbarItems\CloudflareToolbarItem::class . '->toggleDevelopmentMode'
         );
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
             'TxCloudflare::purge',
-            'Causal\\Cloudflare\\Backend\\ToolbarItems\\CloudflareToolbarItem->purge'
+            \Causal\Cloudflare\Backend\ToolbarItems\CloudflareToolbarItem::class . '->purge'
         );
 
         // Create a module section "Cloudflare" before 'Admin Tools'
