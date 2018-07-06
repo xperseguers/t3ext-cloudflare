@@ -286,6 +286,10 @@ class CloudflareToolbarItem implements ToolbarItemInterface
         $tceMain = GeneralUtility::makeInstance(\Causal\Cloudflare\Hooks\TCEmain::class);
         $tceMain->clearCache();
 
+        if (version_compare(TYPO3_branch, '8.7', '>=')) {
+            exit;
+        }
+
         $ajaxObj->addContent('success', true);
     }
 
