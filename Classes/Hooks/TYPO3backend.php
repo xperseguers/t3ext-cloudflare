@@ -54,11 +54,14 @@ class TYPO3backend implements \TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookIn
             // Add new cache menu item
             $clearAll = array_shift($cacheActions);
             if (version_compare(TYPO3_branch, '8.7', '>=')) {
+                /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+                $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+                $ajaxRoute = (string)$uriBuilder->buildUriFromRoute('ajax_cloudflare_purge');
                 $clearCloudflare = [
                     'id' => 'cloudflare',
                     'title' => 'LLL:EXT:cloudflare/Resources/Private/Language/locallang.xlf:clear_cache',
                     'description' => 'LLL:EXT:cloudflare/Resources/Private/Language/locallang.xlf:clear_cache.description',
-                    'href' => $GLOBALS['BACK_PATH'] . BackendUtility::getAjaxUrl('cloudflare_purge'),
+                    'href' => $ajaxRoute,
                     'iconIdentifier' => 'actions-system-cache-clear-impact-low',
                 ];
             } else {
