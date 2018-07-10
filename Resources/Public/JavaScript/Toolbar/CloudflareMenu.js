@@ -16,12 +16,12 @@
  *  - operating on Cloudflare domains
  *  - updating the menu
  */
-define('TYPO3/CMS/Cloudflare/Toolbar/CloudflareMenu', ['jquery'], function ($) {
+define([
+    'jquery',
+    'TYPO3/CMS/Backend/Icons'
+    ], function ($, Icons) {
 
     var CloudflareMenu = {
-        $spinnerElement: $('<span>', {
-            'class': 't3js-icon fa fa-circle-o-notch spinner fa-spin'
-        }),
         options: {
             containerSelector: '#causal-cloudflare-backend-toolbaritems-cloudflaretoolbaritem',
             menuContainerSelector: '.dropdown-menu',
@@ -35,19 +35,21 @@ define('TYPO3/CMS/Cloudflare/Toolbar/CloudflareMenu', ['jquery'], function ($) {
      * Displays the menu and does the AJAX call to the TYPO3 backend
      */
     CloudflareMenu.updateMenu = function () {
-        var $toolbarItemIcon = $(CloudflareMenu.options.toolbarIconSelector, CloudflareMenu.options.containerSelector);
+        var $toolbarItemIcon = $(CloudflareMenu.options.toolbarIconSelector, CloudflareMenu.options.containerSelector),
+            $existingIcon = $toolbarItemIcon.clone();
 
-        var $spinnerIcon = CloudflareMenu.$spinnerElement.clone();
-        var $existingIcon = $toolbarItemIcon.replaceWith($spinnerIcon);
+        Icons.getIcon('spinner-circle-light', Icons.sizes.small).done(function(spinner) {
+            $toolbarItemIcon.replaceWith(spinner);
+        });
 
         $.ajax({
             url: TYPO3.settings.ajaxUrls['cloudflare_rendermenu'],
             type: 'post',
             cache: false,
             success: function (data) {
+                $(CloudflareMenu.options.toolbarIconSelector, CloudflareMenu.options.containerSelector).replaceWith($existingIcon);
                 $(CloudflareMenu.options.containerSelector).find(CloudflareMenu.options.menuContainerSelector).html(data.html);
                 CloudflareMenu.updateNumberOfDomainsInDevelopmentMode();
-                $spinnerIcon.replaceWith($existingIcon);
             }
         });
     };
@@ -61,10 +63,12 @@ define('TYPO3/CMS/Cloudflare/Toolbar/CloudflareMenu', ['jquery'], function ($) {
     };
 
     CloudflareMenu.toggleDevelopmentMode = function (zone, active) {
-        var $toolbarItemIcon = $(CloudflareMenu.options.toolbarIconSelector, CloudflareMenu.options.containerSelector);
+        var $toolbarItemIcon = $(CloudflareMenu.options.toolbarIconSelector, CloudflareMenu.options.containerSelector),
+            $existingIcon = $toolbarItemIcon.clone();
 
-        var $spinnerIcon = CloudflareMenu.$spinnerElement.clone();
-        var $existingIcon = $toolbarItemIcon.replaceWith($spinnerIcon);
+        Icons.getIcon('spinner-circle-light', Icons.sizes.small).done(function(spinner) {
+            $toolbarItemIcon.replaceWith(spinner);
+        });
 
         TYPO3.CloudflareMenu.toggleMenu();
 
@@ -77,7 +81,7 @@ define('TYPO3/CMS/Cloudflare/Toolbar/CloudflareMenu', ['jquery'], function ($) {
             },
             cache: false,
             success: function (data) {
-                $spinnerIcon.replaceWith($existingIcon);
+                $(CloudflareMenu.options.toolbarIconSelector, CloudflareMenu.options.containerSelector).replaceWith($existingIcon);
                 CloudflareMenu.updateMenu();
             }
         });
