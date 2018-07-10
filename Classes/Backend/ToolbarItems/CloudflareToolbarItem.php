@@ -99,7 +99,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
     public function getDropDown()
     {
         $languageService = $this->getLanguageService();
-        $isTypo3v8 = version_compare(TYPO3_branch, '8', '>=');
+        $isModernTypo3 = version_compare(TYPO3_branch, '8', '>=');
         $entries = [];
 
         $domains = GeneralUtility::trimExplode(',', $this->config['domains'], true);
@@ -128,14 +128,30 @@ class CloudflareToolbarItem implements ToolbarItemInterface
                                 break;
                         }
 
-                        $class = $isTypo3v8 ? '' : 'dropdown-header';
-                        $entries[] = '<li class="' . $class . '" data-zone-status="' . $status . '">' . $this->getZoneIcon($status) . ' ' . htmlspecialchars($zone['name']) . '</li>';
-
-                        if ($active !== null) {
-                            $onClickCode = 'TYPO3.CloudflareMenu.toggleDevelopmentMode(\'' . $identifier . '\', ' . $active . '); return false;';
-                            $entries[] = '<li><a href="#" onclick="' . htmlspecialchars($onClickCode) . '">' . $languageService->getLL('toggle_development', true) . '</a></li>';
+                        if ($isModernTypo3) {
+                            $entries[] = '<div class="dropdown-table-row" data-zone-status="' . $status . '">';
+                            $entries[] = '    <div class="dropdown-table-column dropdown-table-column-top dropdown-table-icon">';
+                            $entries[] = $this->getZoneIcon($status);
+                            $entries[] = '    </div>';
+                            $entries[] = '    <div class="dropdown-table-column">';
+                            $entries[] = htmlspecialchars($zone['name']);
+                            if ($active !== null) {
+                                $onClickCode = 'TYPO3.CloudflareMenu.toggleDevelopmentMode(\'' . $identifier . '\', ' . $active . '); return false;';
+                                $entries[] = '<a href="#" onclick="' . htmlspecialchars($onClickCode) . '">' . $languageService->getLL('toggle_development', true) . '</a>';
+                            } else {
+                                $entries[] = $languageService->getLL('zone_inactive', true);
+                            }
+                            $entries[] = '    </div>';
+                            $entries[] = '</div>';
                         } else {
-                            $entries[] = '<li>' . $languageService->getLL('zone_inactive', true) . '</li>';
+                            $entries[] = '<li class="dropdown-header" data-zone-status="' . $status . '">' . $this->getZoneIcon($status) . ' ' . htmlspecialchars($zone['name']) . '</li>';
+
+                            if ($active !== null) {
+                                $onClickCode = 'TYPO3.CloudflareMenu.toggleDevelopmentMode(\'' . $identifier . '\', ' . $active . '); return false;';
+                                $entries[] = '<li><a href="#" onclick="' . htmlspecialchars($onClickCode) . '">' . $languageService->getLL('toggle_development', true) . '</a></li>';
+                            } else {
+                                $entries[] = '<li>' . $languageService->getLL('zone_inactive', true) . '</li>';
+                            }
                         }
                     }
                 } catch (\RuntimeException $e) {
@@ -146,11 +162,13 @@ class CloudflareToolbarItem implements ToolbarItemInterface
 
         $content = '';
         if (!empty($entries)) {
-            if ($isTypo3v8) {
+            if ($isModernTypo3) {
                 $content .= '<h3 class="dropdown-headline">Cloudflare</h3>';
                 $content .= '<hr />';
+                $content .= '<div class="dropdown-table">' . implode('', $entries) . '</div>';
+            } else {
+                $content .= '<ul class="dropdown-list">' . implode('', $entries) . '</ul>';
             }
-            $content .= '<ul class="dropdown-list">' . implode('', $entries) . '</ul>';
         } else {
             $content .= '<p>' . $languageService->getLL('no_domains', true) . '</p>';
         }

@@ -25,9 +25,16 @@ define([
         options: {
             containerSelector: '#causal-cloudflare-backend-toolbaritems-cloudflaretoolbaritem',
             menuContainerSelector: '.dropdown-menu',
-            menuItemSelector: '.dropdown-menu li',
+            menuItemSelector: '.dropdown-menu div.dropdown-table-row',
             toolbarIconSelector: '.dropdown-toggle span.t3js-icon',
             counterSelector: '#tx-cloudflare-counter'
+        }
+    };
+
+    CloudflareMenu.initialize = function () {
+        if ($(CloudflareMenu.options.containerSelector).find(CloudflareMenu.options.menuItemSelector).length == 0) {
+            // Possibly on TYPO3 v7 (or extension not yet configured in TYPO3 v8 and above)
+			CloudflareMenu.options.menuItemSelector = '.dropdown-menu li';
         }
     };
 
@@ -58,7 +65,7 @@ define([
      * Updates the number of domains in development mode in the toolbar.
      */
     CloudflareMenu.updateNumberOfDomainsInDevelopmentMode = function () {
-        var num = $(CloudflareMenu.options.containerSelector).find(CloudflareMenu.options.menuItemSelector).filter('li[data-zone-status=dev-mode]').length;
+        var num = $(CloudflareMenu.options.containerSelector).find(CloudflareMenu.options.menuItemSelector).filter('[data-zone-status=dev-mode]').length;
         $(CloudflareMenu.options.counterSelector).text(num).toggle(num > 0);
     };
 
@@ -99,6 +106,7 @@ define([
      */
     return function () {
         $(document).ready(function () {
+            CloudflareMenu.initialize();
             CloudflareMenu.updateMenu();
         });
 
