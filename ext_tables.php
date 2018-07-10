@@ -27,20 +27,6 @@ $boot = function ($_EXTKEY) {
     $GLOBALS['TBE_STYLES']['skins'][$_EXTKEY]['stylesheetDirectories']['visual'] = 'EXT:' . $_EXTKEY . '/Resources/Public/Css/visual/';
 
     if (TYPO3_MODE === 'BE') {
-        // Register AJAX calls
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
-            'TxCloudflare::renderMenu',
-            \Causal\Cloudflare\Backend\ToolbarItems\CloudflareToolbarItem::class . '->renderAjax'
-        );
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
-            'TxCloudflare::toggleDevelopmentMode',
-            \Causal\Cloudflare\Backend\ToolbarItems\CloudflareToolbarItem::class . '->toggleDevelopmentMode'
-        );
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
-            'TxCloudflare::purge',
-            \Causal\Cloudflare\Backend\ToolbarItems\CloudflareToolbarItem::class . '->purge'
-        );
-
         // Create a module section "Cloudflare" before 'Admin Tools'
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
             'txcloudflare', // main module key

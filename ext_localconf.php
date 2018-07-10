@@ -87,7 +87,6 @@ $boot = function ($_EXTKEY) {
 
         if ($config['domains'] !== '') {
             $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['additionalBackendItems']['cacheActions']['clearCloudflareCache'] = \Causal\Cloudflare\Hooks\TYPO3backend::class;
-            $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['cloudflare::clearCache'] = \Causal\Cloudflare\Hooks\TCEmain::class . '->clearCache';
         }
     }
 };

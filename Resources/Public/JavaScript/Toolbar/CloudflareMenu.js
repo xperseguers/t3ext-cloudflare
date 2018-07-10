@@ -20,13 +20,13 @@ define('TYPO3/CMS/Cloudflare/Toolbar/CloudflareMenu', ['jquery'], function ($) {
 
     var CloudflareMenu = {
         $spinnerElement: $('<span>', {
-            'class': 't3-icon fa fa-circle-o-notch spinner fa-spin'
+            'class': 't3js-icon fa fa-circle-o-notch spinner fa-spin'
         }),
         options: {
             containerSelector: '#causal-cloudflare-backend-toolbaritems-cloudflaretoolbaritem',
             menuContainerSelector: '.dropdown-menu',
             menuItemSelector: '.dropdown-menu li',
-            toolbarIconSelector: '.dropdown-toggle span.t3-icon',
+            toolbarIconSelector: '.dropdown-toggle span.t3js-icon',
             counterSelector: '#tx-cloudflare-counter'
         }
     };
@@ -41,11 +41,11 @@ define('TYPO3/CMS/Cloudflare/Toolbar/CloudflareMenu', ['jquery'], function ($) {
         var $existingIcon = $toolbarItemIcon.replaceWith($spinnerIcon);
 
         $.ajax({
-            url: TYPO3.settings.ajaxUrls['TxCloudflare::renderMenu'],
+            url: TYPO3.settings.ajaxUrls['cloudflare_rendermenu'],
             type: 'post',
             cache: false,
             success: function (data) {
-                $(CloudflareMenu.options.containerSelector).find(CloudflareMenu.options.menuContainerSelector).html(data);
+                $(CloudflareMenu.options.containerSelector).find(CloudflareMenu.options.menuContainerSelector).html(data.html);
                 CloudflareMenu.updateNumberOfDomainsInDevelopmentMode();
                 $spinnerIcon.replaceWith($existingIcon);
             }
@@ -69,7 +69,7 @@ define('TYPO3/CMS/Cloudflare/Toolbar/CloudflareMenu', ['jquery'], function ($) {
         TYPO3.CloudflareMenu.toggleMenu();
 
         $.ajax({
-            url: TYPO3.settings.ajaxUrls['TxCloudflare::toggleDevelopmentMode'],
+            url: TYPO3.settings.ajaxUrls['cloudflare_toggledev'],
             type: 'post',
             data: {
                 zone: zone,

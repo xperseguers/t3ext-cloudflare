@@ -17,6 +17,8 @@ namespace Causal\Cloudflare\Backend\ToolbarItems;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Toolbar Menu handler.
@@ -241,23 +243,28 @@ class CloudflareToolbarItem implements ToolbarItemInterface
     /**
      * Renders the menu so that it can be returned as response to an AJAX call
      *
-     * @param array $params Array of parameters from the AJAX interface, currently unused
-     * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      * @return void
      */
-    public function renderAjax($params = [], \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj = null)
+    public function renderAjax(ServerRequestInterface $request, ResponseInterface $response)
     {
-        $ajaxObj->addContent('cloudflareMenu', $this->getDropDown());
+        $menu = $this->getDropDown();
+        $response->getBody()->write(json_encode([
+            'success' => true,
+            'html' => $menu,
+        ]));
+        return $response;
     }
 
     /**
      * Toggles development mode for a given zone.
      *
-     * @param array $params Array of parameters from the AJAX interface, currently unused
-     * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      * @return void
      */
-    public function toggleDevelopmentMode($params = [], \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj = null)
+    public function toggleDevelopmentMode(ServerRequestInterface $request, ResponseInterface $response)
     {
         $zone = GeneralUtility::_GP('zone');
         $active = GeneralUtility::_GP('active');
@@ -270,17 +277,18 @@ class CloudflareToolbarItem implements ToolbarItemInterface
             // Nothing to do
         }
 
-        $ajaxObj->addContent('success', $ret['success'] === true);
+        $response->getBody()->write(json_encode(['success' => $ret['success'] === true]));
+        return $response;
     }
 
     /**
      * Purges cache from all configured zones.
      *
-     * @param array $params Array of parameters from the AJAX interface, currently unused
-     * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      * @return void
      */
-    public function purge($params = [], \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj = null)
+    public function purge(ServerRequestInterface $request, ResponseInterface $response)
     {
         /** @var \Causal\Cloudflare\Hooks\TCEmain $tceMain */
         $tceMain = GeneralUtility::makeInstance(\Causal\Cloudflare\Hooks\TCEmain::class);
@@ -290,7 +298,8 @@ class CloudflareToolbarItem implements ToolbarItemInterface
             exit;
         }
 
-        $ajaxObj->addContent('success', true);
+        $response->getBody()->write(json_encode(['success' => true]));
+        return $response;
     }
 
     /**********************

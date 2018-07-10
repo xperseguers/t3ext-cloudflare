@@ -58,7 +58,7 @@ class TYPO3backend implements \TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookIn
                     'id' => 'cloudflare',
                     'title' => 'LLL:EXT:cloudflare/Resources/Private/Language/locallang.xlf:clear_cache',
                     'description' => 'LLL:EXT:cloudflare/Resources/Private/Language/locallang.xlf:clear_cache.description',
-                    'href' => $GLOBALS['BACK_PATH'] . BackendUtility::getAjaxUrl('TxCloudflare::purge'),
+                    'href' => $GLOBALS['BACK_PATH'] . BackendUtility::getAjaxUrl('cloudflare_purge'),
                     'iconIdentifier' => 'actions-system-cache-clear-impact-low',
                 ];
             } else {
@@ -69,7 +69,7 @@ class TYPO3backend implements \TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookIn
                 $clearCloudflare = [
                     'id' => 'cloudflare',
                     'title' => $this->getLanguageService()->getLL('clear_cache'),
-                    'href' => $GLOBALS['BACK_PATH'] . BackendUtility::getAjaxUrl('TxCloudflare::purge'),
+                    'href' => $GLOBALS['BACK_PATH'] . BackendUtility::getAjaxUrl('cloudflare_purge'),
                     'icon' => $icon,
                 ];
             }
