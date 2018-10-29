@@ -56,6 +56,13 @@ b, strong {
     font-weight: 700;
 }
 
+.header {
+    background-color: #eee;
+    border-bottom: 1px solid #c3c3c3;
+    height: 48px;
+    padding: 0 1em;
+}
+
 .header h1 {
     font-size: 1rem;
     font-weight: normal;
@@ -68,20 +75,6 @@ b, strong {
 
 .header .right {
     float: right;
-}
-
-.header.typo3v6 {
-    background-color: #dadada;
-    border-top: 5px solid #585858;
-    height: 44px;
-    padding: 0 1em;
-}
-
-.header.typo3v7 {
-    background-color: #eee;
-    border-bottom: 1px solid #c3c3c3;
-    height: 48px;
-    padding: 0 1em;
 }
 
 .header select {

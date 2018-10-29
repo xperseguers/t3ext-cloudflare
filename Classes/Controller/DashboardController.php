@@ -84,7 +84,6 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
             'defaultIdentifier' => $defaultIdentifier,
             'defaultZone' => $defaultIdentifier !== null ? $this->zones[$defaultIdentifier] : null,
             'periods' => $this->getAvailablePeriods($defaultIdentifier),
-            'typo3version' => version_compare(TYPO3_version, '6.99.99', '<=') ? 'v6' : 'v7',
         ]);
     }
 

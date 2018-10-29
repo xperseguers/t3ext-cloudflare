@@ -53,29 +53,16 @@ class TYPO3backend implements \TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookIn
         if ($backendUser->isAdmin() || $backendUser->getTSConfigVal('options.clearCache.all') || $backendUser->getTSConfigVal('options.clearCache.cloudflare')) {
             // Add new cache menu item
             $clearAll = array_shift($cacheActions);
-            if (version_compare(TYPO3_branch, '8.7', '>=')) {
-                /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-                $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
-                $ajaxRoute = (string)$uriBuilder->buildUriFromRoute('ajax_cloudflare_purge');
-                $clearCloudflare = [
-                    'id' => 'cloudflare',
-                    'title' => 'LLL:EXT:cloudflare/Resources/Private/Language/locallang.xlf:clear_cache',
-                    'description' => 'LLL:EXT:cloudflare/Resources/Private/Language/locallang.xlf:clear_cache.description',
-                    'href' => $ajaxRoute,
-                    'iconIdentifier' => 'actions-system-cache-clear-impact-low',
-                ];
-            } else {
-                /** @var \TYPO3\CMS\Core\Imaging\IconFactory $iconFactory */
-                $iconFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconFactory::class);
-                $icon = $iconFactory->getIcon('actions-system-cache-clear-impact-low', \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL);
-
-                $clearCloudflare = [
-                    'id' => 'cloudflare',
-                    'title' => $this->getLanguageService()->getLL('clear_cache'),
-                    'href' => $GLOBALS['BACK_PATH'] . BackendUtility::getAjaxUrl('cloudflare_purge'),
-                    'icon' => $icon,
-                ];
-            }
+            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            $ajaxRoute = (string)$uriBuilder->buildUriFromRoute('ajax_cloudflare_purge');
+            $clearCloudflare = [
+                'id' => 'cloudflare',
+                'title' => 'LLL:EXT:cloudflare/Resources/Private/Language/locallang.xlf:clear_cache',
+                'description' => 'LLL:EXT:cloudflare/Resources/Private/Language/locallang.xlf:clear_cache.description',
+                'href' => $ajaxRoute,
+                'iconIdentifier' => 'actions-system-cache-clear-impact-low',
+            ];
             if ($clearAll !== null) {
                 $cacheActions = array_merge([$clearAll, $clearCloudflare], $cacheActions);
             } else {
