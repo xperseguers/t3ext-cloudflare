@@ -15,6 +15,7 @@ namespace Causal\Cloudflare\Backend\ToolbarItems;
  */
 
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use Psr\Http\Message\ResponseInterface;
@@ -53,8 +54,12 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      */
     public function __construct()
     {
-        $config = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey];
-        $this->config = $config ? unserialize($config) : [];
+        if (version_compare(TYPO3_branch, '9.5', '>=')) {
+            $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extKey);
+        } else {
+            $config = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey];
+            $this->config = $config ? unserialize($config) : [];
+        }
         $this->cloudflareService = GeneralUtility::makeInstance(\Causal\Cloudflare\Services\CloudflareService::class, $this->config);
         $this->getLanguageService()->includeLLFile('EXT:cloudflare/Resources/Private/Language/locallang.xlf');
         $pageRenderer = $this->getPageRenderer();

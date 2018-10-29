@@ -15,6 +15,7 @@ namespace Causal\Cloudflare\Hooks;
  */
 
 use Causal\Cloudflare\Services\CloudflareService;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 
@@ -42,8 +43,12 @@ class TCEmain
      */
     public function __construct()
     {
-        $config = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey];
-        $this->config = $config ? unserialize($config) : [];
+        if (version_compare(TYPO3_branch, '9.5', '>=')) {
+            $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extKey);
+        } else {
+            $config = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey];
+            $this->config = $config ? unserialize($config) : [];
+        }
     }
 
     /**

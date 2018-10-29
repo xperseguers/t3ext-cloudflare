@@ -14,6 +14,7 @@ namespace Causal\Cloudflare\ExtensionManager;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -37,8 +38,12 @@ class Configuration
      */
     public function __construct()
     {
-        $config = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey];
-        $this->config = $config ? unserialize($config) : [];
+        if (version_compare(TYPO3_branch, '9.5', '>=')) {
+            $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extKey);
+        } else {
+            $config = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey];
+            $this->config = $config ? unserialize($config) : [];
+        }
     }
 
     /**

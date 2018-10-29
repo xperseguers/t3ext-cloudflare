@@ -2,9 +2,13 @@
 defined('TYPO3_MODE') || die();
 
 $boot = function ($_EXTKEY) {
-    $config = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY]);
-    if (!is_array($config)) {
-        $config = [];
+    if (version_compare(TYPO3_branch, '9.5', '>=')) {
+        $config = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get($_EXTKEY);
+    } else {
+        $config = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY]);
+        if (!is_array($config)) {
+            $config = [];
+        }
     }
 
     // Register additional clear_cache method
