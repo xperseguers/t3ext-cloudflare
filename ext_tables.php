@@ -28,12 +28,15 @@ $boot = function ($_EXTKEY) {
 
     if (TYPO3_MODE === 'BE') {
         // Create a module section "Cloudflare" before 'Admin Tools'
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
-            'txcloudflare', // main module key
-            '',             // submodule key
-            '',             // position
-            '',
-            [
+        if (version_compare(TYPO3_branch, '9.5', '>=')) {
+            $moduleConfiguration = [
+                'access' => 'user,group',
+                'name' => 'txcloudflare',
+                'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module-cloudflare.png',
+                'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod_cloudflare.xlf',
+            ];
+        } else {
+            $moduleConfiguration = [
                 'access' => 'user,group',
                 'name' => 'txcloudflare',
                 'labels' => [
@@ -42,7 +45,15 @@ $boot = function ($_EXTKEY) {
                     ],
                     'll_ref' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod_cloudflare.xlf',
                 ],
-            ]
+            ];
+        }
+
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+            'txcloudflare', // main module key
+            '',             // submodule key
+            '',             // position
+            '',
+            $moduleConfiguration
         );
         $temp_TBE_MODULES = [];
         foreach ($GLOBALS['TBE_MODULES'] as $key => $val) {
