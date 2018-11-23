@@ -47,9 +47,21 @@ class ClearCacheService
     protected $domains = [];
 
     /**
+     * List of purged domains
+     *
+     * @var array
+     */
+    protected $purgedDomains = [];
+
+    /**
      * @var AbstractUserAuthentication
      */
     protected $beUser = null;
+
+    /**
+     * @var CloudflareService
+     */
+    protected $cloudflareService = null;
 
     /**
      * Initalize
@@ -62,7 +74,10 @@ class ClearCacheService
         $this->config = $config;
         $this->beUser = $beUser;
         if ($this->config['domains']) {
-            $this->domains = GeneralUtility::trimExplode(',', $this->config['domains'], true);
+            foreach (GeneralUtility::trimExplode(',', $this->config['domains'], true) as $domainItem) {
+                list($identifier, $domain) = explode('|', $domainItem, 2);
+                $this->domains[$identifier] = $domain;
+            }
         }
     }
 
@@ -97,6 +112,9 @@ class ClearCacheService
                     $this->clearPagesCache([$pageUid]);
                 }
                 break;
+            case QueueItem::CLEAR_CACHE_ROOT_LINE:
+                $this->clearSitesRootLineCache([$queueItem->getPageUid()]);
+                break;
             // No default action
         }
     }
@@ -108,42 +126,8 @@ class ClearCacheService
      */
     public function clearCloudflareCache()
     {
-        /** @var CloudflareService $cloudflareService */
-        $cloudflareService = GeneralUtility::makeInstance(CloudflareService::class, $this->config);
-
-        foreach ($this->domains as $domain) {
-            try {
-                list($identifier, $zoneName) = explode('|', $domain, 2);
-                $ret = $cloudflareService->send(
-                    '/zones/' . $identifier . '/purge_cache',
-                    [
-                        'purge_everything' => true,
-                    ],
-                    'DELETE'
-                );
-                if (!is_array($ret)) {
-                    $ret = [
-                        'success' => false,
-                        'errors' => []
-                    ];
-                }
-
-                if ($ret['success']) {
-                    $this->writelog(
-                        0,
-                        'User %s cleared the cache on Cloudflare (domain: "%s")',
-                        [$this->beUser->user['username'], $zoneName]
-                    );
-                } else {
-                    $this->writelog(
-                        1,
-                        'User %s failed to clear the cache on Cloudflare (domain: "%s"): %s',
-                        [$this->beUser->user['username'], $zoneName, implode(LF, $ret['errors'])]
-                    );
-                }
-            } catch (\RuntimeException $e) {
-                $this->writelog(1, $e->getMessage(), []);
-            }
+        foreach ($this->domains as $identifier => $zone) {
+            $this->purgeAll($identifier, $zone);
         }
     }
 
@@ -218,6 +202,36 @@ class ClearCacheService
     }
 
     /**
+     * Clear all caches for sites that has given pages uids
+     *
+     * @param array $pages
+     */
+    public function clearSitesRootLineCache(array $pages)
+    {
+        foreach ($pages as $page) {
+            $rootLine = BackendUtility::BEgetRootLine($page);
+            $domains = [];
+            if (is_array($rootLine)) {
+                foreach ($rootLine as $row) {
+                    $dRecs = BackendUtility::getRecordsByField('sys_domain', 'pid', $row['uid'], ' AND redirectTo=\'\' AND hidden=0', '', 'sorting');
+                    if (is_array($dRecs)) {
+                        foreach ($dRecs as $dRec) {
+                            $domains[] = $dRec['domainName'];
+                        }
+                    }
+                }
+            }
+
+            foreach ($domains as $domain) {
+                $identifier = $this->determinateDomainZoneIdentifier($domain);
+                if (!empty($identifier)) {
+                    $this->purgeAll($identifier, $domain);
+                }
+            }
+        }
+    }
+
+    /**
      * Purge cdn caches by tags
      *
      * @param array $cacheTags
@@ -237,17 +251,20 @@ class ClearCacheService
      */
     protected function determinateDomainZoneIdentifier($domain)
     {
+        $key = array_search($domain, $this->domains);
+        if ($key !== false) {
+            return $key;
+        }
+
+        // If it's www.domain.com, try to search for domain.com
         $domainParts = explode('.', $domain);
         $size = count($domainParts);
+        if ($size > 2) {
+            $rootDomain = $domainParts[$size - 2] . '.' . $domainParts[$size - 1];
 
-        if ($size > 1) {
-            $zoneName = $domainParts[$size - 2] . '.' . $domainParts[$size - 1];
-
-            foreach ($this->domains as $cdnDomain) {
-                list($identifier, $z) = explode('|', $cdnDomain, 2);
-                if ($z === $zoneName) {
-                    return $identifier;
-                }
+            $key = array_search($rootDomain, $this->domains);
+            if ($key !== false) {
+                return $key;
             }
         }
 
@@ -266,7 +283,7 @@ class ClearCacheService
     protected function purgeIndividualFilesByUrl(array $urls, $domain, array $pageUids, $zoneIdentifier)
     {
         /** @var CloudflareService $cloudflareService */
-        $cloudflareService = GeneralUtility::makeInstance(CloudflareService::class, $this->config);
+        $cloudflareService = $this->getCloudFlareService();
 
         try {
             $ret = $cloudflareService->send(
@@ -304,11 +321,10 @@ class ClearCacheService
     protected function purgeIndividualFilesByCacheTag(array $cacheTags)
     {
         /** @var CloudflareService $cloudflareService */
-        $cloudflareService = GeneralUtility::makeInstance(CloudflareService::class, $this->config);
+        $cloudflareService = $this->getCloudFlareService();
 
-        foreach ($this->domains as $domain) {
+        foreach ($this->domains as $identifier => $zoneName) {
             try {
-                list($identifier, $zoneName) = explode('|', $domain, 2);
                 $ret = $cloudflareService->send(
                     '/zones/' . $identifier . '/purge_cache',
                     [
@@ -382,6 +398,59 @@ class ClearCacheService
                 $message,
                 $arguments
             );
+        }
+    }
+
+    /**
+     * @return CloudflareService
+     */
+    protected function getCloudFlareService()
+    {
+        if ($this->cloudflareService === null) {
+            $this->cloudflareService = GeneralUtility::makeInstance(CloudflareService::class, $this->config);
+        }
+
+        return $this->cloudflareService;
+    }
+
+    /**
+     * Purge for zone (site)
+     *
+     * @param $identifier
+     * @param $zoneName
+     */
+    protected function purgeAll($identifier, $zoneName)
+    {
+        try {
+            $ret = $this->getCloudFlareService()->send(
+                '/zones/' . $identifier . '/purge_cache',
+                [
+                    'purge_everything' => true,
+                ],
+                'DELETE'
+            );
+            if (!is_array($ret)) {
+                $ret = [
+                    'success' => false,
+                    'errors' => []
+                ];
+            }
+
+            if ($ret['success']) {
+                $this->writelog(
+                    0,
+                    'User %s cleared the cache on Cloudflare (domain: "%s")',
+                    [$this->beUser->user['username'], $zoneName]
+                );
+            } else {
+                $this->writelog(
+                    1,
+                    'User %s failed to clear the cache on Cloudflare (domain: "%s"): %s',
+                    [$this->beUser->user['username'], $zoneName, implode(LF, $ret['errors'])]
+                );
+            }
+        } catch (\RuntimeException $e) {
+            $this->writelog(1, $e->getMessage(), []);
         }
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Causal\Cloudflare\Domain\Model;
 
 /*
@@ -41,6 +42,11 @@ class QueueItem extends AbstractEntity
     const CLEAR_CACHE_COMMAND_PAGE = 3;
 
     /**
+     * Clear cache for all site tree
+     */
+    const CLEAR_CACHE_ROOT_LINE = 4;
+
+    /**
      * Page Uid to clear cache
      *
      * @var int
@@ -70,7 +76,7 @@ class QueueItem extends AbstractEntity
     {
         $this->setPropertiesFromParams($params);
     }
-    
+
     /**
      * @return int
      */
@@ -128,7 +134,8 @@ class QueueItem extends AbstractEntity
     {
         return $this->getCacheCommand() === self::CLEAR_CACHE_COMMAND_ALL
             || ConfigurationUtility::isEnablePurgeByTags() && $this->getCacheCommand() === self::CLEAR_CACHE_COMMAND_CACHE_TAG && !empty($this->getCacheTag())
-            || ConfigurationUtility::isEnablePurgeByUrl() && $this->getCacheCommand() === self::CLEAR_CACHE_COMMAND_PAGE && $this->getPageUid() !== 0;
+            || ConfigurationUtility::isEnablePurgeByUrl() && $this->getCacheCommand() === self::CLEAR_CACHE_COMMAND_PAGE && $this->getPageUid() !== 0
+            || $this->getCacheCommand() === self::CLEAR_CACHE_ROOT_LINE && $this->getPageUid() !== 0;
     }
 
     /**
@@ -139,20 +146,31 @@ class QueueItem extends AbstractEntity
     protected function setPropertiesFromParams(array $params)
     {
         if (!isset($params['cacheCmd'])) {
-            if ($params['table'] === 'pages') {
-                $this->setCacheCommand(self::CLEAR_CACHE_COMMAND_CACHE_TAG);
-                $this->setCacheTag('pageId_' . (int)$params['uid']);
-            } elseif (isset($params['uid_page']) && ($pageUid = (int)$params['uid_page'])) {
+            $pageUid = isset($params['uid_page']) ? intval($params['uid_page']) : 0;
+            if ($pageUid <= 0) {
+                return;
+            }
+            $pageRecord = BackendUtility::getRecord(
+                'pages',
+                $pageUid,
+                'doktype'
+            );
+            if (!is_array($pageRecord)) {
+                // Record not found? Should never happen
+                return;
+            }
+            $isRegularPage = intval($pageRecord['doktype']) === 1;
+
+            if ($params['table'] === 'pages'
+                || ($params['table'] === 'tt_content' && $isRegularPage)) {
                 // If content was update on page and it's standard page
-                $pageRecord = BackendUtility::getRecord(
-                    'pages',
-                    $pageUid,
-                    'doktype'
-                );
-                if (is_array($pageRecord) && (int)$pageRecord['doktype'] === 1) {
-                    $this->setCacheCommand(self::CLEAR_CACHE_COMMAND_PAGE);
-                    $this->setPageUid($pageUid);
-                }
+                // or page was updated
+                $this->setCacheCommand(self::CLEAR_CACHE_COMMAND_PAGE);
+                $this->setPageUid($pageUid);
+            } else {
+                // Any other table or page type trigger update for rootline
+                $this->setCacheCommand(self::CLEAR_CACHE_ROOT_LINE);
+                $this->setPageUid($pageUid);
             }
         } elseif (GeneralUtility::inList('all,pages', $params['cacheCmd'])) {
             $this->setCacheCommand(self::CLEAR_CACHE_COMMAND_ALL);
