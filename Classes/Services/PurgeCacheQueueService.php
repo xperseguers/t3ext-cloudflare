@@ -49,6 +49,7 @@ class PurgeCacheQueueService
         $clearAllCache = false;
         $clearPageUids = [];
         $clearCacheTags = [];
+        $clearRootLinePageUids = [];
 
         /** @var QueueItem $queueItem */
         foreach ($queueItems as $queueItem) {
@@ -66,6 +67,9 @@ class PurgeCacheQueueService
                 case QueueItem::CLEAR_CACHE_COMMAND_PAGE:
                     $clearPageUids[] = $queueItem->getPageUid();
                     break;
+                case QueueItem::CLEAR_CACHE_ROOT_LINE:
+                    $clearRootLinePageUids[] = $queueItem->getPageUid();
+                    break;
                 // No default action
             }
         }
@@ -80,6 +84,9 @@ class PurgeCacheQueueService
             }
             if (!empty($clearPageUids)) {
                 $clearCacheService->clearPagesCache(array_unique($clearPageUids));
+            }
+            if (!empty($clearRootLinePageUids)) {
+                $clearCacheService->clearSitesRootLineCache(array_unique($clearRootLinePageUids));
             }
         }
 
