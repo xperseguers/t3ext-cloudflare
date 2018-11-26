@@ -86,7 +86,7 @@ class PurgeCacheQueueService
                 $clearCacheService->clearPagesCache(array_unique($clearPageUids));
             }
             if (!empty($clearRootLinePageUids)) {
-                $clearCacheService->clearSitesRootLineCache($clearRootLinePageUids);
+                $clearCacheService->clearSitesRootLineCache(array_unique($clearRootLinePageUids));
             }
         }
 
