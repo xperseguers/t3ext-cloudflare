@@ -83,5 +83,5 @@ $boot = function ($_EXTKEY) {
     }
 };
 
-$boot($_EXTKEY);
+$boot('cloudflare');
 unset($boot);
