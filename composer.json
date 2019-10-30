@@ -36,7 +36,6 @@
     }
   },
   "replace": {
-    "cloudflare": "self.version",
     "typo3-ter/cloudflare": "self.version"
   },
   "config": {
@@ -54,6 +53,7 @@
       "dev-master": "2.3.x-dev"
     },
     "typo3/cms": {
+      "extension-key": "cloudflare",
       "cms-package-dir": "{$vendor-dir}/typo3/cms",
       "web-dir": ".Build/Web"
     }
