@@ -192,9 +192,6 @@ class TCEmain
         $GLOBALS['TSFE']->id = $uid;
         $GLOBALS['TSFE']->connectToDB();
 
-        // Prevent database debug messages from messing up the output
-        $GLOBALS['TYPO3_DB']->debugOutput = false;
-
         $GLOBALS['TSFE']->initLLVars();
         $GLOBALS['TSFE']->initFEuser();
 
