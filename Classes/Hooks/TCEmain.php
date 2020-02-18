@@ -190,14 +190,21 @@ class TCEmain
 
         // Fire all the required function to get the TYPO3 Frontend all set up
         $GLOBALS['TSFE']->id = $uid;
-        $GLOBALS['TSFE']->connectToDB();
+        if (version_compare(TYPO3_branch, '8.7.99', '<=')) {
+            $GLOBALS['TSFE']->connectToDB();
+            $GLOBALS['TSFE']->initLLVars();
+        } else {
+            $GLOBALS['TSFE']->settingLanguage();
+            $GLOBALS['TSFE']->settingLocale();
+        }
 
-        $GLOBALS['TSFE']->initLLVars();
         $GLOBALS['TSFE']->initFEuser();
 
-        // Look up the page
-        $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
-        $GLOBALS['TSFE']->sys_page->init($GLOBALS['TSFE']->showHiddenPage);
+        if (version_compare(TYPO3_branch, '8.7.99', '<=')) {
+            // Look up the page
+            $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
+            $GLOBALS['TSFE']->sys_page->init($GLOBALS['TSFE']->showHiddenPage);
+        }
 
         // If the page is not found (if the page is a sysfolder, etc), then return no URL,
         // preventing any further processing which would result in an error page.
@@ -209,7 +216,19 @@ class TCEmain
 
         // If the page is a shortcut, look up the page to which the shortcut references,
         // and do the same check as above.
-        if ($page['doktype'] == 4 && count($GLOBALS['TSFE']->getPageShortcut($page['shortcut'], $page['shortcut_mode'], $page['uid'])) == 0) {
+        $pageShortcut = null;
+        if ($page['doktype'] == 4) {
+            try {
+                if (version_compare(TYPO3_branch, '8.7.99', '<=')) {
+                    $pageShortcut = $GLOBALS['TSFE']->getPageShortcut($page['shortcut'], $page['shortcut_mode'], $page['uid']);
+                } else {
+                    $pageShortcut = $GLOBALS['TSFE']->sys_page->getPageShortcut($page['shortcut'], $page['shortcut_mode'], $page['uid']);
+                }
+            } catch (\Exception $e) {
+                // Page is not accessible
+            }
+        }
+        if ($page['doktype'] == 4 && empty($pageShortcut)) {
             return null;
         }
 
@@ -218,7 +237,18 @@ class TCEmain
             return null;
         }
 
-        $GLOBALS['TSFE']->getPageAndRootline();
+
+        if (version_compare(TYPO3_branch, '8.7.99', '<=>')) {
+            $GLOBALS['TSFE']->getPageAndRootline();
+        } else {
+            // TODO: find a way around this reflection hack
+            // Possibly inspire from \TYPO3\CMS\Frontend\Page\PageGenerator::pagegenInit() in TYPO3 v8?
+            $class = new \ReflectionClass(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class);
+            $method = $class->getMethod('getPageAndRootline');
+            $method->setAccessible(true);
+            $method->invoke($GLOBALS['TSFE']);
+        }
+
         $GLOBALS['TSFE']->initTemplate();
         $GLOBALS['TSFE']->forceTemplateParsing = 1;
 
@@ -248,8 +278,10 @@ class TCEmain
             return null;
         }
 
-        // Get linkVars, absRefPrefix, etc
-        \TYPO3\CMS\Frontend\Page\PageGenerator::pagegenInit();
+        if (version_compare(TYPO3_branch, '8.7.99', '<=>')) {
+            // Get linkVars, absRefPrefix, etc
+            \TYPO3\CMS\Frontend\Page\PageGenerator::pagegenInit();
+        }
 
         /** @var $contentObj \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
         $contentObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
