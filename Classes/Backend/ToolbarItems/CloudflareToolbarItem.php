@@ -289,13 +289,21 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      * Purges cache from all configured zones.
      *
      * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      * @return void
      */
-    public function purge(ServerRequestInterface $request)
+    public function purge(ServerRequestInterface $request, ResponseInterface $response)
     {
         /** @var \Causal\Cloudflare\Hooks\TCEmain $tceMain */
         $tceMain = GeneralUtility::makeInstance(\Causal\Cloudflare\Hooks\TCEmain::class);
         $tceMain->clearCache();
+
+        if (version_compare(TYPO3_branch, '8.7.99', '<=')) {
+            exit;
+        }
+
+        $response->getBody()->write(json_encode(['success' => true]));
+        return $response;
     }
 
     /**********************
