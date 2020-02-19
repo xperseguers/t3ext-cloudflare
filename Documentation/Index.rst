@@ -30,7 +30,7 @@ Cloudflare Client
 		cloud, content delivery network, cdn, proxy, reverse proxy, ssl, performance
 
 	:Copyright:
-		2012-2018
+		2012-2020
 
 	:Author:
 		Xavier Perseguers
@@ -47,12 +47,6 @@ Cloudflare Client
 
 	The content of this document is related to TYPO3,
 	a GNU/GPL CMS/Framework available from `www.typo3.org <https://typo3.org/>`__.
-
-
-	**Other version of this document**
-
-	:PDF:
-		https://docs.typo3.org/typo3cms/extensions/cloudflare/2.2.0/_pdf/
 
 
 	**Table of Contents**
