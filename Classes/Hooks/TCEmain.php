@@ -43,7 +43,10 @@ class TCEmain
      */
     public function __construct()
     {
-        if (version_compare(TYPO3_branch, '9.5', '>=')) {
+        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
+            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
+            : TYPO3_branch;
+        if (version_compare($typo3Branch, '9.5', '>=')) {
             $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extKey);
         } else {
             $config = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey];
@@ -190,7 +193,10 @@ class TCEmain
 
         // Fire all the required function to get the TYPO3 Frontend all set up
         $GLOBALS['TSFE']->id = $uid;
-        if (version_compare(TYPO3_branch, '8.7.99', '<=')) {
+        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
+            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
+            : TYPO3_branch;
+        if (version_compare($typo3Branch, '9.0', '<')) {
             $GLOBALS['TSFE']->connectToDB();
             $GLOBALS['TSFE']->initLLVars();
         } else {
@@ -199,8 +205,10 @@ class TCEmain
         }
 
         $GLOBALS['TSFE']->initFEuser();
-
-        if (version_compare(TYPO3_branch, '8.7.99', '<=')) {
+        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
+            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
+            : TYPO3_branch;
+        if (version_compare($typo3Branch, '9.0', '<')) {
             // Look up the page
             $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
             $GLOBALS['TSFE']->sys_page->init($GLOBALS['TSFE']->showHiddenPage);
@@ -219,7 +227,7 @@ class TCEmain
         $pageShortcut = null;
         if ($page['doktype'] == 4) {
             try {
-                if (version_compare(TYPO3_branch, '8.7.99', '<=')) {
+                if (version_compare($typo3Branch, '9.0', '<')) {
                     $pageShortcut = $GLOBALS['TSFE']->getPageShortcut($page['shortcut'], $page['shortcut_mode'], $page['uid']);
                 } else {
                     $pageShortcut = $GLOBALS['TSFE']->sys_page->getPageShortcut($page['shortcut'], $page['shortcut_mode'], $page['uid']);
@@ -237,8 +245,7 @@ class TCEmain
             return null;
         }
 
-
-        if (version_compare(TYPO3_branch, '8.7.99', '<=>')) {
+        if (version_compare($typo3Branch, '9.0', '<')) {
             $GLOBALS['TSFE']->getPageAndRootline();
         } else {
             // TODO: find a way around this reflection hack
@@ -278,7 +285,7 @@ class TCEmain
             return null;
         }
 
-        if (version_compare(TYPO3_branch, '8.7.99', '<=>')) {
+        if (version_compare(TYPO3_branch, '8.0', '<')) {
             // Get linkVars, absRefPrefix, etc
             \TYPO3\CMS\Frontend\Page\PageGenerator::pagegenInit();
         }
