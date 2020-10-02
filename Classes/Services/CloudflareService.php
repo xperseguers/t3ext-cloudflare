@@ -14,6 +14,9 @@ namespace Causal\Cloudflare\Services;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Service to talk to Cloudflare.
  *
@@ -24,7 +27,7 @@ namespace Causal\Cloudflare\Services;
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class CloudflareService implements \TYPO3\CMS\Core\SingletonInterface
+class CloudflareService implements SingletonInterface
 {
 
     /** @var array */
@@ -60,16 +63,23 @@ class CloudflareService implements \TYPO3\CMS\Core\SingletonInterface
     {
         if (!trim($this->config['apiKey'])) {
             throw new \RuntimeException('Cannot clear cache on Cloudflare: Invalid apiKey for EXT:cloudflare', 1337770232);
-        } elseif (!\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail(trim($this->config['email']))) {
+        }
+
+        if (!$this->config['useBearerAuthentication'] && !GeneralUtility::validEmail(trim($this->config['email']))) {
             throw new \RuntimeException('Cannot clear cache on Cloudflare: Invalid email for EXT:cloudflare', 1337770383);
         }
 
         $url = rtrim($this->apiEndpoint, '/') . '/' . ltrim($route, '/');
         $headers = [
             'Content-Type: application/json',
-            'X-Auth-Key: ' . trim($this->config['apiKey']),
-            'X-Auth-Email: ' . trim($this->config['email']),
         ];
+
+        if ($this->config['useBearerAuthentication']) {
+            $headers[] = 'Authorization: Bearer ' . trim($this->config['apiKey']);
+        } else {
+            $headers[] = 'X-Auth-Key: ' . trim($this->config['apiKey']);
+            $headers[] = 'X-Auth-Email: ' . trim($this->config['email']);
+        }
 
         if ($request === 'GET') {
             $data = $this->sendHttpRequest($request, $url, $headers, $parameters);

@@ -18,10 +18,12 @@ This extension comes with a few settings available from the Extension Manager.
 
 Category Basic
 ^^^^^^^^^^^^^^
-
-- **API Key** : This is the API key made available on your account page (https://www.cloudflare.com/a/account/my-account)
+- **Use Bearer Authentication** : Enables RFC 6750 Bearer Authentication. With this setting enabled, Email is no longer
+  a required field.
 
 - **Email** : The e-mail address associated with the API key.
+
+- **API Key** : This is the API key made available on your account page (https://www.cloudflare.com/a/account/my-account)
 
 - **Domains** : Once the API key and the email are successfully saved (be sure to click on "Update" button first), a
   list of domains (or zones in Cloudflare's terminology) handled by the corresponding account is rendered. Just tick the

@@ -3,6 +3,9 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2014-12-30T17:07:23Z" product-name="cloudflare">
 		<header/>
 		<body>
+			<trans-unit id="settings.useBearerAuthentication">
+				<source>Use Bearer Authentication (RFC 6750) and API key.</source>
+			</trans-unit>
 			<trans-unit id="settings.email">
 				<source>Email: The e-mail address associated with the API key.</source>
 			</trans-unit>
