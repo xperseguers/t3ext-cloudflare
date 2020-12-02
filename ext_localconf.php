@@ -1,7 +1,7 @@
 <?php
 defined('TYPO3_MODE') || die();
 
-$boot = function ($_EXTKEY) {
+(static function (string $_EXTKEY) {
     $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
         ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
         : TYPO3_branch;
@@ -94,7 +94,4 @@ $boot = function ($_EXTKEY) {
             $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['additionalBackendItems']['cacheActions']['clearCloudflareCache'] = \Causal\Cloudflare\Hooks\TYPO3backend::class;
         }
     }
-};
-
-$boot('cloudflare');
-unset($boot);
+})('cloudflare');

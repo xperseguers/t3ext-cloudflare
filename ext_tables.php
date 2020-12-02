@@ -1,7 +1,7 @@
 <?php
 defined('TYPO3_MODE') || die();
 
-$boot = function ($_EXTKEY) {
+(static function (string $_EXTKEY) {
     // Register additional sprite icons
     $icons = [
         'cloudflare' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/cloudflare-16.png',
@@ -84,7 +84,4 @@ $boot = function ($_EXTKEY) {
             ]
         );
     }
-};
-
-$boot('cloudflare');
-unset($boot);
+})('cloudflare');
