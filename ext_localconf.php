@@ -17,7 +17,10 @@ defined('TYPO3_MODE') || die();
     // Register additional clear_cache method
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'][] = \Causal\Cloudflare\Hooks\TCEmain::class . '->clear_cacheCmd';
 
-    $remoteIp = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR');
+    // Do not use GeneralUtility::getIndpEnv('REMOTE_ADDR'), as the remote address need to be changed first in case
+    // option 'enableOriginatingIPs' is activated. Otherwise, the proxied IP address will be cached and used
+    // (e.g. in backend authentication process).
+    $remoteIp = $_SERVER['REMOTE_ADDR'];
 
     // @see https://www.cloudflare.com/ips
     $whiteListIPv4s = [
