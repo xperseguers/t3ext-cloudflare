@@ -1,3 +1,6 @@
+# cat=basic//05; type=boolean; label=LLL:EXT:cloudflare/Resources/Private/Language/locallang_db.xlf:settings.useBearerAuthentication
+useBearerAuthentication = 0
+
 # cat=basic//10; type=string; label=LLL:EXT:cloudflare/Resources/Private/Language/locallang_db.xlf:settings.email
 email =
 
