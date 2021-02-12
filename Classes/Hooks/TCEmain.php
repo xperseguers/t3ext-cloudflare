@@ -109,7 +109,11 @@ class TCEmain
         if (!isset($GLOBALS['BE_USER'])) {
             return;
         }
-        if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.all') || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.cloudflare')) {
+
+        $canClearAllCache = (bool)($GLOBALS['BE_USER']->getTSConfig()['options.']['clearCache.']['all'] ?? false);
+        $canClearCloudflareCache = (bool)($GLOBALS['BE_USER']->getTSConfig()['options.']['clearCache.']['cloudflare'] ?? false);
+
+        if ($GLOBALS['BE_USER']->isAdmin() || $canClearAllCache || $canClearCloudflareCache) {
             $this->clearCloudflareCache($GLOBALS['BE_USER']);
         }
     }
