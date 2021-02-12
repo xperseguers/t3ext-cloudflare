@@ -28,28 +28,12 @@ defined('TYPO3_MODE') || die();
 
     if (TYPO3_MODE === 'BE') {
         // Create a module section "Cloudflare" before 'Admin Tools'
-        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-            : TYPO3_branch;
-        if (version_compare($typo3Branch, '9.5', '>=')) {
-            $moduleConfiguration = [
-                'access' => 'user,group',
-                'name' => 'txcloudflare',
-                'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module-cloudflare.png',
-                'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod_cloudflare.xlf',
-            ];
-        } else {
-            $moduleConfiguration = [
-                'access' => 'user,group',
-                'name' => 'txcloudflare',
-                'labels' => [
-                    'tabs_images' => [
-                        'tab' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module-cloudflare.png',
-                    ],
-                    'll_ref' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod_cloudflare.xlf',
-                ],
-            ];
-        }
+        $moduleConfiguration = [
+            'access' => 'user,group',
+            'name' => 'txcloudflare',
+            'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module-cloudflare.png',
+            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod_cloudflare.xlf',
+        ];
 
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
             'txcloudflare', // main module key
