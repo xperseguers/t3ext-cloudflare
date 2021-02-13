@@ -86,8 +86,8 @@ This proxy setting lets you use a proxy for Cloudflare instead of the real endpo
 authentication mechanism and then forward the request to the real Cloudflare endpoint using the administrator credentials.
 
 .. tip::
-	A sample proxy you may deploy on your own server is part of the extension and may be downloaded from Forge as well
-	off https://git.typo3.org/TYPO3CMS/Extensions/cloudflare.git/blob/HEAD:/Resources/Examples/proxy-cloudflare.php.
+	A sample proxy you may deploy on your own server is part of the extension and may be downloaded from GitHub as well
+	off https://github.com/xperseguers/t3ext-cloudflare/blob/master/Resources/Examples/proxy-cloudflare.php.
 
 The configuration takes place at the end of the file:
 
