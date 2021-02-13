@@ -55,8 +55,6 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
      */
     public function __construct()
     {
-        parent::__construct();
-
         /** @var array config */
         $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extKey);
 
