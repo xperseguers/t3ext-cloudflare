@@ -54,15 +54,9 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      */
     public function __construct()
     {
-        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-            : TYPO3_branch;
-        if (version_compare($typo3Branch, '9.5', '>=')) {
-            $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extKey);
-        } else {
-            $config = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey];
-            $this->config = $config ? unserialize($config) : [];
-        }
+        /** @var array config */
+        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extKey);
+
         $this->cloudflareService = GeneralUtility::makeInstance(\Causal\Cloudflare\Services\CloudflareService::class, $this->config);
         $this->getLanguageService()->includeLLFile('EXT:cloudflare/Resources/Private/Language/locallang.xlf');
         $pageRenderer = $this->getPageRenderer();
@@ -86,7 +80,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      */
     public function getItem()
     {
-        $title = $this->getLanguageService()->getLL('toolbarItem', true);
+        $title = $this->getLanguageService()->getLL('toolbarItem');
 
         $cloudflare = [];
         $cloudflare[] = '<span title="' . htmlspecialchars($title) . '">' . $this->getSpriteIcon('actions-system-extension-configure', [], 'inline') . '</span>';
@@ -140,9 +134,9 @@ class CloudflareToolbarItem implements ToolbarItemInterface
                         $entries[] = htmlspecialchars($zone['name']);
                         if ($active !== null) {
                             $onClickCode = 'TYPO3.CloudflareMenu.toggleDevelopmentMode(\'' . $identifier . '\', ' . $active . '); return false;';
-                            $entries[] = '<a href="#" onclick="' . htmlspecialchars($onClickCode) . '">' . $languageService->getLL('toggle_development', true) . '</a>';
+                            $entries[] = '<a href="#" onclick="' . htmlspecialchars($onClickCode) . '">' . $languageService->getLL('toggle_development') . '</a>';
                         } else {
-                            $entries[] = $languageService->getLL('zone_inactive', true);
+                            $entries[] = $languageService->getLL('zone_inactive');
                         }
                         $entries[] = '    </div>';
                         $entries[] = '</div>';
@@ -159,7 +153,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
             $content .= '<hr />';
             $content .= '<div class="dropdown-table">' . implode('', $entries) . '</div>';
         } else {
-            $content .= '<p>' . $languageService->getLL('no_domains', true) . '</p>';
+            $content .= '<p>' . $languageService->getLL('no_domains') . '</p>';
         }
 
         return $content;
@@ -300,13 +294,6 @@ class CloudflareToolbarItem implements ToolbarItemInterface
         /** @var \Causal\Cloudflare\Hooks\TCEmain $tceMain */
         $tceMain = GeneralUtility::makeInstance(\Causal\Cloudflare\Hooks\TCEmain::class);
         $tceMain->clearCache();
-
-        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-            : TYPO3_branch;
-        if (version_compare($typo3Branch, '9.0', '<')) {
-            exit;
-        }
 
         $response->getBody()->write(json_encode(['success' => true]));
         return $response;

@@ -43,15 +43,7 @@ class TCEmain
      */
     public function __construct()
     {
-        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-            : TYPO3_branch;
-        if (version_compare($typo3Branch, '9.5', '>=')) {
-            $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extKey);
-        } else {
-            $config = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey];
-            $this->config = $config ? unserialize($config) : [];
-        }
+        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extKey);
     }
 
     /**
@@ -117,7 +109,11 @@ class TCEmain
         if (!isset($GLOBALS['BE_USER'])) {
             return;
         }
-        if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.all') || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.cloudflare')) {
+
+        $canClearAllCache = (bool)($GLOBALS['BE_USER']->getTSConfig()['options.']['clearCache.']['all'] ?? false);
+        $canClearCloudflareCache = (bool)($GLOBALS['BE_USER']->getTSConfig()['options.']['clearCache.']['cloudflare'] ?? false);
+
+        if ($GLOBALS['BE_USER']->isAdmin() || $canClearAllCache || $canClearCloudflareCache) {
             $this->clearCloudflareCache($GLOBALS['BE_USER']);
         }
     }
@@ -193,26 +189,10 @@ class TCEmain
 
         // Fire all the required function to get the TYPO3 Frontend all set up
         $GLOBALS['TSFE']->id = $uid;
-        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-            : TYPO3_branch;
-        if (version_compare($typo3Branch, '9.0', '<')) {
-            $GLOBALS['TSFE']->connectToDB();
-            $GLOBALS['TSFE']->initLLVars();
-        } else {
-            $GLOBALS['TSFE']->settingLanguage();
-            $GLOBALS['TSFE']->settingLocale();
-        }
 
+        $GLOBALS['TSFE']->settingLanguage();
+        $GLOBALS['TSFE']->settingLocale();
         $GLOBALS['TSFE']->initFEuser();
-        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-            : TYPO3_branch;
-        if (version_compare($typo3Branch, '9.0', '<')) {
-            // Look up the page
-            $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
-            $GLOBALS['TSFE']->sys_page->init($GLOBALS['TSFE']->showHiddenPage);
-        }
 
         // If the page is not found (if the page is a sysfolder, etc), then return no URL,
         // preventing any further processing which would result in an error page.
@@ -227,11 +207,7 @@ class TCEmain
         $pageShortcut = null;
         if ($page['doktype'] == 4) {
             try {
-                if (version_compare($typo3Branch, '9.0', '<')) {
-                    $pageShortcut = $GLOBALS['TSFE']->getPageShortcut($page['shortcut'], $page['shortcut_mode'], $page['uid']);
-                } else {
-                    $pageShortcut = $GLOBALS['TSFE']->sys_page->getPageShortcut($page['shortcut'], $page['shortcut_mode'], $page['uid']);
-                }
+                $pageShortcut = $GLOBALS['TSFE']->sys_page->getPageShortcut($page['shortcut'], $page['shortcut_mode'], $page['uid']);
             } catch (\Exception $e) {
                 // Page is not accessible
             }
@@ -245,16 +221,13 @@ class TCEmain
             return null;
         }
 
-        if (version_compare($typo3Branch, '9.0', '<')) {
-            $GLOBALS['TSFE']->getPageAndRootline();
-        } else {
-            // TODO: find a way around this reflection hack
-            // Possibly inspire from \TYPO3\CMS\Frontend\Page\PageGenerator::pagegenInit() in TYPO3 v8?
-            $class = new \ReflectionClass(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class);
-            $method = $class->getMethod('getPageAndRootline');
-            $method->setAccessible(true);
-            $method->invoke($GLOBALS['TSFE']);
-        }
+
+        // TODO: find a way around this reflection hack
+        // Possibly inspire from \TYPO3\CMS\Frontend\Page\PageGenerator::pagegenInit() in TYPO3 v8?
+        $class = new \ReflectionClass(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class);
+        $method = $class->getMethod('getPageAndRootline');
+        $method->setAccessible(true);
+        $method->invoke($GLOBALS['TSFE']);
 
         $GLOBALS['TSFE']->initTemplate();
         $GLOBALS['TSFE']->forceTemplateParsing = 1;
@@ -283,11 +256,6 @@ class TCEmain
         } catch (\Exception $e) {
             // Typically problem: #1294587218: No TypoScript template found!
             return null;
-        }
-
-        if (version_compare(TYPO3_branch, '8.0', '<')) {
-            // Get linkVars, absRefPrefix, etc
-            \TYPO3\CMS\Frontend\Page\PageGenerator::pagegenInit();
         }
 
         /** @var $contentObj \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */

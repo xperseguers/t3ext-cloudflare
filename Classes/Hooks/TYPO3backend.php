@@ -35,9 +35,7 @@ class TYPO3backend implements \TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookIn
      */
     public function __construct()
     {
-        if (version_compare(TYPO3_branch, '8.7', '<=')) {
-            $this->getLanguageService()->includeLLFile('EXT:cloudflare/Resources/Private/Language/locallang.xlf');
-        }
+
     }
 
     /**
@@ -50,7 +48,11 @@ class TYPO3backend implements \TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookIn
     public function manipulateCacheActions(&$cacheActions, &$optionValues)
     {
         $backendUser = $this->getBackendUser();
-        if ($backendUser->isAdmin() || $backendUser->getTSConfigVal('options.clearCache.all') || $backendUser->getTSConfigVal('options.clearCache.cloudflare')) {
+
+        $canClearAllCache = (bool)($backendUser->getTSConfig()['options.']['clearCache.']['all'] ?? false);
+        $canClearCloudflareCache = (bool)($backendUser->getTSConfig()['options.']['clearCache.']['cloudflare'] ?? false);
+
+        if ($backendUser->isAdmin() || $canClearAllCache || $canClearCloudflareCache) {
             // Add new cache menu item
             $clearAll = array_shift($cacheActions);
             /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
