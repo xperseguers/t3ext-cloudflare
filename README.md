@@ -1,4 +1,4 @@
 # Cloudflare Client
 
-- Documentation: https://docs.typo3.org/typo3cms/extensions/cloudflare/
-- Contribution guidelines: https://docs.typo3.org/typo3cms/extensions/cloudflare/Links.html
+- Documentation: https://docs.typo3.org/p/causal/cloudflare/2.3/en-us/Index.html
+- Contribution guidelines: https://docs.typo3.org/p/causal/cloudflare/2.3/en-us/Links.html
