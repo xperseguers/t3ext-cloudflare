@@ -254,7 +254,7 @@ class TCEmain
         try {
             $GLOBALS['TSFE']->getConfigArray();
         } catch (\Exception $e) {
-            // Typicall problem: #1294587218: No TypoScript template found!
+            // Typically problem: #1294587218: No TypoScript template found!
             return null;
         }
 
