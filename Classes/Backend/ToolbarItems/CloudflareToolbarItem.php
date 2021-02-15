@@ -16,6 +16,7 @@ namespace Causal\Cloudflare\Backend\ToolbarItems;
 
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use Psr\Http\Message\ResponseInterface;
@@ -246,16 +247,17 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      *
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
-     * @return void
+     *
+     * @return JsonResponse
      */
-    public function renderAjax(ServerRequestInterface $request, ResponseInterface $response)
+    public function renderAjax(ServerRequestInterface $request)
     {
         $menu = $this->getDropDown();
-        $response->getBody()->write(json_encode([
+
+        return new JsonResponse([
             'success' => true,
             'html' => $menu,
-        ]));
-        return $response;
+        ]);
     }
 
     /**
@@ -263,9 +265,10 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      *
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
-     * @return void
+     *
+     * @return JsonResponse
      */
-    public function toggleDevelopmentMode(ServerRequestInterface $request, ResponseInterface $response)
+    public function toggleDevelopmentMode(ServerRequestInterface $request)
     {
         $zone = GeneralUtility::_GP('zone');
         $active = GeneralUtility::_GP('active');
@@ -278,8 +281,9 @@ class CloudflareToolbarItem implements ToolbarItemInterface
             // Nothing to do
         }
 
-        $response->getBody()->write(json_encode(['success' => $ret['success'] === true]));
-        return $response;
+        return new JsonResponse([
+            'success' => $ret['success'] === true,
+        ]);
     }
 
     /**
@@ -287,16 +291,18 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      *
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
-     * @return void
+     *
+     * @return JsonResponse
      */
-    public function purge(ServerRequestInterface $request, ResponseInterface $response)
+    public function purge(ServerRequestInterface $request)
     {
         /** @var \Causal\Cloudflare\Hooks\TCEmain $tceMain */
         $tceMain = GeneralUtility::makeInstance(\Causal\Cloudflare\Hooks\TCEmain::class);
         $tceMain->clearCache();
 
-        $response->getBody()->write(json_encode(['success' => true]));
-        return $response;
+        return new JsonResponse([
+            'success' => true,
+        ]);
     }
 
     /**********************
