@@ -10,6 +10,9 @@ apiKey =
 # cat=basic//30; type=user[Causal\Cloudflare\ExtensionManager\Configuration->getDomains]; label=LLL:EXT:cloudflare/Resources/Private/Language/locallang_db.xlf:settings.domains
 domains =
 
+# cat=basic//40; type=boolean; label=LLL:EXT:cloudflare/Resources/Private/Language/locallang_db.xlf:settings.enableAnalyticsModule
+enableAnalyticsModule = 1
+
 # cat=advanced/enable/10; type=boolean; label=LLL:EXT:cloudflare/Resources/Private/Language/locallang_db.xlf:settings.enableOriginatingIPs
 enableOriginatingIPs = 0
 

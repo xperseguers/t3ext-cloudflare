@@ -26,7 +26,11 @@ defined('TYPO3_MODE') || die();
     // Register our custom CSS
     $GLOBALS['TBE_STYLES']['skins'][$_EXTKEY]['stylesheetDirectories']['visual'] = 'EXT:' . $_EXTKEY . '/Resources/Public/Css/visual/';
 
-    if (TYPO3_MODE === 'BE') {
+    /** @var array $config */
+    $config = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get($_EXTKEY);
+    $enableAnalyticsModule = (bool)($config['enableAnalyticsModule'] ?? true);
+
+    if (TYPO3_MODE === 'BE' && $enableAnalyticsModule) {
         // Create a module section "Cloudflare" before 'Admin Tools'
         $moduleConfiguration = [
             'access' => 'user,group',
