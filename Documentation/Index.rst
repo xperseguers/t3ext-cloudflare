@@ -14,51 +14,53 @@ Cloudflare Client
 
 .. only:: html
 
-	:Classification:
-		cloudflare
+   :Classification:
+      cloudflare
 
-	:Version:
-		|release|
+   :Version:
+      |release|
 
-	:Language:
-		en
+   :Language:
+      en
 
-	:Description:
-		The Cloudflare TYPO3 extension ensures your TYPO3 website is running optimally on the Cloudflare platform.
+   :Description:
+      The Cloudflare TYPO3 extension ensures your TYPO3 website is running
+      optimally on the Cloudflare platform.
 
-	:Keywords:
-		cloud, content delivery network, cdn, proxy, reverse proxy, ssl, performance
+   :Keywords:
+      cloud, content delivery network, cdn, proxy, reverse proxy, ssl,
+      performance
 
-	:Copyright:
-		2012-2021
+   :Copyright:
+      2012-2021
 
-	:Author:
-		Xavier Perseguers
+   :Author:
+      Xavier Perseguers
 
-	:Email:
-		xavier@causal.ch
+   :Email:
+      xavier@causal.ch
 
-	:License:
-		This document is published under the Open Publication License
-		available from http://www.opencontent.org/openpub/
+   :License:
+      This document is published under the Open Publication License
+      available from http://www.opencontent.org/openpub/
 
-	:Rendered:
-		|today|
+   :Rendered:
+      |today|
 
-	The content of this document is related to TYPO3,
-	a GNU/GPL CMS/Framework available from `www.typo3.org <https://typo3.org/>`__.
+   The content of this document is related to TYPO3,
+   a GNU/GPL CMS/Framework available from `www.typo3.org <https://typo3.org/>`__.
 
 
-	**Table of Contents**
+   **Table of Contents**
 
 .. toctree::
-	:maxdepth: 3
-	:titlesonly:
+   :maxdepth: 3
+   :titlesonly:
 
-	Introduction/Index
-	AdministratorManual/Index
-	UsersManual/Index
-	KnownProblems/Index
-	ToDoList/Index
-	ChangeLog/Index
-	Links
+   Introduction/Index
+   AdministratorManual/Index
+   UsersManual/Index
+   KnownProblems/Index
+   ToDoList/Index
+   ChangeLog/Index
+   Links

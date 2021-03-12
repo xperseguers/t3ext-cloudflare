@@ -12,5 +12,6 @@ Known problems
 ==============
 
 .. note::
-	Please use the extension's bug tracker on GitHub to report bugs:
-	https://github.com/xperseguers/t3ext-cloudflare/issues
+
+   Please use the extension's bug tracker on GitHub to report bugs:
+   https://github.com/xperseguers/t3ext-cloudflare/issues
