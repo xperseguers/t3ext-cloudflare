@@ -77,6 +77,8 @@ The official list of Cloudflare's reverse-proxy IPs (both IPv4 and IPv6) can be 
 
 - **API Endpoint:** An alternate API endpoint/proxy for Cloudflare.
 
+.. hint:: This part is outdated since Cloudflare allows Bearer Authentication (see below).
+
 The goal of a proxy for Cloudflare is to solve the problematic of having your client's domains all managed with a single
 Cloudflare account without having to share your "administrator credentials" with your clients. In fact, Cloudflare does
 not provide API credentials on a domain/zone basis but for the whole account which is why you are forced to use
@@ -132,3 +134,18 @@ user group's TSconfig:
 .. code-block:: typoscript
 
 	options.clearCache.cloudflare = 1
+
+.. _admin-manual-configuration-bearer-authentication:
+
+Configuration of the Bearer Authentication
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- Go to https://dash.cloudflare.com/profile/api-tokens
+- Under the section "API Tokens", click the button "Create Token"
+- This extension requires following permissions:
+  - **Zone / Zone / Read** *(to be able to select the zone while configuring the extension)*
+  - **Zone / Zone Settings** / Edit *(to toggle Development mode)*
+  - **Zone / Cache Purge / Purge** *(for obvious reason)*/
+  - **Zone / Analytics / Read** *(for the Backend module showing statistics)*
+
+Naturally you should restrict your token to one or more zones.
