@@ -143,6 +143,7 @@ Configuration of the Bearer Authentication
 - Go to https://dash.cloudflare.com/profile/api-tokens
 - Under the section "API Tokens", click the button "Create Token"
 - This extension requires following permissions:
+
   - **Zone / Zone / Read** *(to be able to select the zone while configuring the extension)*
   - **Zone / Zone Settings** / Edit *(to toggle Development mode)*
   - **Zone / Cache Purge / Purge** *(for obvious reason)*/
