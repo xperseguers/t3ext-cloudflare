@@ -19,7 +19,7 @@ This extension comes with a few settings available from the Extension Manager.
 Category Basic
 ^^^^^^^^^^^^^^
 - **Use Bearer Authentication** : Enables RFC 6750 Bearer Authentication. With this setting enabled, Email is no longer
-  a required field.
+  a required field (:ref:`see below for configuration <admin-manual-configuration-bearer-authentication>`).
 
 - **Email** : The e-mail address associated with the API key.
 
@@ -145,7 +145,7 @@ Configuration of the Bearer Authentication
 - This extension requires following permissions:
 
   - **Zone / Zone / Read** *(to be able to select the zone while configuring the extension)*
-  - **Zone / Zone Settings** / Edit *(to toggle Development mode)*
+  - **Zone / Zone Settings / Edit** *(to toggle Development mode)*
   - **Zone / Cache Purge / Purge** *(for obvious reason)*/
   - **Zone / Analytics / Read** *(for the Backend module showing statistics)*
 
