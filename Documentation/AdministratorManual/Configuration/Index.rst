@@ -146,7 +146,7 @@ Configuration of the Bearer Authentication
 
   - **Zone / Zone / Read** *(to be able to select the zone while configuring the extension)*
   - **Zone / Zone Settings / Edit** *(to toggle Development mode)*
-  - **Zone / Cache Purge / Purge** *(for obvious reason)*/
+  - **Zone / Cache Purge / Purge** *(for obvious reason)*
   - **Zone / Analytics / Read** *(for the Backend module showing statistics)*
 
 Naturally you should restrict your token to one or more zones.

@@ -137,57 +137,50 @@ class CloudflareService implements SingletonInterface
      */
     protected function sendHttpRequest($method, $url, array $headers, array $data)
     {
-        if (true || $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] == '1') {
-            if (!function_exists('curl_init') || !($ch = curl_init())) {
-                list ($major, $_) = explode('.', phpversion(), 2);
-                throw new \RuntimeException('cURL cannot be used. Make sure php' . $major . '-curl is loaded.', 1337673614);
-            }
+        $ch = curl_init();
 
-            if ($method === 'GET') {
-                if (!empty($data)) {
-                    $parameters = '?' . http_build_query($data);
-                    if (strpos($url, '?') === false) {
-                        $url .= $parameters;
-                    } else {
-                        // URL is currently proxied
-                        $pos = strpos($url, '&route=') + 7;
-                        $route = substr($url, $pos) . $parameters;
-                        $url = substr($url, 0, $pos) . urlencode($route);
-                    }
-                }
-            } else {
-                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-            }
-
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
-            curl_setopt($ch, CURLOPT_HEADER, 0);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_FRESH_CONNECT, 1);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);
-            curl_setopt($ch, CURLOPT_TIMEOUT, max(0, intval($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlTimeout'])));
-
-            if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']) {
-                curl_setopt($ch, CURLOPT_PROXY, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']);
-
-                if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel']) {
-                    curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel']);
-                }
-                if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass']) {
-                    curl_setopt($ch, CURLOPT_PROXYUSERPWD, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass']);
+        if ($method === 'GET') {
+            if (!empty($data)) {
+                $parameters = '?' . http_build_query($data);
+                if (!str_contains($url, '?')) {
+                    $url .= $parameters;
+                } else {
+                    // URL is currently proxied
+                    $pos = strpos($url, '&route=') + 7;
+                    $route = substr($url, $pos) . $parameters;
+                    $url = substr($url, 0, $pos) . urlencode($route);
                 }
             }
-
-            if (!($result = curl_exec($ch))) {
-                trigger_error(curl_errno($ch));
-            }
-            curl_close($ch);
-
-            return json_decode($result, true);
         } else {
-            // TODO with fsockopen()
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
         }
+
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_FRESH_CONNECT, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 15);
+
+        if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']) {
+            curl_setopt($ch, CURLOPT_PROXY, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']);
+
+            if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel']) {
+                curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel']);
+            }
+            if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass']) {
+                curl_setopt($ch, CURLOPT_PROXYUSERPWD, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass']);
+            }
+        }
+
+        if (!($result = curl_exec($ch))) {
+            trigger_error(curl_errno($ch));
+        }
+        curl_close($ch);
+
+        return json_decode($result, true, 512, JSON_THROW_ON_ERROR);
     }
 
 }
