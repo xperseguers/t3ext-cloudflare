@@ -39,25 +39,13 @@
   "replace": {
     "typo3-ter/cloudflare": "self.version"
   },
-  "config": {
-    "vendor-dir": ".Build/vendor",
-    "bin-dir": ".Build/bin"
-  },
-  "scripts": {
-    "post-autoload-dump": [
-      "mkdir -p .Build/Web/typo3conf/ext/",
-      "[ -L .Build/Web/typo3conf/ext/cloudflare ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/cloudflare"
-    ]
-  },
   "extra": {
     "branch-alias": {
       "dev-master": "2.4.x-dev",
       "dev-typo3/v8": "2.3.x-dev"
     },
     "typo3/cms": {
-      "extension-key": "cloudflare",
-      "cms-package-dir": "{$vendor-dir}/typo3/cms",
-      "web-dir": ".Build/Web"
+      "extension-key": "cloudflare"
     }
   }
 }
