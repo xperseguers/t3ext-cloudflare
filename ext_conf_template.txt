@@ -16,9 +16,6 @@ enableAnalyticsModule = 1
 # cat=advanced/enable/10; type=boolean; label=LLL:EXT:cloudflare/Resources/Private/Language/locallang_db.xlf:settings.enableOriginatingIPs
 enableOriginatingIPs = 0
 
-# cat=advanced/enable/20; type=boolean; label=LLL:EXT:cloudflare/Resources/Private/Language/locallang_db.xlf:settings.cacheSslContent
-cacheSslContent = 0
-
 # cat=advanced/enable/30; type=boolean; label=LLL:EXT:cloudflare/Resources/Private/Language/locallang_db.xlf:settings.enablePurgeSingleFile
 enablePurgeSingleFile = 0
 

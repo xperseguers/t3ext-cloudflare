@@ -21,9 +21,6 @@
 			<trans-unit id="settings.enableOriginatingIPs">
 				<source>Originating IPs: Tick this checkbox in case you cannot restore the originating IPs at the webserver level.</source>
 			</trans-unit>
-			<trans-unit id="settings.cacheSslContent">
-				<source>Cache content over SSL: Requires EXT:nc_staticfilecache. Tick this checkbox in case you would to cache content over SSL. Typically useful when securing your website with Cloudflare's flexible SSL.</source>
-			</trans-unit>
 			<trans-unit id="settings.enablePurgeSingleFile">
 				<source>[EXPERIMENTAL] Purge individual files by URL: Granularly remove individual files from Cloudflare's cache by specifying the URL. BEWARE: Highly experimental!</source>
 			</trans-unit>

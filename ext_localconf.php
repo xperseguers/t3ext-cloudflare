@@ -63,11 +63,6 @@ defined('TYPO3_MODE') || die();
             }
         }
 
-        // Cache SSL content
-        if (isset($config['cacheSslContent']) && (bool)$config['cacheSslContent']) {
-            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['nc_staticfilecache/class.tx_ncstaticfilecache.php']['createFile_initializeVariables'][] = 'EXT:' . $_EXTKEY . '/Classes/Hooks/tx_ncstaticfilecache.php:Tx_Cloudflare_Hooks_NcStaticfilecache->createFile_initializeVariables';
-        }
-
         if (isset($config['enableOriginatingIPs']) && (bool)$config['enableOriginatingIPs']) {
             if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
                 $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CF_CONNECTING_IP'];

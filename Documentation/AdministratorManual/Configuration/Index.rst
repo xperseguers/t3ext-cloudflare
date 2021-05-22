@@ -43,11 +43,6 @@ Category Basic
 Category Advanced
 ^^^^^^^^^^^^^^^^^
 
-- **Cache content over SSL:** This checkbox implements a hook of extension
-  `nc\_staticfilecache <https://typo3.org/extensions/repository/view/nc_staticfilecache>`_
-  and should be ticked in case you would like to cache content over SSL. This is
-  typically useful when securing your website with Cloudflare's flexible SSL.
-
 - **Purge individual files by URL:** This checkbox allows you to purge individual
   files on Cloudflare's cache using an URL.
   **Beware:** *This is still highly experimental.*
