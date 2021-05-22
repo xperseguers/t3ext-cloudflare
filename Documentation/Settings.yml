@@ -7,7 +7,7 @@ conf.py:
   copyright: 2012-2021
   project: Cloudflare Client
   version: 2.4
-  release: 2.4.0-dev
+  release: 2.4.0
   latex_documents:
   - - Index
     - cloudflare.tex
