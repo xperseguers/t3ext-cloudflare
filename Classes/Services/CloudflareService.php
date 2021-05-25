@@ -180,7 +180,7 @@ class CloudflareService implements SingletonInterface
         }
         curl_close($ch);
 
-        return json_decode($result, true, 512, JSON_THROW_ON_ERROR);
+        return json_decode($result, true);
     }
 
 }
