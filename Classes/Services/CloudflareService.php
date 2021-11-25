@@ -59,7 +59,7 @@ class CloudflareService implements SingletonInterface
      * @return array
      * @throws \RuntimeException
      */
-    public function send($route, array $parameters = [], $request = 'GET')
+    public function send($route, array $parameters = [], string $request = 'GET')
     {
         if (!trim($this->config['apiKey'])) {
             throw new \RuntimeException('Cannot clear cache on Cloudflare: Invalid apiKey for EXT:cloudflare', 1337770232);
@@ -113,7 +113,7 @@ class CloudflareService implements SingletonInterface
      * @param string $resultSortingKey
      * @return array
      */
-    public function sort(array $data, $resultSortingKey)
+    public function sort(array $data, string $resultSortingKey): array
     {
         $keyValues = [];
         foreach ($data['result'] as $key => $arr) {
