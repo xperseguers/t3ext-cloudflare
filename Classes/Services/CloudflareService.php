@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class CloudflareService implements SingletonInterface
 {
-
     /** @var array */
     protected $config;
 

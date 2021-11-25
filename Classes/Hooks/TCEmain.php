@@ -38,9 +38,9 @@ class TCEmain
     /**
      * Default constructor.
      */
-    public function __construct()
+    public function __construct(ExtensionConfiguration $extensionConfiguration)
     {
-        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get(Configuration::KEY);
+        $this->config = $extensionConfiguration->get(Configuration::KEY);
     }
 
     /**
