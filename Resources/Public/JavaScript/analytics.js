@@ -5,7 +5,8 @@ require(['TYPO3/CMS/Core/Ajax/AjaxRequest'], function (AjaxRequest) {
 
         createSimpleGraph: function (elementId, key) {
             var data = [];
-            $.each(this.timeseries, function (index, object) {
+
+            Array.prototype.forEach.call(this.timeseries, function (object) {
                 data.push({
                     'since': object.since,
                     'data1': object[key].all
@@ -18,7 +19,7 @@ require(['TYPO3/CMS/Core/Ajax/AjaxRequest'], function (AjaxRequest) {
 
         createCacheGraph: function (elementId, key) {
             var data = [];
-            $.each(this.timeseries, function (index, object) {
+            Array.prototype.forEach.call(this.timeseries, function (object) {
                 data.push({
                     'since': object.since,
                     'data1': object[key].cached,
@@ -66,14 +67,15 @@ require(['TYPO3/CMS/Core/Ajax/AjaxRequest'], function (AjaxRequest) {
             };
 
             var data = [];
-            $.each(this.timeseries, function (index, object) {
+            Array.prototype.forEach.call(this.timeseries, function (object) {
                 var item = {
                     'since': object.since
                 };
-                $.each(threats, function (type, threat) {
+
+                Array.prototype.forEach.call(threats, function (threat, type) {
                     item[type] = 0;
                 });
-                $.each(object.threats.type, function (type, threat) {
+                Array.prototype.forEach.call(object.threats.type, function (threat, type) {
                     item[type] = threat.all;
                     threats[type].name = threat.name;
                     threats[type].enable = true;
@@ -83,7 +85,7 @@ require(['TYPO3/CMS/Core/Ajax/AjaxRequest'], function (AjaxRequest) {
 
             var graphs = [];
             var self = this;
-            $.each(threats, function (type, threat) {
+            Array.prototype.forEach.call(threats, function (threat, type) {
                 if (threat.enable) {
                     graphs.push(self.getGraphDefinition(threat.color, threat.name, type));
                 }
@@ -124,9 +126,9 @@ require(['TYPO3/CMS/Core/Ajax/AjaxRequest'], function (AjaxRequest) {
                 'usePrefixes': true
             });
 
-            $('#' + key + 'C1').html(this.totals[key].c1);
-            $('#' + key + 'C2').html(this.totals[key].c2);
-            $('#' + key + 'C3').html(this.totals[key].c3);
+            document.getElementById(key + 'C1').innerHTML = this.totals[key].c1;
+            document.getElementById(key + 'C2').innerHTML = this.totals[key].c2;
+            document.getElementById(key + 'C3').innerHTML = this.totals[key].c3;
         },
 
         getGraphDefinition: function (color, title, field) {
@@ -173,30 +175,45 @@ require(['TYPO3/CMS/Core/Ajax/AjaxRequest'], function (AjaxRequest) {
 
         update: function (zone, since) {
             if (!zone) {
-                zone = 'unknown';
+                zone = '#unknown';
             }
             if (!since) {
-                since = 0;
+                since = '#0';
             }
+
+            zone = zone.substring(1);
+            since = since.substring(1);
 
             var self = this;
 
             new AjaxRequest(TYPO3.settings.ajaxUrls.cloudflare_dashboard)
                 .withQueryArguments({zone: zone, since: since})
                 .get()
-                .then(async function (response) {
-                    let resolved = await response.resolve();
-                    let data = resolved.result;
+                .then(async function (ajaxResponse, res) {
+                    let resolved = await ajaxResponse.resolve();
+                    let data = resolved.ressult;
+                    if (!data) {
+                        console.log('No data retrieved, skip processing');
+                        return;
+                    }
+
                     self.timeseries = data.timeseries;
                     self.totals = data.totals;
 
                     // Update the list of available periods
-                    var $periods = $('#period');
-                    $periods.empty();
-                    $.each(data.periods, function (value, label) {
-                        $periods.append($('<option></option>').attr('value', value).text(label));
+                    const periods = document.getElementById('period');
+                    while (periods.firstChild) {
+                        periods.removeChild(el.firstChild);
+                    }
+
+                    Array.prototype.forEach.call(data.periods, function (label, value) {
+                        let option = document.createElement('option')
+                        option.value = value;
+                        option.text = label;
+
+                        periods.add(option);
                     });
-                    $periods.val(since);
+                    periods.value = since;
 
                     self.createCacheGraph('chartRequests', 'requests');
                     self.createCacheGraph('chartBandwidth', 'bandwidth');
@@ -216,7 +233,7 @@ require(['TYPO3/CMS/Core/Ajax/AjaxRequest'], function (AjaxRequest) {
                     self.createDonut('donutBandwidth', donutData, ['#9bca3e', '#ebebeb']);
 
                     donutData = [];
-                    $.each(data.totals.requests.content_type, function (type, count) {
+                    Array.prototype.forEach.call(data.totals.requests.content_type, function (count, type) {
                         donutData.push({
                             'title': type,
                             'value': count
@@ -235,39 +252,65 @@ require(['TYPO3/CMS/Core/Ajax/AjaxRequest'], function (AjaxRequest) {
                         }
                     ];
                     self.createDonut('donutSsl', donutData, ['#2f7bbf', '#ebebeb']);
-
-                    $('.blocks small').html(data.period);
-                    console.log(resolved.result);
+                    const blocks = document.querySelectorAll('.blocks small');
+                    Array.prototype.forEach.call(blocks, function (el) {
+                        el.innerHTML = data.period;
+                    });
+                })
+                .catch(function (reason) {
+                    console.error('CloudFlare: Analytics called .catch on %o with arguments: %o', this, arguments);
                 });
         }
     };
 
-    $(document).ready(function () {
-        $('.tabs a').click(function (event) {
-            event.preventDefault();
-            $(this).parent().addClass('active');
-            $(this).parent().siblings().removeClass('active');
-            var tab = $(this).attr('href');
-            $('.tab-content').not(tab).css('display', 'none');
-            $(tab).fadeIn();
+    var cloudflareEventListeners = function () {
+        const tabLinks = document.querySelectorAll('.tabs a');
+        Array.prototype.forEach.call(tabLinks, function (tabLink) {
+            tabLink.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                if (this.parentNode === null) return;
+
+                Array.prototype.filter.call(this.parentNode.parentNode.children, function (child) {
+                    child.classList.remove('active');
+                });
+                this.parentNode.classList.add('active');
+
+                const tabLink = this.getAttribute('href');
+                const inactiveTabs = document.querySelectorAll(".tab-content:not(" + tabLink + ")");
+                Array.prototype.filter.call(inactiveTabs, function (tab) {
+                    tab.classList.remove('show');
+                });
+                var activeTab = document.querySelector(tabLink);
+                activeTab.classList.add('show');
+
+                return false;
+            }, false);
         });
-        $('#requests').fadeIn();
 
-        $('#zone').change(function () {
-            var zone = $(this).val();
-            var period = $('#period').val();
 
-            CloudflareAnalytics.update(zone, period);
+        document.getElementById('requests').style.display = '';
+        const period = document.querySelector('select[name=period]');
+        const zone = document.querySelector('select[name=zone]');
+
+        zone.addEventListener('change', function () {
+            CloudflareAnalytics.update(zone.value, period.value);
         });
 
-        $('#period').change(function () {
-            var zone = $('#zone').val();
-            var period = $(this).val();
 
-            CloudflareAnalytics.update(zone, period);
+        period.addEventListener('change', function () {
+            CloudflareAnalytics.update(zone.value, period.value);
         });
 
-        $('#period').change();
-    });
+        // Trigger change event by default for period
+        var event = document.createEvent('HTMLEvents');
+        event.initEvent('change', true, false);
+        period.dispatchEvent(event);
+    }
 
+    if (document.readyState !== 'loading') {
+        cloudflareEventListeners();
+    } else {
+        document.addEventListener('DOMContentLoaded', cloudflareEventListeners);
+    }
 });

@@ -5,25 +5,6 @@
 
 <f:section name="Content">
     <f:be.pageRenderer pageTitle="Analytics"/>
-    <!-- refactor to TYPO3 buttons -->
-    <div class="header">
-        <div class="left">
-            <f:if condition="{zones -> f:count()} > 1">
-                <f:then>
-                    <f:form.select id="zone" options="{zones}"/>
-                </f:then>
-                <f:else>
-                    <h1>{defaultZone}</h1>
-                    <input type="hidden" id="zone" value="{defaultIdentifier}"/>
-                </f:else>
-            </f:if>
-        </div>
-        <div class="right">
-            <f:form.select id="period" options="{periods}" value="1440"/>
-        </div>
-    </div>
-
-    <!-- -->
     <section class="tab-container">
         <ul class="tabs">
             <li class="active"><a href="#requests" data-tab-id="0">
@@ -40,7 +21,7 @@
             </a></li>
         </ul>
 
-        <div class="tab-content" id="requests">
+        <div class="tab-content show" id="requests">
             <f:render partial="Tab/Requests"/>
         </div>
 

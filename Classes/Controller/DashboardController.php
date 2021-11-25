@@ -15,12 +15,16 @@ namespace Causal\Cloudflare\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Causal\Cloudflare\Backend\Template\Components\Menu\JavascriptMenuItem;
 use Causal\Cloudflare\ExtensionManager\Configuration;
 use Causal\Cloudflare\Services\CloudflareService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Template\Components\DocHeaderComponent;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -50,7 +54,9 @@ class DashboardController extends ActionController
     protected $zones;
 
     /**
-     * Default constructor.
+     * @param \TYPO3\CMS\Backend\Template\ModuleTemplateFactory $moduleTemplateFactory
+     * @param \TYPO3\CMS\Core\Configuration\ExtensionConfiguration $extensionConfiguration
+     * @param \Causal\Cloudflare\Services\CloudflareService $cloudflareService
      */
     public function __construct(ModuleTemplateFactory $moduleTemplateFactory, ExtensionConfiguration $extensionConfiguration, CloudflareService $cloudflareService)
     {
@@ -88,9 +94,83 @@ class DashboardController extends ActionController
         ]);
 
         $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
-        // Adding title, menus, buttons, etc. using $moduleTemplate ...
+        $this->addZoneAndPeriodsToButtonBar($moduleTemplate->getDocHeaderComponent());
         $moduleTemplate->setContent($this->view->render());
-        return $this->htmlResponse($moduleTemplate->renderContent());
+
+        return new HtmlResponse($moduleTemplate->renderContent());
+    }
+
+    /**
+     * @param DocHeaderComponent $docHeaderComponent
+     * @return void
+     */
+    private function addZoneAndPeriodsToButtonBar(DocHeaderComponent $docHeaderComponent): void
+    {
+        $menuRegistry = $docHeaderComponent->getMenuRegistry();
+        $zoneMenu = $menuRegistry->makeMenu()
+            ->setIdentifier('zone');
+        $zoneMenu->addMenuItem(
+            $zoneMenu->makeMenuItem()
+                ->setTitle('Pick a zone')
+                ->setHref('#')
+        );
+
+        $defaultIdentifier = null;
+        if (!empty($this->zones)) {
+            $defaultIdentifier = key($this->zones);
+            // Make first value default
+            foreach ($this->zones as $identifier => $zone) {
+                $menuItem = $zoneMenu->makeMenuItem()
+                    ->setTitle($zone)
+                    ->setHref('#' . $identifier)
+                    ->setActive($identifier === $defaultIdentifier);
+                $zoneMenu->addMenuItem($menuItem);
+            }
+        } else {
+            $menuItem = $zoneMenu->makeMenuItem()
+                ->setTitle('No zones found')
+                ->setHref('#unknown')
+                ->setActive(true);
+            $zoneMenu->addMenuItem($menuItem);
+        }
+        $menuRegistry->addMenu($zoneMenu);
+
+        // Period Menu
+        $periodMenu = $menuRegistry->makeMenu()
+            ->setIdentifier('period');
+        $periodMenu->addMenuItem(
+            $periodMenu->makeMenuItem()
+                ->setTitle('Pick a period')
+                ->setHref('#')
+        );
+
+        $periods = $this->getAvailablePeriods($defaultIdentifier);
+        if (!empty($periods)) {
+            $defaultValue = '1440';
+
+            foreach ($periods as $value => $label) {
+                $menuItem = $periodMenu->makeMenuItem()
+                    ->setTitle($label)
+                    ->setHref('#' . $value)
+                    ->setActive($value === $defaultValue);
+                $periodMenu->addMenuItem($menuItem);
+            }
+        } else {
+            $menuItem = $periodMenu->makeMenuItem()
+                ->setTitle('No periods found')
+                ->setHref('#')
+                ->setActive(true);
+            $periodMenu->addMenuItem($menuItem);
+        }
+        $menuRegistry->addMenu($periodMenu);
+
+        $buttonBar = $docHeaderComponent->getButtonBar();
+        // Shortcut button
+        $shortCutButton = $buttonBar->makeShortcutButton();
+        $shortCutButton
+            ->setRouteIdentifier('txcloudflare_analytics')
+            ->setDisplayName('Cloudflare: Analytics');
+        $buttonBar->addButton($shortCutButton);
     }
 
     /**
@@ -98,13 +178,13 @@ class DashboardController extends ActionController
      *
      * @param string|null $zone
      * @param int|null $since
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return JsonResponse
      */
-    public function ajaxAnalyticsAction(ServerRequestInterface $serverRequest): ResponseInterface
+    public function ajaxAnalyticsAction(ServerRequestInterface $serverRequest): JsonResponse
     {
         $zone = $serverRequest->getQueryParams()['zone'] ?? 'unknown';
         if (empty($zone)) {
-            return $this->jsonResponse('');
+            return new JsonResponse([], 204);
         }
         $since = $serverRequest->getQueryParams()['since'] ?? 0;
 
@@ -112,9 +192,14 @@ class DashboardController extends ActionController
         if (!isset($availablePeriods[$since])) {
             $since = (int)key($availablePeriods);
         }
-        $cfData = $this->cloudflareService->send('/zones/' . $zone . '/analytics/dashboard', ['since' => -$since]);
-        if (!$cfData['success']) {
-            return $this->jsonResponse('');
+        try {
+            $cfData = $this->cloudflareService->send('/zones/' . $zone . '/analytics/dashboard', ['since' => -$since]);
+        } catch (\RuntimeException) {
+            $cfData = [];
+        }
+
+        if (!isset($cfData['success'])) {
+            return new JsonResponse([], 204);
         }
 
         $data = [
@@ -199,16 +284,16 @@ class DashboardController extends ActionController
         arsort($data['totals']['bandwidth']['content_type']);
         arsort($data['totals']['requests']['content_type']);
 
-        return $this->jsonResponse(json_encode($data));
+        return new JsonResponse($data);
     }
 
     /**
      * Returns the available periods for a given zone (depends on the Cloudflare plan).
      *
-     * @param string $zone
+     * @param string|null $zone
      * @return array
      */
-    protected function getAvailablePeriods($zone): array
+    protected function getAvailablePeriods(?string $zone): array
     {
         if ($zone === null) {
             return [];
@@ -222,8 +307,12 @@ class DashboardController extends ActionController
             '10080' => $this->translate('period.10080'),
             '43200' => $this->translate('period.43200'),
         ];
+        try {
+            $info = $this->cloudflareService->send('/zones/' . $zone);
+        } catch (\RuntimeException) {
+            $info = [];
+        }
 
-        $info = $this->cloudflareService->send('/zones/' . $zone);
         if ($info['success']) {
             switch ($info['result']['plan']['legacy_id']) {
                 case 'free':
@@ -269,5 +358,4 @@ class DashboardController extends ActionController
     {
         return LocalizationUtility::translate($key, Configuration::KEY, $arguments);
     }
-
 }

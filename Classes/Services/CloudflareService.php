@@ -61,11 +61,11 @@ class CloudflareService implements SingletonInterface
     public function send($route, array $parameters = [], string $request = 'GET')
     {
         if (!trim($this->config['apiKey'])) {
-            throw new \RuntimeException('Cannot clear cache on Cloudflare: Invalid apiKey for EXT:cloudflare', 1337770232);
+            throw new \RuntimeException('Cannot invoke data send for Cloudflare: Invalid apiKey for EXT:cloudflare', 1337770232);
         }
 
         if (!$this->config['useBearerAuthentication'] && !GeneralUtility::validEmail(trim($this->config['email']))) {
-            throw new \RuntimeException('Cannot clear cache on Cloudflare: Invalid email for EXT:cloudflare', 1337770383);
+            throw new \RuntimeException('Cannot invoke data send for Cloudflare: Invalid email for EXT:cloudflare', 1337770383);
         }
 
         $url = rtrim($this->apiEndpoint, '/') . '/' . ltrim($route, '/');
