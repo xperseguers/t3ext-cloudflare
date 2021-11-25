@@ -29,15 +29,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  */
 class TYPO3backend implements \TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookInterface
 {
-
-    /**
-     * Default constructor.
-     */
-    public function __construct()
-    {
-
-    }
-
     /**
      * Adds cache menu item.
      *
