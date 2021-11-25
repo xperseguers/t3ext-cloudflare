@@ -14,6 +14,7 @@ namespace Causal\Cloudflare\Hooks;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Causal\Cloudflare\ExtensionManager\Configuration;
 use Causal\Cloudflare\Services\CloudflareService;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -31,10 +32,6 @@ use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
  */
 class TCEmain
 {
-
-    /** @var string */
-    protected $extKey = 'cloudflare';
-
     /** @var array */
     protected $config;
 
@@ -43,7 +40,7 @@ class TCEmain
      */
     public function __construct()
     {
-        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extKey);
+        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get(Configuration::KEY);
     }
 
     /**

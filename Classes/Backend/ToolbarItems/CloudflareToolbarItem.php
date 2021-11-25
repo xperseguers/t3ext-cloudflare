@@ -1,4 +1,5 @@
 <?php
+
 namespace Causal\Cloudflare\Backend\ToolbarItems;
 
 /*
@@ -14,13 +15,16 @@ namespace Causal\Cloudflare\Backend\ToolbarItems;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
-use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Http\JsonResponse;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Imaging\IconFactory;
+use Causal\Cloudflare\ExtensionManager\Configuration;
+use Causal\Cloudflare\Services\CloudflareService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Toolbar Menu handler.
@@ -34,16 +38,15 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class CloudflareToolbarItem implements ToolbarItemInterface
 {
-
-    /**
-     * @var string
-     */
-    protected $extKey = 'cloudflare';
-
     /**
      * @var array
      */
     protected $config;
+
+    /**
+     * @var \TYPO3\CMS\Core\Context\Context
+     */
+    protected $context;
 
     /**
      * @var \Causal\Cloudflare\Services\CloudflareService
@@ -53,12 +56,11 @@ class CloudflareToolbarItem implements ToolbarItemInterface
     /**
      * Default constructor.
      */
-    public function __construct()
+    public function __construct(ExtensionConfiguration $extensionConfiguration, Context $context, CloudflareService $cloudflareService)
     {
         /** @var array config */
-        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extKey);
-
-        $this->cloudflareService = GeneralUtility::makeInstance(\Causal\Cloudflare\Services\CloudflareService::class, $this->config);
+        $this->config = $extensionConfiguration->get(Configuration::KEY);
+        $this->cloudflareService = $cloudflareService;
         $this->getLanguageService()->includeLLFile('EXT:cloudflare/Resources/Private/Language/locallang.xlf');
         $pageRenderer = $this->getPageRenderer();
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Cloudflare/Toolbar/CloudflareMenu');
@@ -69,7 +71,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      *
      * @return bool true if user has access, false if not
      */
-    public function checkAccess()
+    public function checkAccess(): bool
     {
         return $this->getBackendUser()->isAdmin();
     }
@@ -104,7 +106,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
         $domains = GeneralUtility::trimExplode(',', $this->config['domains'], true);
         if (!empty($domains)) {
             foreach ($domains as $domain) {
-                list($identifier, ) = explode('|', $domain, 2);
+                list($identifier,) = explode('|', $domain, 2);
                 try {
                     $ret = $this->cloudflareService->send('/zones/' . $identifier);
 

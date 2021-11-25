@@ -14,6 +14,7 @@ namespace Causal\Cloudflare\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Causal\Cloudflare\ExtensionManager\Configuration;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -29,12 +30,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
-
-    /**
-     * @var string
-     */
-    protected $extKey = 'cloudflare';
-
     /**
      * @var array
      */
@@ -56,7 +51,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     public function __construct()
     {
         /** @var array config */
-        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extKey);
+        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get(Configuration::KEY);
 
         $this->cloudflareService = GeneralUtility::makeInstance(\Causal\Cloudflare\Services\CloudflareService::class, $this->config);
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace Causal\Cloudflare\ExtensionManager;
 
 /*
@@ -15,6 +16,7 @@ namespace Causal\Cloudflare\ExtensionManager;
  */
 
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -27,19 +29,18 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Configuration
+class Configuration implements SingletonInterface
 {
-
     /** @var string */
-    protected $extKey = 'cloudflare';
+    public const KEY = 'cloudflare';
 
     /**
      * Default constructor.
      */
-    public function __construct()
+    public function __construct(ExtensionConfiguration $extensionConfiguration)
     {
         /** @var array config */
-        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extKey);
+        $this->config = $extensionConfiguration->get(self::KEY);
     }
 
     /**
@@ -140,7 +141,7 @@ JS;
      */
     protected function sL($key)
     {
-        $message = $this->getLanguageService()->sL('LLL:EXT:' . $this->extKey . '/Resources/Private/Language/locallang_db.xlf:' . $key);
+        $message = $this->getLanguageService()->sL('LLL:EXT:' . self::KEY . '/Resources/Private/Language/locallang_db.xlf:' . $key);
         return $message;
     }
 
