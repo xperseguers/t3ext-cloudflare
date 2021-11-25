@@ -98,7 +98,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      *
      * @return string HTML
      */
-    public function getDropDown()
+    public function getDropDown(): string
     {
         $languageService = $this->getLanguageService();
         $entries = [];
