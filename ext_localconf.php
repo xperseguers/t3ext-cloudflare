@@ -82,9 +82,5 @@ defined('TYPO3_MODE') || die();
 
     if (!empty($config['apiKey'])) {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'][] = \Causal\Cloudflare\Backend\ToolbarItems\CloudflareToolbarItem::class;
-
-        if ($config['domains'] !== '') {
-            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['additionalBackendItems']['cacheActions']['clearCloudflareCache'] = \Causal\Cloudflare\Hooks\TYPO3backend::class;
-        }
     }
 })('cloudflare');

@@ -7,8 +7,23 @@ services:
   Causal\Cloudflare\:
     resource: '../Classes/*'
 
+  service.cloudflare:
+    class: Causal\Cloudflare\Services\CloudflareService
+    factory: '@Causal\Cloudflare\Factory\CloudflareServiceFactory'
+
   Causal\Cloudflare\ExtensionManager\Configuration:
+    public: true
+    arguments:
+      $cloudflareService: '@service.cloudflare'
+
+  Causal\Cloudflare\Hooks\TCEmain:
     public: true
 
   Causal\Cloudflare\Backend\ToolbarItems\CloudflareToolbarItem:
     public: true
+
+  Causal\Cloudflare\Backend\Event\CloudflareClearCacheActionsEventListener:
+    tags:
+      - name: event.listener
+        identifier: 'cloudflare/toolbar/clear-cache-actions-listener'
+        event: TYPO3\CMS\Backend\Backend\Event\ModifyClearCacheActionsEvent
