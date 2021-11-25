@@ -1,5 +1,6 @@
 <?php
 use Causal\Cloudflare\Backend\ToolbarItems\CloudflareToolbarItem;
+use Causal\Cloudflare\Controller\DashboardController;
 
 /**
  * Definitions for AJAX routes provided by EXT:cloudflare
@@ -10,11 +11,15 @@ return [
         'target' => CloudflareToolbarItem::class . '::renderAjax'
     ],
     'cloudflare_toggledev' => [
-        'path' => 'menu/cloudflare/development/toggle',
+        'path' => '/menu/cloudflare/development/toggle',
         'target' => CloudflareToolbarItem::class . '::toggleDevelopmentMode'
     ],
     'cloudflare_purge' => [
-        'path' => 'menu/cloudflare/purge',
+        'path' => '/menu/cloudflare/purge',
         'target' => CloudflareToolbarItem::class . '::purge'
+    ],
+    'cloudflare_dashboard' => [
+        'path' => '/dashboard/cloudflare',
+        'target' => DashboardController::class . '::ajaxAnalyticsAction',
     ],
 ];

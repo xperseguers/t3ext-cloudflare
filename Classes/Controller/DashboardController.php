@@ -1,4 +1,5 @@
 <?php
+
 namespace Causal\Cloudflare\Controller;
 
 /*
@@ -15,8 +16,14 @@ namespace Causal\Cloudflare\Controller;
  */
 
 use Causal\Cloudflare\ExtensionManager\Configuration;
+use Causal\Cloudflare\Services\CloudflareService;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Dashboard controller.
@@ -28,33 +35,31 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class DashboardController extends ActionController
 {
-    /**
-     * @var array
-     */
+    /** @var \TYPO3\CMS\Backend\Template\ModuleTemplateFactory */
+    protected $moduleTemplateFactory;
+
+    /** @var array */
     protected $config;
 
-    /**
-     * @var \Causal\Cloudflare\Services\CloudflareService
-     */
+    /** @var \Causal\Cloudflare\Services\CloudflareService */
     protected $cloudflareService;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $zones;
 
     /**
      * Default constructor.
      */
-    public function __construct()
+    public function __construct(ModuleTemplateFactory $moduleTemplateFactory, ExtensionConfiguration $extensionConfiguration, CloudflareService $cloudflareService)
     {
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
+
         /** @var array config */
-        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get(Configuration::KEY);
+        $this->config = $extensionConfiguration->get(Configuration::KEY);
 
-        $this->cloudflareService = GeneralUtility::makeInstance(\Causal\Cloudflare\Services\CloudflareService::class, $this->config);
-
+        $this->cloudflareService = $cloudflareService;
         $domains = GeneralUtility::trimExplode(',', $this->config['domains'], true);
         $this->zones = [];
         foreach ($domains as $domain) {
@@ -64,44 +69,52 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     }
 
     /**
-     * Default action: analytics.
+     * Default action: analytics
      *
-     * @return void
+     * @return \Psr\Http\Message\ResponseInterface
      */
-    public function analyticsAction()
+    public function analyticsAction(): ResponseInterface
     {
         $defaultIdentifier = null;
         if (!empty($this->zones)) {
             $defaultIdentifier = key($this->zones);
         }
+
         $this->view->assignMultiple([
             'zones' => $this->zones,
             'defaultIdentifier' => $defaultIdentifier,
             'defaultZone' => $defaultIdentifier !== null ? $this->zones[$defaultIdentifier] : null,
             'periods' => $this->getAvailablePeriods($defaultIdentifier),
         ]);
+
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        // Adding title, menus, buttons, etc. using $moduleTemplate ...
+        $moduleTemplate->setContent($this->view->render());
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
     /**
      * Returns the JSON data for the requests analytics.
      *
-     * @param string $zone
-     * @param int $since
-     * @return void
+     * @param string|null $zone
+     * @param int|null $since
+     * @return \Psr\Http\Message\ResponseInterface
      */
-    public function ajaxAnalyticsAction($zone, $since)
+    public function ajaxAnalyticsAction(ServerRequestInterface $serverRequest): ResponseInterface
     {
+        $zone = $serverRequest->getQueryParams()['zone'] ?? 'unknown';
         if (empty($zone)) {
-            $this->returnAjax(null);
+            return $this->jsonResponse('');
         }
+        $since = $serverRequest->getQueryParams()['since'] ?? 0;
 
         $availablePeriods = $this->getAvailablePeriods($zone);
         if (!isset($availablePeriods[$since])) {
-            $since = key($availablePeriods);
+            $since = (int)key($availablePeriods);
         }
         $cfData = $this->cloudflareService->send('/zones/' . $zone . '/analytics/dashboard', ['since' => -$since]);
         if (!$cfData['success']) {
-            $this->returnAjax(null);
+            return $this->jsonResponse('');
         }
 
         $data = [
@@ -186,27 +199,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         arsort($data['totals']['bandwidth']['content_type']);
         arsort($data['totals']['requests']['content_type']);
 
-        $this->returnAjax($data);
-    }
-
-    /**
-     * Returns an AJAX response.
-     *
-     * @param array $response
-     * @param bool $wrapForIframe see http://cmlenz.github.io/jquery-iframe-transport/#section-13
-     * return void
-     */
-    protected function returnAjax(array $response = null, $wrapForIframe = false)
-    {
-        $payload = json_encode($response);
-        if (!$wrapForIframe) {
-            header('Content-type: application/json');
-        } else {
-            header('Content-type: text/html');
-            $payload = '<textarea data-type="application/json">' . $payload . '</textarea>';
-        }
-        echo $payload;
-        exit;
+        return $this->jsonResponse(json_encode($data));
     }
 
     /**
@@ -215,7 +208,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
      * @param string $zone
      * @return array
      */
-    protected function getAvailablePeriods($zone)
+    protected function getAvailablePeriods($zone): array
     {
         if ($zone === null) {
             return [];
@@ -236,10 +229,8 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
                 case 'free':
                     unset($periods['30'], $periods['360'], $periods['720']);
                     break;
-                case 'pro':
-                    unset($periods['30']);
-                    break;
                 case 'business':
+                case 'pro':
                     unset($periods['30']);
                     break;
                 case 'enterprise':
@@ -258,11 +249,11 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
      * @param string $type
      * @return string
      */
-    protected function getThreatName($type)
+    protected function getThreatName(string $type): string
     {
         $name = $this->translate('dashboard.threats.' . $type);
         if (empty($name)) {
-            $name = $type;
+            return $type;
         }
         return $name;
     }
@@ -271,12 +262,12 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
      * Returns the localized label of a given key.
      *
      * @param string $key The key from the LOCAL_LANG array for which to return the value.
-     * @param array $arguments the arguments of the extension, being passed over to vsprintf
+     * @param array|null $arguments the arguments of the extension, being passed over to vsprintf
      * @return string Localized label
      */
-    protected function translate($key, $arguments = null)
+    protected function translate(string $key, ?array $arguments = null): string
     {
-        return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, $this->request->getControllerExtensionKey(), $arguments);
+        return LocalizationUtility::translate($key, Configuration::KEY, $arguments);
     }
 
 }

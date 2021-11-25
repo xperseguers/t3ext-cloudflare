@@ -11,7 +11,9 @@ hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video {
     font-size: 100%;
     vertical-align: baseline;
 }
-
+.module-body {
+    padding: 0;
+}
 html {
     line-height: 1;
 }

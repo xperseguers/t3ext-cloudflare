@@ -3,6 +3,8 @@ services:
     autowire: true
     autoconfigure: true
     public: false
+    bind:
+      $cloudflareService: '@service.cloudflare'
 
   Causal\Cloudflare\:
     resource: '../Classes/*'
@@ -11,10 +13,11 @@ services:
     class: Causal\Cloudflare\Services\CloudflareService
     factory: '@Causal\Cloudflare\Factory\CloudflareServiceFactory'
 
+  Causal\Cloudflare\Controller\DashboardController:
+    public: true
+
   Causal\Cloudflare\ExtensionManager\Configuration:
     public: true
-    arguments:
-      $cloudflareService: '@service.cloudflare'
 
   Causal\Cloudflare\Hooks\TCEmain:
     public: true
