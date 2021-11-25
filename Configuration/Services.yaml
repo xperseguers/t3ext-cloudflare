@@ -9,10 +9,20 @@ services:
   Causal\Cloudflare\:
     resource: '../Classes/*'
 
+  # Define generic cloudflare service
   service.cloudflare:
     class: Causal\Cloudflare\Services\CloudflareService
     factory: '@Causal\Cloudflare\Factory\CloudflareServiceFactory'
 
+  # Add custom toolbar
+  Causal\Cloudflare\Backend\Event\CloudflareClearCacheActionsEventListener:
+    tags:
+      - name: event.listener
+        identifier: 'cloudflare/toolbar/clear-cache-actions-listener'
+        event: TYPO3\CMS\Backend\Backend\Event\ModifyClearCacheActionsEvent
+
+  # All classes that uses DI and are invoked through GeneralUtility::makeInstance are
+  # required to be public
   Causal\Cloudflare\Controller\DashboardController:
     public: true
 
@@ -24,9 +34,3 @@ services:
 
   Causal\Cloudflare\Backend\ToolbarItems\CloudflareToolbarItem:
     public: true
-
-  Causal\Cloudflare\Backend\Event\CloudflareClearCacheActionsEventListener:
-    tags:
-      - name: event.listener
-        identifier: 'cloudflare/toolbar/clear-cache-actions-listener'
-        event: TYPO3\CMS\Backend\Backend\Event\ModifyClearCacheActionsEvent
