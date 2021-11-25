@@ -2,6 +2,41 @@
 defined('TYPO3_MODE') || die();
 
 (static function (string $_EXTKEY) {
+    // Register additional sprite icons
+    /** @var \TYPO3\CMS\Core\Imaging\IconRegistry $iconRegistry */
+    $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
+    $iconRegistry->registerIcon(
+        'extensions-' . $_EXTKEY . '-cloudflare-icon',
+        \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+        ['source' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/cloudflare-icon.svg']
+    );
+    $iconRegistry->registerIcon(
+        'extensions-' . $_EXTKEY . '-cloudflare',
+        \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+        ['source' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/cloudflare-16.png']
+    );
+    $iconRegistry->registerIcon(
+        'extensions-' . $_EXTKEY . '-direct',
+        \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+        ['source' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/direct-16.png']
+    );
+    $iconRegistry->registerIcon(
+        'extensions-' . $_EXTKEY . '-offline',
+        \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+        ['source' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/offline-16.png']
+    );
+    $iconRegistry->registerIcon(
+        'extensions-' . $_EXTKEY . '-online',
+        \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+        ['source' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/online-16.png']
+    );
+    $iconRegistry->registerIcon(
+        'extensions-' . $_EXTKEY . '-module',
+        \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+        ['source' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module-cloudflare.svg']
+    );
+    unset($iconRegistry);
+
     /** @var array $config */
     $config = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)
         ->get($_EXTKEY);
