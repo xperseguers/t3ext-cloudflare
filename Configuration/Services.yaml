@@ -1,0 +1,14 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Causal\Cloudflare\:
+    resource: '../Classes/*'
+
+  Causal\Cloudflare\ExtensionManager\Configuration:
+    public: true
+
+  Causal\Cloudflare\Backend\ToolbarItems\CloudflareToolbarItem:
+    public: true

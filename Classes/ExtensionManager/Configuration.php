@@ -34,9 +34,6 @@ class Configuration implements SingletonInterface
     /** @var string */
     public const KEY = 'cloudflare';
 
-    /**
-     * Default constructor.
-     */
     public function __construct(ExtensionConfiguration $extensionConfiguration)
     {
         /** @var array config */
