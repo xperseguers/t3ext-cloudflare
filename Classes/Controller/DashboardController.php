@@ -313,8 +313,8 @@ class DashboardController extends ActionController
             $info = [];
         }
 
-        if ($info['success']) {
-            switch ($info['result']['plan']['legacy_id']) {
+        if (isset($info['success'])) {
+            switch ($info['result']['plan']['legacy_id'] ?? 'unknown') {
                 case 'free':
                     unset($periods['30'], $periods['360'], $periods['720']);
                     break;
