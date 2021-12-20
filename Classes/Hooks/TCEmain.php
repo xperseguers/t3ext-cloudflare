@@ -1,4 +1,5 @@
 <?php
+
 namespace Causal\Cloudflare\Hooks;
 
 /*
@@ -14,10 +15,13 @@ namespace Causal\Cloudflare\Hooks;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Causal\Cloudflare\ExtensionManager\Configuration;
 use Causal\Cloudflare\Services\CloudflareService;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 
 /**
  * Hook for clearing cache on Cloudflare.
@@ -31,19 +35,19 @@ use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
  */
 class TCEmain
 {
-
-    /** @var string */
-    protected $extKey = 'cloudflare';
-
     /** @var array */
     protected $config;
+
+    /** @var \TYPO3\CMS\Core\Context\UserAspect */
+    protected $backendUserAspect;
 
     /**
      * Default constructor.
      */
-    public function __construct()
+    public function __construct(ExtensionConfiguration $extensionConfiguration, Context $context)
     {
-        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extKey);
+        $this->config = $extensionConfiguration->get(Configuration::KEY);
+        $this->backendUserAspect = $context->getAspect('backend.user');
     }
 
     /**
@@ -63,10 +67,7 @@ class TCEmain
 
         if (!isset($params['cacheCmd'])) {
             if ($params['table'] === 'pages' && $enablePurgeByTags) {
-                $this->purgeIndividualFileByCacheTag(
-                    isset($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER'] : null,
-                    'pageId_' . (int)$params['uid']
-                );
+                $this->purgeIndividualFileByCacheTag('pageId_' . (int)$params['uid']);
             }
             return;
         }
@@ -74,25 +75,19 @@ class TCEmain
         if (GeneralUtility::inList('all,pages', $params['cacheCmd'])) {
             $this->clearCloudflareCache($pObj->BE_USER);
         } else {
-            if (strpos(strtolower($params['cacheCmd']), 'cachetag:') !== false && $enablePurgeByTags) {
+            if ($enablePurgeByTags && str_contains(strtolower($params['cacheCmd']), 'cachetag:')) {
                 $cacheTag = substr($params['cacheCmd'], 9);
-                if (!in_array($cacheTag, $handledTags)) {
+                if (!in_array($cacheTag, $handledTags, true)) {
                     $handledTags[] = $cacheTag;
-                    $this->purgeIndividualFileByCacheTag(
-                        isset($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER'] : null,
-                        $cacheTag
-                    );
+                    $this->purgeIndividualFileByCacheTag($cacheTag);
                 }
             } elseif ($enablePurgeByUrl) {
                 $pageUid = (int)$params['cacheCmd'];
-                if ($pageUid && !in_array($pageUid, $handledPageUids)) {
+                if ($pageUid && !in_array($pageUid, $handledPageUids, true)) {
                     $handledPageUids[] = $pageUid;
                     $url = $this->getFrontendUrl($pageUid);
                     if ($url) {
-                        $this->purgeIndividualFileByUrl(
-                            isset($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER'] : null,
-                            $url
-                        );
+                        $this->purgeIndividualFileByUrl($url);
                     }
                 }
             }
@@ -104,27 +99,27 @@ class TCEmain
      *
      * @return void
      */
-    public function clearCache()
+    public function clearCache(): void
     {
-        if (!isset($GLOBALS['BE_USER'])) {
+        $backendUser = $this->getBackendUser();
+        if (!$backendUser) {
             return;
         }
 
-        $canClearAllCache = (bool)($GLOBALS['BE_USER']->getTSConfig()['options.']['clearCache.']['all'] ?? false);
-        $canClearCloudflareCache = (bool)($GLOBALS['BE_USER']->getTSConfig()['options.']['clearCache.']['cloudflare'] ?? false);
+        $canClearAllCache = (bool)($backendUser->getTSConfig()['options.']['clearCache.']['all'] ?? false);
+        $canClearCloudflareCache = (bool)($backendUser->getTSConfig()['options.']['clearCache.']['cloudflare'] ?? false);
 
-        if ($GLOBALS['BE_USER']->isAdmin() || $canClearAllCache || $canClearCloudflareCache) {
-            $this->clearCloudflareCache($GLOBALS['BE_USER']);
+        if ($this->getBackendUser()->isAdmin() || $canClearAllCache || $canClearCloudflareCache) {
+            $this->clearCloudflareCache();
         }
     }
 
     /**
      * Clears the Cloudflare cache.
      *
-     * @param AbstractUserAuthentication $beUser
      * @return void
      */
-    protected function clearCloudflareCache(AbstractUserAuthentication $beUser = null)
+    protected function clearCloudflareCache(): void
     {
         $domains = $this->config['domains'] ? GeneralUtility::trimExplode(',', $this->config['domains'], true) : [];
 
@@ -144,142 +139,43 @@ class TCEmain
                     ];
                 }
 
-                if ($beUser !== null) {
-                    if ($ret['success']) {
-                        $beUser->writelog(4, 1, 0, 0, 'User %s cleared the cache on Cloudflare (domain: "%s")', [$beUser->user['username'], $zoneName]);
-                    } else {
-                        $beUser->writelog(4, 1, 1, 0, 'User %s failed to clear the cache on Cloudflare (domain: "%s"): %s', [$beUser->user['username'], $zoneName, implode(LF, $ret['errors'])]);
-                    }
+                if ($ret['success']) {
+                    $this->writelog(4, 1, 0, 0, 'User %s cleared the cache on Cloudflare (domain: "%s")', [$this->backendUserAspect->get('username'), $zoneName]);
+                } else {
+                    $this->writelog(4, 1, 1, 0, 'User %s failed to clear the cache on Cloudflare (domain: "%s"): %s', [$this->backendUserAspect->get('username'), $zoneName, implode(LF, $ret['errors'])]);
                 }
+
             } catch (\RuntimeException $e) {
-                if ($beUser !== null) {
-                    $beUser->writelog(4, 1, 1, 0, $e->getMessage(), []);
-                }
+                $this->writelog(4, 1, 1, 0, $e->getMessage(), []);
+
             }
         }
     }
 
     /**
-     * Returns a Frontend URL corresponding to a given page UID.
-     * Implementation was inspired by EXT:vara_feurlfrombe
+     * Returns a Frontend URL corresponding to a given page UID
+     * Using core getPreviewUrl() as backend now uses slug + site to generate url
      *
      * @param integer $uid
-     * @return string
-     * @todo Add support for multiple Frontend URLs
+     * @return string|null
      */
-    protected function getFrontendUrl($uid)
+    protected function getFrontendUrl(int $uid): ?string
     {
-        if (isset($GLOBALS['BE_USER']) && $GLOBALS['BE_USER']->workspace != 0) {
+        if ($this->getBackendUser() && $this->getBackendUser()->workspace != 0) {
             // Preview in workspaces is not supported!
             return null;
         }
 
-        /** @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $tsfe */
-        $tsfe = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-            \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class,
-            $GLOBALS['TYPO3_CONF_VARS'],
-            $uid,
-            ''
-        );
-        $GLOBALS['TSFE'] = $tsfe;
-
-        $GLOBALS['TT'] = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TimeTracker\TimeTracker::class);
-        $GLOBALS['TT']->start();
-        $GLOBALS['TSFE']->config['config']['language'] = 'default';
-
-        // Fire all the required function to get the TYPO3 Frontend all set up
-        $GLOBALS['TSFE']->id = $uid;
-
-        $GLOBALS['TSFE']->settingLanguage();
-        $GLOBALS['TSFE']->settingLocale();
-        $GLOBALS['TSFE']->initFEuser();
-
-        // If the page is not found (if the page is a sysfolder, etc), then return no URL,
-        // preventing any further processing which would result in an error page.
-        $page = $GLOBALS['TSFE']->sys_page->getPage($uid);
-
-        if (empty($page)) {
-            return null;
-        }
-
-        // If the page is a shortcut, look up the page to which the shortcut references,
-        // and do the same check as above.
-        $pageShortcut = null;
-        if ($page['doktype'] == 4) {
-            try {
-                $pageShortcut = $GLOBALS['TSFE']->sys_page->getPageShortcut($page['shortcut'], $page['shortcut_mode'], $page['uid']);
-            } catch (\Exception $e) {
-                // Page is not accessible
-            }
-        }
-        if ($page['doktype'] == 4 && empty($pageShortcut)) {
-            return null;
-        }
-
-        // Spacer pages and sysfolders result in a page not found page too...
-        if ($page['doktype'] == 199 || $page['doktype'] == 254) {
-            return null;
-        }
-
-
-        // TODO: find a way around this reflection hack
-        // Possibly inspire from \TYPO3\CMS\Frontend\Page\PageGenerator::pagegenInit() in TYPO3 v8?
-        $class = new \ReflectionClass(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class);
-        $method = $class->getMethod('getPageAndRootline');
-        $method->setAccessible(true);
-        $method->invoke($GLOBALS['TSFE']);
-
-        $GLOBALS['TSFE']->initTemplate();
-        $GLOBALS['TSFE']->forceTemplateParsing = 1;
-
-        // Find the root template
-        $GLOBALS['TSFE']->tmpl->start($GLOBALS['TSFE']->rootLine);
-
-        // Fill the pSetup from the same variables from the same location as where
-        // tslib_fe->getConfigArray will get them, so they can be checked before
-        // this function is called
-        //$GLOBALS['TSFE']->sPre = $GLOBALS['TSFE']->tmpl->setup['types.'][$GLOBALS['TSFE']->type];    // toplevel - objArrayName
-        //$GLOBALS['TSFE']->pSetup = $GLOBALS['TSFE']->tmpl->setup[$GLOBALS['TSFE']->sPre . '.'];
-
-        // If there is no root template found, there is no point in continuing which would
-        // result in a 'template not found' page and then call exit PHP.
-        // And the same applies if pSetup is empty, which would result in a
-        // "The page is not configured" message.
-        if (!$GLOBALS['TSFE']->tmpl->loaded || ($GLOBALS['TSFE']->tmpl->loaded && !$GLOBALS['TSFE']->pSetup)) {
-            //return null;
-        }
-
-        $GLOBALS['TSFE']->checkAlternativeIdMethods();
-        $GLOBALS['TSFE']->determineId();
-        try {
-            $GLOBALS['TSFE']->getConfigArray();
-        } catch (\Exception $e) {
-            // Typically problem: #1294587218: No TypoScript template found!
-            return null;
-        }
-
-        /** @var $contentObj \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
-        $contentObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
-        $contentObj->start([], '');
-
-        // Create the URL
-        $link = $contentObj->typolink('', [
-            'parameter' => $uid,
-            'forceAbsoluteUrl' => 1,
-        ]);
-        $url = $contentObj->lastTypoLinkUrl;
-
-        return $url;
+        return BackendUtility::getPreviewUrl($uid);
     }
 
     /**
      * Granularly removes an individual file from Cloudflare's cache by specifying the URL.
      *
-     * @param AbstractUserAuthentication $beUser
      * @param string $url
      * @return void
      */
-    protected function purgeIndividualFileByUrl(AbstractUserAuthentication $beUser = null, $url)
+    protected function purgeIndividualFileByUrl(string $url): void
     {
         $domains = $this->config['domains'] ? GeneralUtility::trimExplode(',', $this->config['domains'], true) : [];
 
@@ -314,28 +210,24 @@ class TCEmain
                 'files' => [$url],
             ], 'DELETE');
 
-            if ($beUser !== null) {
-                if ($ret['result'] === 'error') {
-                    $beUser->writelog(4, 1, 1, 0, 'User %s failed to clear the cache on Cloudflare (domain: "%s") for "%s": %s', [$beUser->user['username'], $domain, $url, $ret['msg']]);
-                } else {
-                    $beUser->writelog(4, 1, 0, 0, 'User %s cleared the cache on Cloudflare (domain: "%s") for "%s"', [$beUser->user['username'], $domain, $url]);
-                }
+
+            if ($ret['result'] === 'error') {
+                $this->writelog(4, 1, 1, 0, 'User %s failed to clear the cache on Cloudflare (domain: "%s") for "%s": %s', [$this->backendUserAspect->get('username'), $domain, $url, $ret['msg']]);
+            } else {
+                $this->writelog(4, 1, 0, 0, 'User %s cleared the cache on Cloudflare (domain: "%s") for "%s"', [$this->backendUserAspect->get('username'), $domain, $url]);
             }
         } catch (\RuntimeException $e) {
-            if ($beUser !== null) {
-                $beUser->writelog(4, 1, 1, 0, $e->getMessage(), []);
-            }
+            $this->writelog(4, 1, 1, 0, $e->getMessage(), []);
         }
     }
 
     /**
      * Granularly removes an individual file from Cloudflare's cache by specifying the associated Cache-Tag.
      *
-     * @param AbstractUserAuthentication|null $beUser
      * @param string $cacheTag
      * @return void
      */
-    protected function purgeIndividualFileByCacheTag(AbstractUserAuthentication $beUser = null, $cacheTag)
+    protected function purgeIndividualFileByCacheTag(string $cacheTag): void
     {
         $domains = $this->config['domains'] ? GeneralUtility::trimExplode(',', $this->config['domains'], true) : [];
 
@@ -355,18 +247,35 @@ class TCEmain
                     ];
                 }
 
-                if ($beUser !== null) {
-                    if ($ret['success']) {
-                        $beUser->writelog(4, 1, 0, 0, 'User %s cleared the cache on Cloudflare using Cache-Tag (domain: "%s")', [$beUser->user['username'], $zoneName]);
-                    } else {
-                        $beUser->writelog(4, 1, 1, 0, 'User %s failed to clear the cache on Cloudflare using Cache-Tag (domain: "%s"): %s', [$beUser->user['username'], $zoneName, implode(LF, $ret['errors'])]);
-                    }
+                if ($ret['success']) {
+                    $this->writelog(4, 1, 0, 0, 'User %s cleared the cache on Cloudflare using Cache-Tag (domain: "%s")', [$this->backendUserAspect->get('username'), $zoneName]);
+                } else {
+                    $this->writelog(4, 1, 1, 0, 'User %s failed to clear the cache on Cloudflare using Cache-Tag (domain: "%s"): %s', [$this->backendUserAspect->get('username'), $zoneName, implode(LF, $ret['errors'])]);
                 }
+
             } catch (\RuntimeException $e) {
-                if ($beUser !== null) {
-                    $beUser->writelog(4, 1, 1, 0, $e->getMessage(), []);
-                }
+                $this->writelog(4, 1, 1, 0, $e->getMessage(), []);
             }
         }
+    }
+
+    /**
+     * Wrapper for writing log for logged in backend user
+     */
+    protected function writelog($type, $action, $error, $details_nr, $details, $data, $tablename = '', $recuid = '', $recpid = '', $event_pid = -1, $NEWid = '', $userId = 0)
+    {
+        if (!$this->getBackendUser()) {
+            return;
+        }
+
+        $this->getBackendUser()->writelog($type, $action, $error, $details_nr, $details, $data, $tablename, $recuid, $recpid, $event_pid, $NEWid, $userId);
+    }
+
+    /**
+     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     */
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

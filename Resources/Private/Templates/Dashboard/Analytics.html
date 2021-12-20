@@ -1,33 +1,27 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+
 <f:layout name="Default"/>
 
-<f:section name="content">
-
-    <div class="header">
-        <div class="left">
-            <f:if condition="{zones -> f:count()} > 1">
-                <f:then>
-                    <f:form.select id="zone" options="{zones}"/>
-                </f:then>
-                <f:else>
-                    <h1>{defaultZone}</h1>
-                    <input type="hidden" id="zone" value="{defaultIdentifier}"/>
-                </f:else>
-            </f:if>
-        </div>
-        <div class="right">
-            <f:form.select id="period" options="{periods}" value="1440"/>
-        </div>
-    </div>
-
+<f:section name="Content">
+    <f:be.pageRenderer pageTitle="Analytics"/>
     <section class="tab-container">
         <ul class="tabs">
-            <li class="active"><a href="#requests" data-tab-id="0"><f:translate key="dashboard.requests"/></a></li>
-            <li class=""><a href="#bandwidth" data-tab-id="1"><f:translate key="dashboard.bandwidth"/></a></li>
-            <li class=""><a href="#unique-visitors" data-tab-id="2"><f:translate key="dashboard.uniques"/></a></li>
-            <li class=""><a href="#threats" data-tab-id="3"><f:translate key="dashboard.threats"/></a></li>
+            <li class="active"><a href="#requests" data-tab-id="0">
+                <f:translate key="dashboard.requests"/>
+            </a></li>
+            <li class=""><a href="#bandwidth" data-tab-id="1">
+                <f:translate key="dashboard.bandwidth"/>
+            </a></li>
+            <li class=""><a href="#unique-visitors" data-tab-id="2">
+                <f:translate key="dashboard.uniques"/>
+            </a></li>
+            <li class=""><a href="#threats" data-tab-id="3">
+                <f:translate key="dashboard.threats"/>
+            </a></li>
         </ul>
 
-        <div class="tab-content" id="requests">
+        <div class="tab-content show" id="requests">
             <f:render partial="Tab/Requests"/>
         </div>
 
@@ -45,7 +39,9 @@
     </section>
 
     <section class="analytics">
-        <h2><f:translate key="dashboard.performanceSecurity"/></h2>
+        <h2>
+            <f:translate key="dashboard.performanceSecurity"/>
+        </h2>
 
         <ul class="blocks">
             <li>
@@ -61,19 +57,5 @@
 
     </section>
 
-    <!-- amCharts javascript code -->
-    <script type="text/javascript">
-        // Initialize the dashboard's actions and labels
-        var dataUrl = "{f:uri.action(controller:'Dashboard', action:'ajaxAnalytics', arguments:{zone: '_ZONE_', since: '_SINCE_'}) -> f:format.raw()}";
-
-        CloudflareAnalytics.labels.requests = "{f:translate(key:'dashboard.requests')}";
-        CloudflareAnalytics.labels.bandwidth = "{f:translate(key:'dashboard.bandwidth')}";
-        CloudflareAnalytics.labels.uniques = "{f:translate(key:'dashboard.uniques')}";
-        CloudflareAnalytics.labels.threats = "{f:translate(key:'dashboard.threats')}";
-        CloudflareAnalytics.labels.cached = "{f:translate(key:'dashboard.cached')}";
-        CloudflareAnalytics.labels.uncached = "{f:translate(key:'dashboard.uncached')}";
-        CloudflareAnalytics.labels.encrypted = "{f:translate(key:'dashboard.encrypted')}";
-        CloudflareAnalytics.labels.unencrypted = "{f:translate(key:'dashboard.unencrypted')}";
-    </script>
-
 </f:section>
+</html>

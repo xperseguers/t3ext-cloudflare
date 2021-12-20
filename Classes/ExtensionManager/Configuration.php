@@ -1,4 +1,5 @@
 <?php
+
 namespace Causal\Cloudflare\ExtensionManager;
 
 /*
@@ -14,7 +15,9 @@ namespace Causal\Cloudflare\ExtensionManager;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Causal\Cloudflare\Services\CloudflareService;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -27,40 +30,44 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Configuration
+class Configuration implements SingletonInterface
 {
-
     /** @var string */
-    protected $extKey = 'cloudflare';
+    public const KEY = 'cloudflare';
+
+    /** @var array */
+    protected $config;
+
+    /** @var \Causal\Cloudflare\Services\CloudflareService */
+    protected $cloudflareService;
 
     /**
-     * Default constructor.
+     * DI is not available within Admin Tools, so initialize everything on our own.
      */
-    public function __construct()
+    public function __construct(ExtensionConfiguration $extensionConfiguration = null, CloudflareService $cloudflareService = null)
     {
         /** @var array config */
-        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extKey);
+        $this->config = $extensionConfiguration
+            ?? GeneralUtility::makeInstance(ExtensionConfiguration::class)->get(self::KEY);
+        $this->cloudflareService = $cloudflareService
+            ?? GeneralUtility::makeInstance(\Causal\Cloudflare\Services\CloudflareService::class, $this->config);
     }
 
     /**
      * Returns an Extension Manager field for selecting domains.
      *
      * @param array $params
-     * @param \TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj
+     * @param \TYPO3\CMS\Core\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj
      * @return string
      */
     public function getDomains(array $params, $pObj)
     {
         $domains = [];
         $out = [];
-
-        /** @var $cloudflareService \Causal\Cloudflare\Services\CloudflareService */
-        $cloudflareService = GeneralUtility::makeInstance(\Causal\Cloudflare\Services\CloudflareService::class, $this->config);
-
         try {
-            $ret = $cloudflareService->send('/zones/');
+            $ret = $this->cloudflareService->send('/zones/');
             if ($ret['success']) {
-                $data = $cloudflareService->sort($ret, 'name');
+                $data = $this->cloudflareService->sort($ret, 'name');
                 foreach ($data['result'] as $zone) {
                     $domains[$zone['id']] = $zone['name'];
                 }
@@ -138,18 +145,8 @@ JS;
      * @param string $key
      * @return string
      */
-    protected function sL($key)
+    protected function sL(string $key): string
     {
-        $message = $this->getLanguageService()->sL('LLL:EXT:' . $this->extKey . '/Resources/Private/Language/locallang_db.xlf:' . $key);
-        return $message;
+        return $GLOBALS['LANG']->sL('LLL:EXT:' . self::KEY . '/Resources/Private/Language/locallang_db.xlf:' . $key);
     }
-
-    /**
-     * @return \TYPO3\CMS\Lang\LanguageService
-     */
-    protected function getLanguageService()
-    {
-        return $GLOBALS['LANG'];
-    }
-
 }

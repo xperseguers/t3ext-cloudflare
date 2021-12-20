@@ -9,28 +9,30 @@
  * Only the data in the array - everything else is removed by next
  * writing. "version" and "dependencies" must not be touched!
  ***************************************************************/
-
-$EM_CONF[$_EXTKEY] = [
-    'title' => 'Cloudflare Client',
-    'description' => 'The Cloudflare TYPO3 extension ensures your TYPO3 website is running optimally on the Cloudflare platform.',
-    'category' => 'services',
-    'author' => 'Xavier Perseguers',
-    'author_company' => 'Causal Sàrl',
-    'author_email' => 'xavier@causal.ch',
-    'state' => 'stable',
-    'uploadfolder' => 0,
-    'createDirs' => '',
-    'clearCacheOnLoad' => 0,
-    'version' => '2.4.1',
-    'constraints' => [
-        'depends' => [
-            'php' => '7.2.0-7.4.99',
-            'typo3' => '9.5.0-11.4.99',
+(static function (string $_EXTKEY) {
+    $EM_CONF['$_EXTKEY'] = [
+        'title' => 'Cloudflare Client',
+        'description' => 'The Cloudflare TYPO3 extension ensures your TYPO3 website is running optimally on the Cloudflare platform.',
+        'category' => 'services',
+        'author' => 'Xavier Perseguers',
+        'author_company' => 'Causal Sàrl',
+        'author_email' => 'xavier@causal.ch',
+        'state' => 'stable',
+        'uploadfolder' => false,
+        'createDirs' => '',
+        'clearCacheOnLoad' => false,
+        'version' => '3.0.0',
+        'constraints' => [
+            'depends' => [
+                'php' => '7.4.0-8.0.99',
+                'typo3' => '11.4.0-11.4.99',
+            ],
+            'conflicts' => [],
+            'suggests' => [],
         ],
-        'conflicts' => [],
-        'suggests' => [],
-    ],
-    'autoload' => [
-        'psr-4' => ['Causal\\Cloudflare\\' => 'Classes']
-    ],
-];
+        'autoload' => [
+            'psr-4' => ['Causal\\Cloudflare\\' => 'Classes']
+        ],
+    ];
+})('cloudflare');
+

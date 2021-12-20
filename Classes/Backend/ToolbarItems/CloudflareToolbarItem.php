@@ -1,4 +1,5 @@
 <?php
+
 namespace Causal\Cloudflare\Backend\ToolbarItems;
 
 /*
@@ -14,13 +15,18 @@ namespace Causal\Cloudflare\Backend\ToolbarItems;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
-use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Http\JsonResponse;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Imaging\IconFactory;
+use Causal\Cloudflare\ExtensionManager\Configuration;
+use Causal\Cloudflare\Services\CloudflareService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
+use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Toolbar Menu handler.
@@ -34,34 +40,26 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class CloudflareToolbarItem implements ToolbarItemInterface
 {
-
-    /**
-     * @var string
-     */
-    protected $extKey = 'cloudflare';
-
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $config;
 
-    /**
-     * @var \Causal\Cloudflare\Services\CloudflareService
-     */
+    /** @var \TYPO3\CMS\Core\Context\Context */
+    protected $context;
+
+    /** @var \Causal\Cloudflare\Services\CloudflareService */
     protected $cloudflareService;
 
     /**
      * Default constructor.
      */
-    public function __construct()
+    public function __construct(ExtensionConfiguration $extensionConfiguration, Context $context, CloudflareService $cloudflareService)
     {
         /** @var array config */
-        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extKey);
-
-        $this->cloudflareService = GeneralUtility::makeInstance(\Causal\Cloudflare\Services\CloudflareService::class, $this->config);
+        $this->config = $extensionConfiguration->get(Configuration::KEY);
+        $this->context = $context;
+        $this->cloudflareService = $cloudflareService;
         $this->getLanguageService()->includeLLFile('EXT:cloudflare/Resources/Private/Language/locallang.xlf');
-        $pageRenderer = $this->getPageRenderer();
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Cloudflare/Toolbar/CloudflareMenu');
+        $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Cloudflare/Toolbar/CloudflareMenu');
     }
 
     /**
@@ -69,9 +67,13 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      *
      * @return bool true if user has access, false if not
      */
-    public function checkAccess()
+    public function checkAccess(): bool
     {
-        return $this->getBackendUser()->isAdmin();
+        try {
+            return $this->context->getPropertyFromAspect('backend.user', 'isAdmin');
+        } catch (AspectNotFoundException) {
+            return false;
+        }
     }
 
     /**
@@ -79,16 +81,16 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      *
      * @return string HTML
      */
-    public function getItem()
+    public function getItem(): string
     {
         $title = $this->getLanguageService()->getLL('toolbarItem');
 
-        $cloudflare = [];
-        $cloudflare[] = '<span title="' . htmlspecialchars($title) . '">' . $this->getSpriteIcon('actions-system-extension-configure', [], 'inline') . '</span>';
+        $item = [];
+        $item[] = '<span title="' . htmlspecialchars($title) . '">' . $this->getSpriteIcon('extensions-cloudflare-cloudflare-icon', [], 'inline') . '</span>';
         $badgeClasses = ['badge', 'badge-danger', 'toolbar-item-badge'];
 
-        $cloudflare[] = '<span class="' . implode(' ', $badgeClasses) . '" id="tx-cloudflare-counter" style="display:none">0</span>';
-        return implode(LF, $cloudflare);
+        $item[] = '<span class="' . implode(' ', $badgeClasses) . '" id="tx-cloudflare-counter" style="display:none">0</span>';
+        return implode(LF, $item);
     }
 
     /**
@@ -96,7 +98,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      *
      * @return string HTML
      */
-    public function getDropDown()
+    public function getDropDown(): string
     {
         $languageService = $this->getLanguageService();
         $entries = [];
@@ -104,7 +106,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
         $domains = GeneralUtility::trimExplode(',', $this->config['domains'], true);
         if (!empty($domains)) {
             foreach ($domains as $domain) {
-                list($identifier, ) = explode('|', $domain, 2);
+                list($identifier,) = explode('|', $domain, 2);
                 try {
                     $ret = $this->cloudflareService->send('/zones/' . $identifier);
 
@@ -290,8 +292,6 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      * Purges cache from all configured zones.
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     *
      * @return JsonResponse
      */
     public function purge(ServerRequestInterface $request)
@@ -310,30 +310,19 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      **********************/
 
     /**
-     * Returns the current Backend user.
-     *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-     */
-    protected function getBackendUser()
-    {
-        return $GLOBALS['BE_USER'];
-    }
-
-    /**
      * Returns current PageRenderer.
      *
      * @return \TYPO3\CMS\Core\Page\PageRenderer
      */
-    protected function getPageRenderer()
+    protected function getPageRenderer(): PageRenderer
     {
-        $pageRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
-        return $pageRenderer;
+        return GeneralUtility::makeInstance(PageRenderer::class);
     }
 
     /**
      * Returns the LanguageService.
      *
-     * @return \TYPO3\CMS\Lang\LanguageService
+     * @return \TYPO3\CMS\Core\Localization\LanguageService
      */
     protected function getLanguageService()
     {

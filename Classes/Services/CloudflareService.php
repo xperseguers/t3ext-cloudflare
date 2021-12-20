@@ -1,4 +1,5 @@
 <?php
+
 namespace Causal\Cloudflare\Services;
 
 /*
@@ -29,7 +30,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class CloudflareService implements SingletonInterface
 {
-
     /** @var array */
     protected $config;
 
@@ -59,14 +59,14 @@ class CloudflareService implements SingletonInterface
      * @return array
      * @throws \RuntimeException
      */
-    public function send($route, array $parameters = [], $request = 'GET')
+    public function send($route, array $parameters = [], string $request = 'GET')
     {
-        if (!trim($this->config['apiKey'])) {
-            throw new \RuntimeException('Cannot clear cache on Cloudflare: Invalid apiKey for EXT:cloudflare', 1337770232);
+        if (!trim($this->config['apiKey'] ?? '')) {
+            throw new \RuntimeException('Cannot invoke data send for Cloudflare: Invalid apiKey for EXT:cloudflare', 1337770232);
         }
 
         if (!$this->config['useBearerAuthentication'] && !GeneralUtility::validEmail(trim($this->config['email']))) {
-            throw new \RuntimeException('Cannot clear cache on Cloudflare: Invalid email for EXT:cloudflare', 1337770383);
+            throw new \RuntimeException('Cannot invoke data send for Cloudflare: Invalid email for EXT:cloudflare', 1337770383);
         }
 
         $url = rtrim($this->apiEndpoint, '/') . '/' . ltrim($route, '/');
@@ -74,7 +74,7 @@ class CloudflareService implements SingletonInterface
             'Content-Type: application/json',
         ];
 
-        if ($this->config['useBearerAuthentication']) {
+        if (filter_var($this->config['useBearerAuthentication'] ?? false, FILTER_VALIDATE_BOOL)) {
             $headers[] = 'Authorization: Bearer ' . trim($this->config['apiKey']);
         } else {
             $headers[] = 'X-Auth-Key: ' . trim($this->config['apiKey']);
@@ -113,7 +113,7 @@ class CloudflareService implements SingletonInterface
      * @param string $resultSortingKey
      * @return array
      */
-    public function sort(array $data, $resultSortingKey)
+    public function sort(array $data, string $resultSortingKey): array
     {
         $keyValues = [];
         foreach ($data['result'] as $key => $arr) {
@@ -164,13 +164,13 @@ class CloudflareService implements SingletonInterface
         curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);
         curl_setopt($ch, CURLOPT_TIMEOUT, 15);
 
-        if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']) {
+        if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer'] ?? null) {
             curl_setopt($ch, CURLOPT_PROXY, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']);
 
-            if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel']) {
+            if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel'] ?? null) {
                 curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel']);
             }
-            if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass']) {
+            if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass'] ?? null) {
                 curl_setopt($ch, CURLOPT_PROXYUSERPWD, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass']);
             }
         }

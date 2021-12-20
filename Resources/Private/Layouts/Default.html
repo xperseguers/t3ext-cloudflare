@@ -1,24 +1,26 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title>Cloudflare Analytics</title>
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      data-namespace-typo3-fluid="true">
 
-    <link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/dashboard.css')}"/>
+<f:be.pageRenderer
+    includeCssFiles="{0: '{f:uri.resource(path:\'Css/dashboard.css\')}'}"
+    includeJsFiles="{
+        0: '{f:uri.resource(path:\'JavaScript/analytics.js\')}',
+        1: '{f:uri.resource(path:\'JavaScript/amcharts/amcharts.js\')}',
+        2: '{f:uri.resource(path:\'JavaScript/amcharts/serial.js\')}',
+        3: '{f:uri.resource(path:\'JavaScript/amcharts/pie.js\')}',
+        4: '{f:uri.resource(path:\'JavaScript/amcharts/themes/light.js\')}'
+    }"
+    includeRequireJsModules="{0: 'TYPO3/CMS/Core/Ajax/AjaxRequest'}"
+    addJsInlineLabels="{
+        0: 'dashboard.requests',
+        1: 'dashboard.uniques',
+        2: 'dashboard.threats',
+        3: 'dashboard.cached',
+        4: 'dashboard.uncached',
+        5: 'dashboard.encrypted',
+        6: 'dashboard.unencrypted'
+    }"/>
 
-    <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery-1.11.3.min.js')}"></script>
-    <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/analytics.js')}"></script>
+<f:render section="Content"/>
 
-    <!-- amCharts javascript sources -->
-    <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/amcharts/amcharts.js')}"></script>
-    <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/amcharts/serial.js')}"></script>
-    <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/amcharts/pie.js')}"></script>
-    <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/amcharts/themes/light.js')}"></script>
-</head>
-<body>
-
-<f:be.container>
-    <f:render section="content"/>
-</f:be.container>
-
-</body>
 </html>
