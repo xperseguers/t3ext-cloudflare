@@ -174,7 +174,8 @@ class TCEmain
             return null;
         }
 
-        return \nn\t3::Page()->getAbsLink( $uid );
+        $tsfe = GeneralUtility::makeInstance(\Causal\Cloudflare\Utilities\Tsfe::class);
+        return $tsfe -> getPageUrl($uid, [], true);
     }
 
     /**
