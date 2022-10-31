@@ -21,6 +21,7 @@ For more details,
 =======  ======================================================
 Version  Changes
 =======  ======================================================
+2.5.x    Compatibility with TYPO3 10 LTS and 11 LTS
 2.4.x    Compatibility with TYPO3 9 LTS and 10 LTS
 2.3.x    Compatibility with TYPO3 8 LTS and 9 LTS
 2.2.x    Compatibility with TYPO3 7 LTS to 9 LTS
