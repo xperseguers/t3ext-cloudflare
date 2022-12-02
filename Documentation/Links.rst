@@ -24,7 +24,7 @@ Links
    https://github.com/xperseguers/t3ext-cloudflare
 
 :Translation:
-   https://translation.typo3.org/projects/TYPO3.ext.cloudflare/
+   https://crowdin.com/project/typo3-extension-cloudflare
 
 :Contact:
    `@xperseguers <https://twitter.com/xperseguers>`__
