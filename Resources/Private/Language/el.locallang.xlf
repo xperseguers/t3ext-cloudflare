@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="en" datatype="plaintext" original="messages" date="2014-12-30T10:37:08Z" product-name="cloudflare" target-language="el">
+    <header/>
+    <body>
+      <trans-unit id="toolbarItem">
+        <source>Cloudflare</source>
+        <target state="needs-translation">Cloudflare</target>
+      </trans-unit>
+      <trans-unit id="no_domains">
+        <source>No domains configured.</source>
+        <target state="needs-translation">No domains configured.</target>
+      </trans-unit>
+      <trans-unit id="toggle_development">
+        <source>Toggle development mode</source>
+        <target state="needs-translation">Toggle development mode</target>
+      </trans-unit>
+      <trans-unit id="zone_active">
+        <source>This zone is active</source>
+        <target state="needs-translation">This zone is active</target>
+      </trans-unit>
+      <trans-unit id="zone_inactive">
+        <source>This zone is currently inactive</source>
+        <target state="needs-translation">This zone is currently inactive</target>
+      </trans-unit>
+      <trans-unit id="zone_development">
+        <source>This zone is in development mode</source>
+        <target state="needs-translation">This zone is in development mode</target>
+      </trans-unit>
+      <trans-unit id="clear_cache">
+        <source>Clear Cloudflare cache</source>
+        <target state="needs-translation">Clear Cloudflare cache</target>
+      </trans-unit>
+      <trans-unit id="clear_cache.description">
+        <source>Clear frontend and page-related caches on Cloudflare.</source>
+        <target state="needs-translation">Clear frontend and page-related caches on Cloudflare.</target>
+      </trans-unit>
+      <!-- dashboard -->
+      <trans-unit id="period.30">
+        <source>Last 30 Minutes</source>
+        <target state="needs-translation">Last 30 Minutes</target>
+      </trans-unit>
+      <trans-unit id="period.360">
+        <source>Last 6 Hours</source>
+        <target state="needs-translation">Last 6 Hours</target>
+      </trans-unit>
+      <trans-unit id="period.720">
+        <source>Last 12 Hours</source>
+        <target state="needs-translation">Last 12 Hours</target>
+      </trans-unit>
+      <trans-unit id="period.1440">
+        <source>Last 24 Hours</source>
+        <target state="needs-translation">Last 24 Hours</target>
+      </trans-unit>
+      <trans-unit id="period.10080">
+        <source>Last Week</source>
+        <target state="needs-translation">Last Week</target>
+      </trans-unit>
+      <trans-unit id="period.43200">
+        <source>Last Month</source>
+        <target state="needs-translation">Last Month</target>
+      </trans-unit>
+      <trans-unit id="dashboard.requests">
+        <source>Requests</source>
+        <target state="needs-translation">Requests</target>
+      </trans-unit>
+      <trans-unit id="dashboard.requests.long">
+        <source>Requests Through Cloudflare</source>
+        <target state="needs-translation">Requests Through Cloudflare</target>
+      </trans-unit>
+      <trans-unit id="dashboard.requests.total">
+        <source>Total Requests</source>
+        <target state="needs-translation">Total Requests</target>
+      </trans-unit>
+      <trans-unit id="dashboard.requests.cached">
+        <source>Cached Requests</source>
+        <target state="needs-translation">Cached Requests</target>
+      </trans-unit>
+      <trans-unit id="dashboard.requests.uncached">
+        <source>Uncached Requests</source>
+        <target state="needs-translation">Uncached Requests</target>
+      </trans-unit>
+      <trans-unit id="dashboard.bandwidth">
+        <source>Bandwidth</source>
+        <target state="needs-translation">Bandwidth</target>
+      </trans-unit>
+      <trans-unit id="dashboard.bandwidth.total">
+        <source>Total Bandwidth</source>
+        <target state="needs-translation">Total Bandwidth</target>
+      </trans-unit>
+      <trans-unit id="dashboard.bandwidth.cached">
+        <source>Cached Bandwidth</source>
+        <target state="needs-translation">Cached Bandwidth</target>
+      </trans-unit>
+      <trans-unit id="dashboard.bandwidth.uncached">
+        <source>Uncached Bandwidth</source>
+        <target state="needs-translation">Uncached Bandwidth</target>
+      </trans-unit>
+      <trans-unit id="dashboard.uniques">
+        <source>Unique Visitors</source>
+        <target state="needs-translation">Unique Visitors</target>
+      </trans-unit>
+      <trans-unit id="dashboard.uniques.total">
+        <source>Total Unique Visitors</source>
+        <target state="needs-translation">Total Unique Visitors</target>
+      </trans-unit>
+      <trans-unit id="dashboard.uniques.maximum">
+        <source>Maximum Unique Visitors</source>
+        <target state="needs-translation">Maximum Unique Visitors</target>
+      </trans-unit>
+      <trans-unit id="dashboard.uniques.minimum">
+        <source>Minimum Unique Visitors</source>
+        <target state="needs-translation">Minimum Unique Visitors</target>
+      </trans-unit>
+      <trans-unit id="dashboard.threats">
+        <source>Threats</source>
+        <target state="needs-translation">Threats</target>
+      </trans-unit>
+      <trans-unit id="dashboard.threats.total">
+        <source>Total Threats</source>
+        <target state="needs-translation">Total Threats</target>
+      </trans-unit>
+      <trans-unit id="dashboard.threats.topCountry">
+        <source>Top Country</source>
+        <target state="needs-translation">Top Country</target>
+      </trans-unit>
+      <trans-unit id="dashboard.threats.topType">
+        <source>Top Threat Type</source>
+        <target state="needs-translation">Top Threat Type</target>
+      </trans-unit>
+      <trans-unit id="dashboard.threats.bic.ban.unknown">
+        <source>Bad Browser</source>
+        <target state="needs-translation">Bad Browser</target>
+      </trans-unit>
+      <trans-unit id="dashboard.threats.hot.ban.unknown">
+        <source>Blocked hotlink</source>
+        <target state="needs-translation">Blocked hotlink</target>
+      </trans-unit>
+      <trans-unit id="dashboard.threats.macro.ban.unknown">
+        <source>Bad IP</source>
+        <target state="needs-translation">Bad IP</target>
+      </trans-unit>
+      <trans-unit id="dashboard.threats.macro.chl.captchaFail">
+        <source>Human challenged</source>
+        <target state="needs-translation">Human challenged</target>
+      </trans-unit>
+      <trans-unit id="dashboard.threats.macro.chl.jschlFail">
+        <source>Browser challenged</source>
+        <target state="needs-translation">Browser challenged</target>
+      </trans-unit>
+      <trans-unit id="dashboard.threats.user.ban.ip">
+        <source>IP block (user)</source>
+        <target state="needs-translation">IP block (user)</target>
+      </trans-unit>
+      <trans-unit id="dashboard.performanceSecurity">
+        <source>Performance &amp; Security</source>
+        <target state="needs-translation">Performance &amp; Security</target>
+      </trans-unit>
+      <trans-unit id="dashboard.bandwidthSaved">
+        <source>Bandwidth Saved</source>
+        <target state="needs-translation">Bandwidth Saved</target>
+      </trans-unit>
+      <trans-unit id="dashboard.contentType">
+        <source>Content Type Breakdown</source>
+        <target state="needs-translation">Content Type Breakdown</target>
+      </trans-unit>
+      <trans-unit id="dashboard.ssl">
+        <source>Traffic Served Over SSL</source>
+        <target state="needs-translation">Traffic Served Over SSL</target>
+      </trans-unit>
+      <trans-unit id="dashboard.cached">
+        <source>Cached</source>
+        <target state="needs-translation">Cached</target>
+      </trans-unit>
+      <trans-unit id="dashboard.uncached">
+        <source>Uncached</source>
+        <target state="needs-translation">Uncached</target>
+      </trans-unit>
+      <trans-unit id="dashboard.encrypted">
+        <source>Encrypted</source>
+        <target state="needs-translation">Encrypted</target>
+      </trans-unit>
+      <trans-unit id="dashboard.unencrypted">
+        <source>Unencrypted</source>
+        <target state="needs-translation">Unencrypted</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
