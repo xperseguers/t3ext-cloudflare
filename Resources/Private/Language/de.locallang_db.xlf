@@ -9,15 +9,15 @@
       </trans-unit>
       <trans-unit id="settings.email">
         <source>Email: The e-mail address associated with the API key.</source>
-        <target state="needs-translation">Email: The e-mail address associated with the API key.</target>
+        <target state="translated">E-Mail: Die mit dem API Schlüssel verknüpfte E-Mail Adresse</target>
       </trans-unit>
       <trans-unit id="settings.apiKey">
         <source>API Key: This is the API key made available on your account page (https://dash.cloudflare.com/profile)</source>
-        <target state="needs-translation">API Key: This is the API key made available on your account page (https://dash.cloudflare.com/profile)</target>
+        <target state="translated">API Schlüssel: Der API Schlüssel ist innerhalb der CloudFlare Konto Seite verfügbar (https://www.cloudflare.com/a/account/my-account)</target>
       </trans-unit>
       <trans-unit id="settings.domains">
         <source>Domains: Please tick the domains whose cache should be flushed on Cloudflare upon clearing all caches in TYPO3.</source>
-        <target state="needs-translation">Domains: Please tick the domains whose cache should be flushed on Cloudflare upon clearing all caches in TYPO3.</target>
+        <target state="translated">Domains: Bitte wählen Sie die Domains aus, dessen Cache in CloudFlare geleert werden soll, wenn alle Caches in TYPO3 geleert werden.</target>
       </trans-unit>
       <trans-unit id="settings.enableAnalyticsModule">
         <source>Enable Analytics Backend module: Tick this checkbox if you need the Analytics module in Backend (this requires proper Token permissions if using Bearer Authentication).</source>
@@ -25,11 +25,11 @@
       </trans-unit>
       <trans-unit id="settings.enableOriginatingIPs">
         <source>Originating IPs: Tick this checkbox in case you cannot restore the originating IPs at the webserver level.</source>
-        <target state="needs-translation">Originating IPs: Tick this checkbox in case you cannot restore the originating IPs at the webserver level.</target>
+        <target state="translated">Ursprungs IP Adresse: Wählen sie dieses Auswahlfeld, falls Ihr Web Server die ursprünglichen IP Adressesn nicht wiederherstellen kann.</target>
       </trans-unit>
       <trans-unit id="settings.enablePurgeSingleFile">
         <source>[EXPERIMENTAL] Purge individual files by URL: Granularly remove individual files from Cloudflare's cache by specifying the URL. BEWARE: Highly experimental!</source>
-        <target state="needs-translation">[EXPERIMENTAL] Purge individual files by URL: Granularly remove individual files from Cloudflare's cache by specifying the URL. BEWARE: Highly experimental!</target>
+        <target state="translated">Einzelne Datei aus Cache löschen (Experimentell): Wählen Sie dieses Auswahlfeld um einzelne Dateien aus dem CloudFlare Cache zu löschen. Warnung: Experimentelle Lösung.</target>
       </trans-unit>
       <trans-unit id="settings.enablePurgeByTags">
         <source>Purge cache by Cache-Tag: Granularly remove individual files from Cloudflare's cache by specifying the associated Cache-Tag. BEWARE: This option requires an Enterprise account.</source>
@@ -37,15 +37,15 @@
       </trans-unit>
       <trans-unit id="settings.apiEndpoint">
         <source>API Endpoint: Alternate API endpoint/proxy. Beware: DO NOT change unless you know what you do!</source>
-        <target state="needs-translation">API Endpoint: Alternate API endpoint/proxy. Beware: DO NOT change unless you know what you do!</target>
+        <target state="translated">API Endpunkt: Alternativer API Endpunkt/Proxy. Warnung: NICHT ÄNDERN, außer Sie wissen was Sie hier tun!</target>
       </trans-unit>
       <trans-unit id="settings.labels.emptyList">
         <source>Empty list fetched from Cloudflare, please check your credentials.</source>
-        <target state="needs-translation">Empty list fetched from Cloudflare, please check your credentials.</target>
+        <target state="translated">Leere Liste von CloudFlare empfangen. Bitte überprüfen Sie Ihre Zugangsdaten.</target>
       </trans-unit>
       <trans-unit id="settings.labels.zoneIdentifiers">
         <source>Cloudflare API Zone Identifiers</source>
-        <target state="needs-translation">Cloudflare API Zone Identifiers</target>
+        <target state="translated">CloudFlare API Zonen Bezeichner</target>
       </trans-unit>
     </body>
   </file>
