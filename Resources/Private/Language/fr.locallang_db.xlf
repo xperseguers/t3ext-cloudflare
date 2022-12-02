@@ -7,37 +7,37 @@
         <source>Use Bearer Authentication: Use a Token for Bearer Authentication (RFC 6750) and API key instead of the standard e-mail address and API key.</source>
         <target state="needs-translation">Use Bearer Authentication: Use a Token for Bearer Authentication (RFC 6750) and API key instead of the standard e-mail address and API key.</target>
       </trans-unit>
-      <trans-unit id="settings.email">
+      <trans-unit id="settings.email" approved="yes">
         <source>Email: The e-mail address associated with the API key.</source>
-        <target state="needs-translation">Email: The e-mail address associated with the API key.</target>
+        <target state="final">E-mail: L'adresse email associée avec le clé d'API.</target>
       </trans-unit>
-      <trans-unit id="settings.apiKey">
+      <trans-unit id="settings.apiKey" approved="yes">
         <source>API Key: This is the API key made available on your account page (https://dash.cloudflare.com/profile)</source>
-        <target state="needs-translation">API Key: This is the API key made available on your account page (https://dash.cloudflare.com/profile)</target>
+        <target state="final">Clé d'API: C'est la clé d'API qui est disponible sur votre page de compte (https://www.cloudflare.com/a/account/my-account)</target>
       </trans-unit>
-      <trans-unit id="settings.domains">
+      <trans-unit id="settings.domains" approved="yes">
         <source>Domains: Please tick the domains whose cache should be flushed on Cloudflare upon clearing all caches in TYPO3.</source>
-        <target state="needs-translation">Domains: Please tick the domains whose cache should be flushed on Cloudflare upon clearing all caches in TYPO3.</target>
+        <target state="final">Domaines: Veuillez cocher les domaines pour lesquels le cache doit être vidé sur Cloudflare lorsque vous videz tous les caches dans TYPO3.</target>
       </trans-unit>
       <trans-unit id="settings.enableAnalyticsModule">
         <source>Enable Analytics Backend module: Tick this checkbox if you need the Analytics module in Backend (this requires proper Token permissions if using Bearer Authentication).</source>
         <target state="needs-translation">Enable Analytics Backend module: Tick this checkbox if you need the Analytics module in Backend (this requires proper Token permissions if using Bearer Authentication).</target>
       </trans-unit>
-      <trans-unit id="settings.enableOriginatingIPs">
+      <trans-unit id="settings.enableOriginatingIPs" approved="yes">
         <source>Originating IPs: Tick this checkbox in case you cannot restore the originating IPs at the webserver level.</source>
-        <target state="needs-translation">Originating IPs: Tick this checkbox in case you cannot restore the originating IPs at the webserver level.</target>
+        <target state="final">IPs d'origine: Cochez cette case si vous ne pouvez pas restaurer les IPs d'origine au niveau du serveur web.</target>
       </trans-unit>
-      <trans-unit id="settings.enablePurgeSingleFile">
+      <trans-unit id="settings.enablePurgeSingleFile" approved="yes">
         <source>[EXPERIMENTAL] Purge individual files by URL: Granularly remove individual files from Cloudflare's cache by specifying the URL. BEWARE: Highly experimental!</source>
-        <target state="needs-translation">[EXPERIMENTAL] Purge individual files by URL: Granularly remove individual files from Cloudflare's cache by specifying the URL. BEWARE: Highly experimental!</target>
+        <target state="final">[EXPÉRIMENTAL] Purger des fichiers uniques: Cochez cette case pour tenter de purger des fichiers uniques sur Cloudflare. Attention: très expérimental !</target>
       </trans-unit>
       <trans-unit id="settings.enablePurgeByTags">
         <source>Purge cache by Cache-Tag: Granularly remove individual files from Cloudflare's cache by specifying the associated Cache-Tag. BEWARE: This option requires an Enterprise account.</source>
         <target state="needs-translation">Purge cache by Cache-Tag: Granularly remove individual files from Cloudflare's cache by specifying the associated Cache-Tag. BEWARE: This option requires an Enterprise account.</target>
       </trans-unit>
-      <trans-unit id="settings.apiEndpoint">
+      <trans-unit id="settings.apiEndpoint" approved="yes">
         <source>API Endpoint: Alternate API endpoint/proxy. Beware: DO NOT change unless you know what you do!</source>
-        <target state="needs-translation">API Endpoint: Alternate API endpoint/proxy. Beware: DO NOT change unless you know what you do!</target>
+        <target state="final">Point d'accès API: Point d'entrée/proxy alternatif pour l'API. Attention : NE PAS changer sauf si vous savez ce que vous faites !</target>
       </trans-unit>
       <trans-unit id="settings.labels.emptyList">
         <source>Empty list fetched from Cloudflare, please check your credentials.</source>
