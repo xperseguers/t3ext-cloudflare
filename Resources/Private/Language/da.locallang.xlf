@@ -5,156 +5,156 @@
     <body>
       <trans-unit id="toolbarItem">
         <source>Cloudflare</source>
-        <target state="needs-translation">Cloudflare</target>
+        <target state="translated">Cloudflare</target>
       </trans-unit>
       <trans-unit id="no_domains">
         <source>No domains configured.</source>
-        <target state="needs-translation">No domains configured.</target>
+        <target state="translated">Ingen domæner konfigureret.</target>
       </trans-unit>
       <trans-unit id="toggle_development">
         <source>Toggle development mode</source>
-        <target state="needs-translation">Toggle development mode</target>
+        <target state="translated">Skift udviklingstilstand</target>
       </trans-unit>
       <trans-unit id="zone_active">
         <source>This zone is active</source>
-        <target state="needs-translation">This zone is active</target>
+        <target state="translated">Denne zone er aktiv</target>
       </trans-unit>
       <trans-unit id="zone_inactive">
         <source>This zone is currently inactive</source>
-        <target state="needs-translation">This zone is currently inactive</target>
+        <target state="translated">Denne zone er i øjeblikket inaktiv</target>
       </trans-unit>
       <trans-unit id="zone_development">
         <source>This zone is in development mode</source>
-        <target state="needs-translation">This zone is in development mode</target>
+        <target state="translated">Denne zone er i udviklingstilstand</target>
       </trans-unit>
       <trans-unit id="clear_cache">
         <source>Clear Cloudflare cache</source>
-        <target state="needs-translation">Clear Cloudflare cache</target>
+        <target state="translated">Ryd Cloudflare cache</target>
       </trans-unit>
       <trans-unit id="clear_cache.description">
         <source>Clear frontend and page-related caches on Cloudflare.</source>
-        <target state="needs-translation">Clear frontend and page-related caches on Cloudflare.</target>
+        <target state="translated">Ryd frontend og side-relaterede caches på Cloudflare.</target>
       </trans-unit>
       <!-- dashboard -->
       <trans-unit id="period.30">
         <source>Last 30 Minutes</source>
-        <target state="needs-translation">Last 30 Minutes</target>
+        <target state="translated">Sidste 30 Minutter</target>
       </trans-unit>
       <trans-unit id="period.360">
         <source>Last 6 Hours</source>
-        <target state="needs-translation">Last 6 Hours</target>
+        <target state="translated">Sidste 6 timer</target>
       </trans-unit>
       <trans-unit id="period.720">
         <source>Last 12 Hours</source>
-        <target state="needs-translation">Last 12 Hours</target>
+        <target state="translated">Sidste 12 timer</target>
       </trans-unit>
       <trans-unit id="period.1440">
         <source>Last 24 Hours</source>
-        <target state="needs-translation">Last 24 Hours</target>
+        <target state="translated">Sidste 24 timer</target>
       </trans-unit>
       <trans-unit id="period.10080">
         <source>Last Week</source>
-        <target state="needs-translation">Last Week</target>
+        <target state="translated">Sidste uge</target>
       </trans-unit>
       <trans-unit id="period.43200">
         <source>Last Month</source>
-        <target state="needs-translation">Last Month</target>
+        <target state="translated">Sidste måned</target>
       </trans-unit>
       <trans-unit id="dashboard.requests">
         <source>Requests</source>
-        <target state="needs-translation">Requests</target>
+        <target state="translated">Forespørgsler</target>
       </trans-unit>
       <trans-unit id="dashboard.requests.long">
         <source>Requests Through Cloudflare</source>
-        <target state="needs-translation">Requests Through Cloudflare</target>
+        <target state="translated">Forespørgsler gennem Cloudflare</target>
       </trans-unit>
       <trans-unit id="dashboard.requests.total">
         <source>Total Requests</source>
-        <target state="needs-translation">Total Requests</target>
+        <target state="translated">Samlet antal forespørgsler</target>
       </trans-unit>
       <trans-unit id="dashboard.requests.cached">
         <source>Cached Requests</source>
-        <target state="needs-translation">Cached Requests</target>
+        <target state="translated">Cache-lagrede forespørgsler</target>
       </trans-unit>
       <trans-unit id="dashboard.requests.uncached">
         <source>Uncached Requests</source>
-        <target state="needs-translation">Uncached Requests</target>
+        <target state="translated">Ikke-cachede forespørgsler</target>
       </trans-unit>
       <trans-unit id="dashboard.bandwidth">
         <source>Bandwidth</source>
-        <target state="needs-translation">Bandwidth</target>
+        <target state="translated">Båndbredde</target>
       </trans-unit>
       <trans-unit id="dashboard.bandwidth.total">
         <source>Total Bandwidth</source>
-        <target state="needs-translation">Total Bandwidth</target>
+        <target state="translated">Total båndbredde</target>
       </trans-unit>
       <trans-unit id="dashboard.bandwidth.cached">
         <source>Cached Bandwidth</source>
-        <target state="needs-translation">Cached Bandwidth</target>
+        <target state="translated">Cache-lagret båndbredde</target>
       </trans-unit>
       <trans-unit id="dashboard.bandwidth.uncached">
         <source>Uncached Bandwidth</source>
-        <target state="needs-translation">Uncached Bandwidth</target>
+        <target state="translated">Ikke-cachelagret båndbredde</target>
       </trans-unit>
       <trans-unit id="dashboard.uniques">
         <source>Unique Visitors</source>
-        <target state="needs-translation">Unique Visitors</target>
+        <target state="translated">Unikke besøgende</target>
       </trans-unit>
       <trans-unit id="dashboard.uniques.total">
         <source>Total Unique Visitors</source>
-        <target state="needs-translation">Total Unique Visitors</target>
+        <target state="translated">Samlede antal unikke besøgende</target>
       </trans-unit>
       <trans-unit id="dashboard.uniques.maximum">
         <source>Maximum Unique Visitors</source>
-        <target state="needs-translation">Maximum Unique Visitors</target>
+        <target state="translated">Maksimum antal unikke besøgende</target>
       </trans-unit>
       <trans-unit id="dashboard.uniques.minimum">
         <source>Minimum Unique Visitors</source>
-        <target state="needs-translation">Minimum Unique Visitors</target>
+        <target state="translated">Minimum antal unikke besøgende</target>
       </trans-unit>
       <trans-unit id="dashboard.threats">
         <source>Threats</source>
-        <target state="needs-translation">Threats</target>
+        <target state="translated">Trusler</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.total">
         <source>Total Threats</source>
-        <target state="needs-translation">Total Threats</target>
+        <target state="translated">Samlede antal trusler</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.topCountry">
         <source>Top Country</source>
-        <target state="needs-translation">Top Country</target>
+        <target state="translated">Top land</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.topType">
         <source>Top Threat Type</source>
-        <target state="needs-translation">Top Threat Type</target>
+        <target state="translated">Top trusselstype</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.bic.ban.unknown">
         <source>Bad Browser</source>
-        <target state="needs-translation">Bad Browser</target>
+        <target state="translated">Dårlig browser</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.hot.ban.unknown">
         <source>Blocked hotlink</source>
-        <target state="needs-translation">Blocked hotlink</target>
+        <target state="translated">Blokeret hotlink</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.macro.ban.unknown">
         <source>Bad IP</source>
-        <target state="needs-translation">Bad IP</target>
+        <target state="translated">Dårlig IP</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.macro.chl.captchaFail">
         <source>Human challenged</source>
-        <target state="needs-translation">Human challenged</target>
+        <target state="translated">Menneskelig udfordret</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.macro.chl.jschlFail">
         <source>Browser challenged</source>
-        <target state="needs-translation">Browser challenged</target>
+        <target state="translated">Browser udfordret</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.user.ban.ip">
         <source>IP block (user)</source>
-        <target state="needs-translation">IP block (user)</target>
+        <target state="translated">IP blokering (bruger)</target>
       </trans-unit>
       <trans-unit id="dashboard.performanceSecurity">
         <source>Performance &amp; Security</source>
-        <target state="needs-translation">Performance &amp; Security</target>
+        <target state="translated">Ydeevne &amp; sikkerhed</target>
       </trans-unit>
       <trans-unit id="dashboard.bandwidthSaved">
         <source>Bandwidth Saved</source>
