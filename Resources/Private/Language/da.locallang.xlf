@@ -13,7 +13,7 @@
       </trans-unit>
       <trans-unit id="toggle_development" approved="yes">
         <source>Toggle development mode</source>
-        <target state="final">Skift udviklingstilstand</target>
+        <target state="final">Skift udviklertilstand</target>
       </trans-unit>
       <trans-unit id="zone_active" approved="yes">
         <source>This zone is active</source>
@@ -25,7 +25,7 @@
       </trans-unit>
       <trans-unit id="zone_development" approved="yes">
         <source>This zone is in development mode</source>
-        <target state="final">Denne zone er i udviklingstilstand</target>
+        <target state="final">Denne zone er i udviklertilstand</target>
       </trans-unit>
       <trans-unit id="clear_cache" approved="yes">
         <source>Clear Cloudflare cache</source>
