@@ -13,9 +13,10 @@
     "ssl",
     "performance"
   ],
-  "homepage": "https://github.com/xperseguers/t3ext-cloudflare",
   "support": {
-    "issues": "https://github.com/xperseguers/t3ext-cloudflare/issues"
+    "docs": "https://docs.typo3.org/p/causal/cloudflare/main/en-us/",
+    "issues": "https://github.com/xperseguers/t3ext-cloudflare/issues",
+    "source": "https://github.com/xperseguers/t3ext-cloudflare"
   },
   "authors": [
     {
