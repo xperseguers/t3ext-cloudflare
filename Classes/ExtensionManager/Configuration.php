@@ -33,13 +33,15 @@ class Configuration
     /** @var string */
     protected $extKey = 'cloudflare';
 
+    /** @var array */
+    protected $config;
+
     /**
      * Default constructor.
      */
     public function __construct()
     {
-        /** @var array config */
-        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extKey);
+        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extKey) ?? [];
     }
 
     /**
