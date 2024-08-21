@@ -108,7 +108,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
                 try {
                     $ret = $this->cloudflareService->send('/zones/' . $identifier);
 
-                    if ($ret['success']) {
+                    if ($ret['success'] ?? false) {
                         $zone = $ret['result'];
 
                         switch (true) {

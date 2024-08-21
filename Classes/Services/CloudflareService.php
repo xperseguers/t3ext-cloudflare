@@ -83,7 +83,7 @@ class CloudflareService implements SingletonInterface
 
         if ($request === 'GET') {
             $data = $this->sendHttpRequest($request, $url, $headers, $parameters);
-            if ($data['success'] && ($data['result_info']['total_pages'] ?? 0) > 1) {
+            if (($data['success'] ?? false) && ($data['result_info']['total_pages'] ?? 0) > 1) {
                 $accumulatedData = $data;
                 for ($i = $data['result_info']['page'] + 1; $i <= $data['result_info']['total_pages']; $i++) {
                     $nextParameters = $parameters;
