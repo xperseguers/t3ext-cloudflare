@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -103,6 +104,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      */
     public function getDropDown(): string
     {
+        $typo3Version = (new Typo3Version())->getMajorVersion();
         $languageService = $this->getLanguageService();
         $entries = [];
 
@@ -132,20 +134,40 @@ class CloudflareToolbarItem implements ToolbarItemInterface
                                 break;
                         }
 
-                        $entries[] = '<div class="dropdown-table-row" data-zone-status="' . $status . '">';
-                        $entries[] = '    <div class="dropdown-table-column dropdown-table-column-top dropdown-table-icon">';
-                        $entries[] = $this->getZoneIcon($status);
-                        $entries[] = '    </div>';
-                        $entries[] = '    <div class="dropdown-table-column">';
-                        $entries[] = htmlspecialchars($zone['name']);
-                        if ($active !== null) {
-                            $onClickCode = 'TYPO3.CloudflareMenu.toggleDevelopmentMode(\'' . $identifier . '\', ' . $active . '); return false;';
-                            $entries[] = '<a href="#" onclick="' . htmlspecialchars($onClickCode) . '">' . $languageService->getLL('toggle_development') . '</a>';
+                        if ($typo3Version >= 12) {
+                            $entries[] = '<li>';
+                            $entries[] = '  <div class="dropdown-item" role="menuitem">';
+                            $entries[] = '    <span class="dropdown-item-columns">';
+                            $entries[] = '      <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">'
+                                . $this->getZoneIcon($status) . '</span>';
+                            $entries[] = '      <span class="dropdown-item-column dropdown-item-column-title">';
+                            $entries[] = '        ' . htmlspecialchars($zone['name']) . '<br>';
+                            if ($active !== null) {
+                                $entries[] = '        <a href="#" onclick="alert(\'Not yet implemented\');return false;">'
+                                    . $languageService->getLL('toggle_development') . '</a>';
+                            } else {
+                                $entries[] = '        <span class="text-muted">' . $languageService->getLL('zone_inactive') . '</span>';
+                            }
+                            $entries[] = '      </span>';
+                            $entries[] = '    </span>';
+                            $entries[] = '  </div>';
+                            $entries[] = '</li>';
                         } else {
-                            $entries[] = $languageService->getLL('zone_inactive');
+                            $entries[] = '<div class="dropdown-table-row" data-zone-status="' . $status . '">';
+                            $entries[] = '  <div class="dropdown-table-column dropdown-table-column-top dropdown-table-icon">';
+                            $entries[] = $this->getZoneIcon($status);
+                            $entries[] = '  </div>';
+                            $entries[] = '  <div class="dropdown-table-column">';
+                            $entries[] = '    ' . htmlspecialchars($zone['name']);
+                            if ($active !== null) {
+                                $onClickCode = 'TYPO3.CloudflareMenu.toggleDevelopmentMode(\'' . $identifier . '\', ' . $active . '); return false;';
+                                $entries[] = '    <a href="#" onclick="' . htmlspecialchars($onClickCode) . '">' . $languageService->getLL('toggle_development') . '</a>';
+                            } else {
+                                $entries[] = '    ' . $languageService->getLL('zone_inactive');
+                            }
+                            $entries[] = '  </div>';
+                            $entries[] = '</div>';
                         }
-                        $entries[] = '    </div>';
-                        $entries[] = '</div>';
                     }
                 } catch (\RuntimeException $e) {
                     // Nothing to do
@@ -155,9 +177,19 @@ class CloudflareToolbarItem implements ToolbarItemInterface
 
         $content = '';
         if (!empty($entries)) {
-            $content .= '<h3 class="dropdown-headline">Cloudflare</h3>';
-            $content .= '<hr />';
-            $content .= '<div class="dropdown-table">' . implode('', $entries) . '</div>';
+            if ($typo3Version >= 12) {
+                $content .= '<p class="h3 dropdown-headline" id="cloudflare-dropdown-headline">Cloudflare</p>';
+                $content .= '<hr class="dropdown-divider" aria-hidden="true">';
+                $content .= '<nav class="t3js-helpmenu">';
+                $content .= '<ul class="dropdown-list" role="menu" aria-labelledby="cloudflare-dropdown-headline">';
+                $content .= implode(LF, $entries);
+                $content .= '</ul>';
+                $content .= '</nav>';
+            } else {
+                $content .= '<h3 class="dropdown-headline">Cloudflare</h3>';
+                $content .= '<hr />';
+                $content .= '<div class="dropdown-table">' . implode('', $entries) . '</div>';
+            }
         } else {
             $content .= '<p>' . $languageService->getLL('no_domains') . '</p>';
         }
