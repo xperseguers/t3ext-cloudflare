@@ -79,6 +79,7 @@ defined('TYPO3') || die();
     }
 
     if (!empty($config['apiKey'])) {
+        // TYPO3 v11 code only:
         $GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'][] = \Causal\Cloudflare\Backend\ToolbarItems\CloudflareToolbarItem::class;
     }
 })('cloudflare');
