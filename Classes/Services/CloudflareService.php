@@ -46,6 +46,12 @@ class CloudflareService implements SingletonInterface
         $this->config = $config;
     }
 
+    public function setConfiguration(array $config): self
+    {
+        $this->config = $config;
+        return $this;
+    }
+
     /**
      * Sends data to Cloudflare.
      *

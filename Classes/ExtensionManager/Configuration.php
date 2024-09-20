@@ -14,6 +14,7 @@ namespace Causal\Cloudflare\ExtensionManager;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Causal\Cloudflare\Services\CloudflareService;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -29,10 +30,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class Configuration
 {
-
-    /** @var string */
-    protected $extKey = 'cloudflare';
-
     /** @var array */
     protected $config;
 
@@ -41,7 +38,7 @@ class Configuration
      */
     public function __construct()
     {
-        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extKey) ?? [];
+        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('cloudflare') ?? [];
     }
 
     /**
@@ -56,8 +53,8 @@ class Configuration
         $domains = [];
         $out = [];
 
-        /** @var $cloudflareService \Causal\Cloudflare\Services\CloudflareService */
-        $cloudflareService = GeneralUtility::makeInstance(\Causal\Cloudflare\Services\CloudflareService::class, $this->config);
+        /** @var CloudflareService $cloudflareService */
+        $cloudflareService = GeneralUtility::makeInstance(CloudflareService::class, $this->config);
 
         try {
             $ret = $cloudflareService->send('/zones/');
@@ -142,7 +139,7 @@ JS;
      */
     protected function sL($key)
     {
-        $message = $this->getLanguageService()->sL('LLL:EXT:' . $this->extKey . '/Resources/Private/Language/locallang_db.xlf:' . $key);
+        $message = $this->getLanguageService()->sL('LLL:EXT:cloudflare/Resources/Private/Language/locallang_db.xlf:' . $key);
         return $message;
     }
 
@@ -153,5 +150,4 @@ JS;
     {
         return $GLOBALS['LANG'];
     }
-
 }

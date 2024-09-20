@@ -31,10 +31,6 @@ use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
  */
 class TCEmain
 {
-
-    /** @var string */
-    protected $extKey = 'cloudflare';
-
     /** @var array */
     protected $config;
 
@@ -43,7 +39,7 @@ class TCEmain
      */
     public function __construct()
     {
-        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extKey);
+        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('cloudflare') ?? [];
     }
 
     /**
