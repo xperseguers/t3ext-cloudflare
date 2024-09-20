@@ -116,6 +116,8 @@ class Configuration
         }
 
         $fieldId = str_replace(['[', ']'], '_', $params['fieldName']);
+
+        // TODO: Check why JS is not executed in TYPO3 v13
         if ((new Typo3Version())->getMajorVersion() >= 12) {
             $nonce = GeneralUtility::getContainer()->get(RequestId::class)->nonce->consume();
             $out[] = '<script nonce="' . $nonce . '">';
