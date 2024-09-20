@@ -2,27 +2,6 @@
 defined('TYPO3') || die();
 
 (static function (string $_EXTKEY) {
-    // Register additional sprite icons
-    $icons = [
-        'cloudflare' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/cloudflare-16.png',
-        'direct' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/direct-16.png',
-        'offline' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/offline-16.png',
-        'online' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/online-16.png',
-        'module' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module-cloudflare.png',
-    ];
-
-    /** @var \TYPO3\CMS\Core\Imaging\IconRegistry $iconRegistry */
-    $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
-    foreach ($icons as $key => $icon) {
-        $iconRegistry->registerIcon('extensions-' . $_EXTKEY . '-' . $key,
-            \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-            [
-                'source' => $icon
-            ]
-        );
-    }
-    unset($iconRegistry);
-
     // Register our custom CSS
     $GLOBALS['TBE_STYLES']['skins'][$_EXTKEY]['stylesheetDirectories']['visual'] = 'EXT:' . $_EXTKEY . '/Resources/Public/Css/visual/';
 
