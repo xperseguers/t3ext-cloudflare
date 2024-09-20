@@ -39,8 +39,8 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "2.5.x-dev",
-      "dev-typo3/v12": "2.6.x-dev",
+      "dev-master": "2.6.x-dev",
+      "dev-typo3/v11": "2.5.x-dev",
       "dev-typo3/v8": "2.3.x-dev"
     },
     "typo3/cms": {
