@@ -4,8 +4,8 @@
     <header/>
     <body>
       <trans-unit id="settings.useBearerAuthentication">
-        <source>Use Bearer Authentication: Use a Token for Bearer Authentication (RFC 6750) and API key instead of the standard e-mail address and API key.</source>
-        <target state="needs-translation">Use Bearer Authentication: Use a Token for Bearer Authentication (RFC 6750) and API key instead of the standard e-mail address and API key.</target>
+        <source>Use Bearer Authentication (recommended): Use a Token for Bearer Authentication (RFC 6750) and API key instead of the standard e-mail address and API key.</source>
+        <target state="needs-translation">Use Bearer Authentication (recommended): Use a Token for Bearer Authentication (RFC 6750) and API key instead of the standard e-mail address and API key.</target>
       </trans-unit>
       <trans-unit id="settings.email">
         <source>Email: The e-mail address associated with the API key.</source>
@@ -34,10 +34,6 @@
       <trans-unit id="settings.enablePurgeByTags">
         <source>Purge cache by Cache-Tag: Granularly remove individual files from Cloudflare's cache by specifying the associated Cache-Tag. BEWARE: This option requires an Enterprise account.</source>
         <target state="needs-translation">Purge cache by Cache-Tag: Granularly remove individual files from Cloudflare's cache by specifying the associated Cache-Tag. BEWARE: This option requires an Enterprise account.</target>
-      </trans-unit>
-      <trans-unit id="settings.apiEndpoint">
-        <source>API Endpoint: Alternate API endpoint/proxy. Beware: DO NOT change unless you know what you do!</source>
-        <target state="translated">API Endpunkt: Alternativer API Endpunkt/Proxy. Warnung: NICHT ÄNDERN, außer Sie wissen was Sie hier tun!</target>
       </trans-unit>
       <trans-unit id="settings.labels.emptyList">
         <source>Empty list fetched from Cloudflare, please check your credentials.</source>
