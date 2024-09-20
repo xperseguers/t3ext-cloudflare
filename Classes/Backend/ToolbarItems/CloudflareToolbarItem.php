@@ -20,6 +20,7 @@ use Causal\Cloudflare\Services\CloudflareService;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Information\Typo3Version;
@@ -350,9 +351,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
         $tceMain = GeneralUtility::makeInstance(\Causal\Cloudflare\Hooks\TCEmain::class);
         $tceMain->clearCache();
 
-        return new JsonResponse([
-            'success' => true,
-        ]);
+        return new HtmlResponse('');
     }
 
     /**********************
