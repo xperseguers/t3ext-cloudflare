@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -42,32 +43,40 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class CloudflareToolbarItem implements ToolbarItemInterface
 {
-    /**
-     * @var string
-     */
-    protected $extKey = 'cloudflare';
+    protected PageRenderer $pageRenderer;
 
-    /**
-     * @var array
-     */
-    protected $config;
+    protected CloudflareService $cloudflareService;
 
-    /**
-     * @var CloudflareService
-     */
-    protected $cloudflareService;
+    protected array $config;
 
     /**
      * Default constructor.
+     *
+     * @param PageRenderer $pageRenderer
+     * @param CloudflareService $cloudflareService
      */
-    public function __construct()
+    public function __construct(
+        PageRenderer $pageRenderer,
+        CloudflareService $cloudflareService
+    )
     {
-        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extKey);
+        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('cloudflare') ?? [];
 
-        $this->cloudflareService = GeneralUtility::makeInstance(CloudflareService::class, $this->config);
+        $this->pageRenderer = $pageRenderer;
+        $this->cloudflareService = $cloudflareService->setConfiguration($this->config);
+
         $this->getLanguageService()->includeLLFile('EXT:cloudflare/Resources/Private/Language/locallang.xlf');
-        $pageRenderer = $this->getPageRenderer();
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Cloudflare/Toolbar/CloudflareMenu');
+
+        if ((new Typo3Version())->getMajorVersion() >= 12) {
+            $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
+                JavaScriptModuleInstruction::create('@causal/cloudflare/toolbar.js')
+                    ->invoke('create', [
+                        // options go here...
+                    ])
+            );
+        } else {
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Cloudflare/Toolbar/CloudflareMenu');
+        }
     }
 
     /**
@@ -352,16 +361,6 @@ class CloudflareToolbarItem implements ToolbarItemInterface
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * Returns current PageRenderer.
-     *
-     * @return PageRenderer
-     */
-    protected function getPageRenderer(): PageRenderer
-    {
-        return GeneralUtility::makeInstance(PageRenderer::class);
     }
 
     /**
