@@ -23,7 +23,7 @@ class Toolbar {
 
         this.selectors = {
             containerSelector: '#causal-cloudflare-backend-toolbaritems-cloudflaretoolbaritem',
-            //menuContainerSelector: '.dropdown-menu',
+            menuContainerSelector: '.dropdown-menu',
             //menuItemSelector: '.dropdown-menu div.dropdown-table-row',
             toolbarIconSelector: '.dropdown-toggle span.t3js-icon',
             //counterSelector: '#tx-cloudflare-counter'
@@ -45,7 +45,22 @@ class Toolbar {
     }
 
     updateMenu() {
-        console.log('TODO: implement updateMenu()');
+        const that = this;
+        const iconSelector = this.selectors.containerSelector + ' ' + this.selectors.toolbarIconSelector;
+        const menuSelector = this.selectors.containerSelector + ' ' + this.selectors.menuContainerSelector;
+        const toolbarItemIcon = document.querySelector(iconSelector);
+
+        Icons.getIcon('spinner-circle-light', Icons.sizes.small).then(function (icon) {
+            document.querySelector(iconSelector).outerHTML = icon;
+        });
+
+        fetch(TYPO3.settings.ajaxUrls['cloudflare_rendermenu'])
+            .then(response => response.json())
+            .then(data => {
+                document.querySelector(iconSelector).outerHTML = toolbarItemIcon.outerHTML;
+                document.querySelector(menuSelector).innerHTML = data.html;
+                that.initialize();
+            });
     }
 
     toggleDevelopmentMode(item) {
