@@ -44,10 +44,6 @@ class CloudflareService implements SingletonInterface
     public function __construct(array $config = [])
     {
         $this->config = $config;
-
-        if (!empty($this->config['apiEndpoint'])) {
-            $this->apiEndpoint = $this->config['apiEndpoint'] . '?v=4&route=';
-        }
     }
 
     /**

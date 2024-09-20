@@ -18,8 +18,8 @@ This extension comes with a few settings available from Admin Tools > Settings.
 
 Category Basic
 ^^^^^^^^^^^^^^
-- **Use Bearer Authentication** : Enables RFC 6750 Bearer Authentication. With
-  this setting enabled, Email is no longer a required field
+- **Use Bearer Authentication (recommended)** : Enables RFC 6750 Bearer
+  Authentication. With this setting enabled, Email is no longer a required field
   (:ref:`see below for configuration <admin-manual-configuration-bearer-authentication>`).
 
 - **Email** : The e-mail address associated with the API key.
@@ -79,64 +79,6 @@ found on https://www.cloudflare.com/ips.
    for this extension to allow the originating IP to be overridden based on the
    HTTP header ``HTTP_CF_CONNECTING_IP`` that is only allowed if the remote IP
    matches one of the official Cloudflare's reverse-proxies.
-
-
-**Proxy Settings**
-
-- **API Endpoint:** An alternate API endpoint/proxy for Cloudflare.
-
-.. warning::
-
-   This part is outdated since Cloudflare allows Bearer Authentication (see below).
-
-The goal of a proxy for Cloudflare is to solve the problematic of having your
-client's domains all managed with a single Cloudflare account without having to
-share your "administrator credentials" with your clients. In fact, Cloudflare
-does not provide API credentials on a domain/zone basis but for the whole
-account which is why you are forced to use "administrator credentials" when
-configuring this TYPO3 extension.
-
-This proxy setting lets you use a proxy for Cloudflare instead of the real
-endpoint. The proxy should provide its own authentication mechanism and then
-forward the request to the real Cloudflare endpoint using the administrator
-credentials.
-
-.. tip::
-
-   A sample proxy you may deploy on your own server is part of the extension and
-   may be downloaded from GitHub as well off
-   https://github.com/xperseguers/t3ext-cloudflare/blob/master/Resources/Examples/proxy-cloudflare.php.
-
-The configuration takes place at the end of the file:
-
-.. code-block:: php
-
-   // Enter your Cloudflare API credentials below
-   $proxy = new cloudflareProxy(
-       'api-email@your-domain.tld',
-       '000111222333444555666777888999aaabbbc'
-   );
-
-   // Add a few clients to our proxy
-   $proxy
-       ->addClient(
-           'domain@mydomain.tld',
-           '1234567890ABCDEF',
-           [
-               '627aaac32cbff7210660f400a6451ccc' => 'mydomain.tld',
-           ]
-       )
-       ->addClient(
-           'other@somedomain.tld',
-           'an-arbitrary-k3y',
-           [
-               '627aaac32cbff7210660f400a6451ccc' => 'somedomain.tld',
-               '123aaac32cbff7150660f999a1d2addd' => 'someotherdomain.tld',
-           ]
-       )
-   ;
-
-Feel free to enhance it to fit your needs!
 
 
 .. _admin-manual-configuration-clearcache:
