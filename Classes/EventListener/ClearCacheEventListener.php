@@ -48,7 +48,7 @@ class ClearCacheEventListener
                 'title' => 'LLL:EXT:cloudflare/Resources/Private/Language/locallang.xlf:clear_cache',
                 'description' => 'LLL:EXT:cloudflare/Resources/Private/Language/locallang.xlf:clear_cache.description',
                 'href' => $ajaxRoute,
-                'severity' => 'warning',
+                'severity' => 'success',
                 'iconIdentifier' => 'actions-system-cache-clear-impact-low',
             ];
 
