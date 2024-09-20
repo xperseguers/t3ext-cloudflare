@@ -1,5 +1,5 @@
 <?php
-namespace Causal\Cloudflare\Backend\ToolbarItems;
+declare(strict_types=1);
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,9 +14,15 @@ namespace Causal\Cloudflare\Backend\ToolbarItems;
  * The TYPO3 project - inspiring people to share!
  */
 
+namespace Causal\Cloudflare\Backend\ToolbarItems;
+
+use Causal\Cloudflare\Services\CloudflareService;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use Psr\Http\Message\ResponseInterface;
@@ -45,7 +51,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
     protected $config;
 
     /**
-     * @var \Causal\Cloudflare\Services\CloudflareService
+     * @var CloudflareService
      */
     protected $cloudflareService;
 
@@ -54,10 +60,9 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      */
     public function __construct()
     {
-        /** @var array config */
         $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extKey);
 
-        $this->cloudflareService = GeneralUtility::makeInstance(\Causal\Cloudflare\Services\CloudflareService::class, $this->config);
+        $this->cloudflareService = GeneralUtility::makeInstance(CloudflareService::class, $this->config);
         $this->getLanguageService()->includeLLFile('EXT:cloudflare/Resources/Private/Language/locallang.xlf');
         $pageRenderer = $this->getPageRenderer();
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Cloudflare/Toolbar/CloudflareMenu');
@@ -68,7 +73,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      *
      * @return bool true if user has access, false if not
      */
-    public function checkAccess()
+    public function checkAccess(): bool
     {
         return $this->getBackendUser()->isAdmin();
     }
@@ -78,7 +83,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      *
      * @return string HTML
      */
-    public function getItem()
+    public function getItem(): string
     {
         $title = $this->getLanguageService()->getLL('toolbarItem');
 
@@ -91,11 +96,11 @@ class CloudflareToolbarItem implements ToolbarItemInterface
     }
 
     /**
-     * Renders the drop down.
+     * Renders the dropdown.
      *
      * @return string HTML
      */
-    public function getDropDown()
+    public function getDropDown(): string
     {
         $languageService = $this->getLanguageService();
         $entries = [];
@@ -165,7 +170,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      * @param string $status
      * @return string
      */
-    protected function getZoneIcon($status)
+    protected function getZoneIcon(string $status): string
     {
         $languageService = $this->getLanguageService();
         switch ($status) {
@@ -188,10 +193,14 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      *
      * @param string $iconName
      * @param array $options
-     * @param string $alternativeMarkupIdentifier
+     * @param string|null $alternativeMarkupIdentifier
      * @return string
      */
-    protected function getSpriteIcon($iconName, array $options, $alternativeMarkupIdentifier = null)
+    protected function getSpriteIcon(
+        string $iconName,
+        array $options,
+        ?string $alternativeMarkupIdentifier = null
+    ): string
     {
         /** @var IconFactory $iconFactory */
         static $iconFactory = null;
@@ -199,7 +208,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
         if ($iconFactory === null) {
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         }
-        $icon = $iconFactory->getIcon($iconName, \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL)->render($alternativeMarkupIdentifier);
+        $icon = $iconFactory->getIcon($iconName, Icon::SIZE_SMALL)->render($alternativeMarkupIdentifier);
         if (strpos($icon, '<img ') !== false) {
             $icon = str_replace('<img ', '<img title="' . htmlspecialchars($options['title']) . '" ', $icon);
         }
@@ -321,22 +330,20 @@ class CloudflareToolbarItem implements ToolbarItemInterface
     /**
      * Returns current PageRenderer.
      *
-     * @return \TYPO3\CMS\Core\Page\PageRenderer
+     * @return PageRenderer
      */
-    protected function getPageRenderer()
+    protected function getPageRenderer(): PageRenderer
     {
-        $pageRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
-        return $pageRenderer;
+        return GeneralUtility::makeInstance(PageRenderer::class);
     }
 
     /**
      * Returns the LanguageService.
      *
-     * @return \TYPO3\CMS\Lang\LanguageService
+     * @return LanguageService
      */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
-
 }
