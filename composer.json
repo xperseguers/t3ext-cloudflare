@@ -28,21 +28,19 @@
   ],
   "license": "GPL-2.0-or-later",
   "require": {
-    "php": ">= 7.2.0, <= 8.3.99",
+    "php": ">= 7.4.0, <= 8.3.99",
     "ext-curl": "*",
-    "typo3/cms-core": "^9.5 || ^10 || ^11"
+    "typo3/cms-core": "^11 || ^12"
   },
   "autoload": {
     "psr-4": {
       "Causal\\Cloudflare\\": "Classes/"
     }
   },
-  "replace": {
-    "typo3-ter/cloudflare": "self.version"
-  },
   "extra": {
     "branch-alias": {
       "dev-master": "2.5.x-dev",
+      "dev-typo3/v12": "2.6.x-dev",
       "dev-typo3/v8": "2.3.x-dev"
     },
     "typo3/cms": {
