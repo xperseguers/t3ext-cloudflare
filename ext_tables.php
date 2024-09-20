@@ -11,6 +11,9 @@ defined('TYPO3') || die();
         $config = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get($_EXTKEY);
         $enableAnalyticsModule = (bool)($config['enableAnalyticsModule'] ?? true);
 
+        // Disable analytics module until we have a proper implementation
+        $enableAnalyticsModule = false;
+
         if ($enableAnalyticsModule) {
             // Create a module section "Cloudflare" before 'Admin Tools'
             $moduleConfiguration = [
