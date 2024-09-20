@@ -18,6 +18,7 @@ This extension comes with a few settings available from Admin Tools > Settings.
 
 Category Basic
 ^^^^^^^^^^^^^^
+
 - **Use Bearer Authentication (recommended)** : Enables RFC 6750 Bearer
   Authentication. With this setting enabled, Email is no longer a required field
   (:ref:`see below for configuration <admin-manual-configuration-bearer-authentication>`).
@@ -101,6 +102,7 @@ Configuration of the Bearer Authentication
 
 - Go to https://dash.cloudflare.com/profile/api-tokens
 - Under the section "API Tokens", click the button "Create Token"
+- Choose to create a custom token instead of a template
 - This extension requires following permissions:
 
   - **Zone / Zone / Read** *(to be able to select the zone while configuring the
@@ -109,4 +111,4 @@ Configuration of the Bearer Authentication
   - **Zone / Cache Purge / Purge** *(for obvious reason)*
   - **Zone / Analytics / Read** *(for the Backend module showing statistics)*
 
-Naturally you should restrict your token to one or more zones.
+Naturally you should restrict your token to one or more zones (zone resources).
