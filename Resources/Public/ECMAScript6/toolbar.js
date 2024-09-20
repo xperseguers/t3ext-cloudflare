@@ -11,6 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import Icons from '@typo3/backend/icons.js';
+
 /**
  * Module: @causal/cloudflare/toolbar
  * @exports @causal/cloudflare/toolbar
@@ -18,7 +20,17 @@
 class Toolbar {
     create (options) {
         this.options = options || {};
+
+        this.selectors = {
+            containerSelector: '#causal-cloudflare-backend-toolbaritems-cloudflaretoolbaritem',
+            //menuContainerSelector: '.dropdown-menu',
+            //menuItemSelector: '.dropdown-menu div.dropdown-table-row',
+            toolbarIconSelector: '.dropdown-toggle span.t3js-icon',
+            //counterSelector: '#tx-cloudflare-counter'
+        };
+
         this.initialize();
+        this.updateMenu();
     }
 
     initialize() {
@@ -32,9 +44,21 @@ class Toolbar {
         })
     }
 
+    updateMenu() {
+        console.log('TODO: implement updateMenu()');
+    }
+
     toggleDevelopmentMode(item) {
+        const that = this;
         const zone = item.dataset.zone;
         const active = item.dataset.active;
+
+        const iconSelector = this.selectors.containerSelector + ' ' + this.selectors.toolbarIconSelector;
+        const toolbarItemIcon = document.querySelector(iconSelector);
+
+        Icons.getIcon('spinner-circle-light', Icons.sizes.small).then(function (icon) {
+            document.querySelector(iconSelector).outerHTML = icon;
+        });
 
         fetch(
             TYPO3.settings.ajaxUrls['cloudflare_toggledev'],
@@ -48,7 +72,8 @@ class Toolbar {
             })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
+                document.querySelector(iconSelector).outerHTML = toolbarItemIcon.outerHTML;
+                that.updateMenu();
             });
     }
 }
