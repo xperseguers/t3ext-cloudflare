@@ -1,5 +1,5 @@
 <?php
-defined('TYPO3_MODE') || die();
+defined('TYPO3') || die();
 
 (static function (string $_EXTKEY) {
     // Register additional sprite icons
@@ -30,7 +30,7 @@ defined('TYPO3_MODE') || die();
     $config = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get($_EXTKEY);
     $enableAnalyticsModule = (bool)($config['enableAnalyticsModule'] ?? true);
 
-    if (TYPO3_MODE === 'BE' && $enableAnalyticsModule) {
+    if ($enableAnalyticsModule) {
         // Create a module section "Cloudflare" before 'Admin Tools'
         $moduleConfiguration = [
             'access' => 'user,group',

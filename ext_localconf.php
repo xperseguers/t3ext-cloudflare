@@ -1,5 +1,5 @@
 <?php
-defined('TYPO3_MODE') || die();
+defined('TYPO3') || die();
 
 (static function (string $_EXTKEY) {
     /** @var array $config */
@@ -78,7 +78,7 @@ defined('TYPO3_MODE') || die();
             \Causal\Cloudflare\Hooks\ContentProcessor::class . '->sendPageCacheTag';
     }
 
-    if (TYPO3_MODE === 'BE' && !empty($config['apiKey'])) {
+    if (!empty($config['apiKey'])) {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'][] = \Causal\Cloudflare\Backend\ToolbarItems\CloudflareToolbarItem::class;
 
         if ($config['domains'] !== '') {
