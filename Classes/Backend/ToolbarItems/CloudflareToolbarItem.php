@@ -316,7 +316,11 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      */
     public function toggleDevelopmentMode(ServerRequestInterface $request): ResponseInterface
     {
-        $params = json_decode($request->getBody()->getContents(), true);
+        $params = $request->getParsedBody();
+        if ($params === null) {
+            // TODO: This happens in TYPO3 v12, understand the underlying issue
+            $params = json_decode($request->getBody()->getContents(), true);
+        }
 
         $zone = $params['zone'] ?? null;
         $active = (bool)($params['active'] ?? false);
