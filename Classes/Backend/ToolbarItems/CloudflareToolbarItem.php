@@ -152,7 +152,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
                             $entries[] = '      <span class="dropdown-item-column dropdown-item-column-title">';
                             $entries[] = '        ' . htmlspecialchars($zone['name']) . '<br>';
                             if ($active !== null) {
-                                $entries[] = '        <a href="#" onclick="alert(\'Not yet implemented\');return false;">'
+                                $entries[] = '        <a href="#" class="cloudflare-zone" data-zone="' . $identifier . '" data-active="' . $active . '">'
                                     . $languageService->getLL('toggle_development') . '</a>';
                             } else {
                                 $entries[] = '        <span class="text-muted">' . $languageService->getLL('zone_inactive') . '</span>';
@@ -316,8 +316,10 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      */
     public function toggleDevelopmentMode(ServerRequestInterface $request): ResponseInterface
     {
-        $zone = GeneralUtility::_GP('zone');
-        $active = GeneralUtility::_GP('active');
+        $params = json_decode($request->getBody()->getContents(), true);
+
+        $zone = $params['zone'] ?? null;
+        $active = (bool)($params['active'] ?? false);
 
         try {
             $ret = $this->cloudflareService->send('/zones/' . $zone . '/settings/development_mode', [
