@@ -16,6 +16,8 @@ namespace Causal\Cloudflare\ExtensionManager;
 
 use Causal\Cloudflare\Services\CloudflareService;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Core\RequestId;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -77,7 +79,11 @@ class Configuration
         }
 
         $i = 0;
-        $selectedDomains = GeneralUtility::trimExplode(',', $params['fieldValue'], true);
+        if ((new Typo3Version())->getMajorVersion() >= 12) {
+            $selectedDomains = GeneralUtility::trimExplode(',', $this->config['domains'], true);
+        } else {
+            $selectedDomains = GeneralUtility::trimExplode(',', $params['fieldValue'], true);
+        }
 
         if (!empty($domains)) {
             $out[] = '<table class="table table-striped table-hover">';
@@ -97,7 +103,7 @@ class Configuration
             $checked = in_array($domain, $selectedDomains) || in_array($value, $selectedDomains)
                 ? ' checked="checked"'
                 : '';
-            $out[] = '<td style="width:20px"><input type="checkbox" id="cloudflare_domain_' . $i . '" value="' . $value . '"' . $checked . ' onclick="toggleCloudflareDomains();" /></td>';
+            $out[] = '<td style="width:20px"><input type="checkbox" class="cloudflare_domain" id="cloudflare_domain_' . $i . '" value="' . $value . '"' . $checked . '" /></td>';
             $out[] = '<td style="padding-right:50px"><label for="cloudflare_domain_' . $i . '">' . htmlspecialchars($domain) . '</label></td>';
             $out[] = '<td><tt>' . htmlspecialchars($identifier) . '</tt></td>';
             $out[] = '</tr>';
@@ -110,9 +116,13 @@ class Configuration
         }
 
         $fieldId = str_replace(['[', ']'], '_', $params['fieldName']);
-        $out[] = '<script type="text/javascript">';
+        if ((new Typo3Version())->getMajorVersion() >= 12) {
+            $nonce = GeneralUtility::getContainer()->get(RequestId::class)->nonce->consume();
+            $out[] = '<script nonce="' . $nonce . '">';
+        } else {
+            $out[] = '<script>';
+        }
         $out[] = <<<JS
-
 function toggleCloudflareDomains() {
     var domains = new Array();
     for (var i = 0; i < {$i}; i++) {
@@ -123,7 +133,13 @@ function toggleCloudflareDomains() {
     }
     document.getElementById("{$fieldId}").value = domains.join(',');
 }
-
+setTimeout(function() {
+    document.querySelectorAll('.cloudflare_domain').forEach(function (item, idx) {
+        item.addEventListener('click', function (event) {
+            toggleCloudflareDomains();
+        });
+    });
+}, 1000);
 JS;
         $out[] = '</script>';
         $out[] = '<input type="hidden" id="' . $fieldId . '" name="' . $params['fieldName'] . '" value="' . $params['fieldValue'] . '" />';
