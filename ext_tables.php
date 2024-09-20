@@ -2,9 +2,6 @@
 defined('TYPO3') || die();
 
 (static function (string $_EXTKEY) {
-    // Register our custom CSS
-    $GLOBALS['TBE_STYLES']['skins'][$_EXTKEY]['stylesheetDirectories']['visual'] = 'EXT:' . $_EXTKEY . '/Resources/Public/Css/visual/';
-
     $typo3Version = (new \TYPO3\CMS\Core\Information\Typo3Version())->getMajorVersion();
     if ($typo3Version < 12) {
         /** @var array $config */
