@@ -30,11 +30,10 @@ use Psr\Http\Message\ServerRequestInterface;
  * @subpackage  tx_cloudflare
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @copyright   Causal Sàrl
- * @license     http://www.gnu.org/copyleft/gpl.html
+ * @license     https://www.gnu.org/licenses/gpl-3.0.html
  */
 class CloudflareToolbarItem implements ToolbarItemInterface
 {
-
     /**
      * @var string
      */
