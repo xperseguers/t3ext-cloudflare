@@ -23,7 +23,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  * @package     tx_cloudflare
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @copyright   Causal Sàrl
- * @license     https://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @license     https://www.gnu.org/licenses/gpl-3.0.html
  */
 class ContentProcessor extends \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
 {

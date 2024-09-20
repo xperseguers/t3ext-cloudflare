@@ -14,7 +14,11 @@ namespace Causal\Cloudflare\ExtensionManager;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Causal\Cloudflare\Services\CloudflareService;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Core\RequestId;
+use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -25,14 +29,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @subpackage  tx_cloudflare
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @copyright   Causal Sàrl
- * @license     http://www.gnu.org/copyleft/gpl.html
+ * @license     https://www.gnu.org/licenses/gpl-3.0.html
  */
 class Configuration
 {
-
-    /** @var string */
-    protected $extKey = 'cloudflare';
-
     /** @var array */
     protected $config;
 
@@ -41,23 +41,22 @@ class Configuration
      */
     public function __construct()
     {
-        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extKey) ?? [];
+        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('cloudflare') ?? [];
     }
 
     /**
      * Returns an Extension Manager field for selecting domains.
      *
      * @param array $params
-     * @param \TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj
      * @return string
      */
-    public function getDomains(array $params, $pObj)
+    public function getDomains(array $params)
     {
         $domains = [];
         $out = [];
 
-        /** @var $cloudflareService \Causal\Cloudflare\Services\CloudflareService */
-        $cloudflareService = GeneralUtility::makeInstance(\Causal\Cloudflare\Services\CloudflareService::class, $this->config);
+        /** @var CloudflareService $cloudflareService */
+        $cloudflareService = GeneralUtility::makeInstance(CloudflareService::class, $this->config);
 
         try {
             $ret = $cloudflareService->send('/zones/');
@@ -80,7 +79,11 @@ class Configuration
         }
 
         $i = 0;
-        $selectedDomains = GeneralUtility::trimExplode(',', $params['fieldValue'], true);
+        if ((new Typo3Version())->getMajorVersion() >= 12) {
+            $selectedDomains = GeneralUtility::trimExplode(',', $this->config['domains'], true);
+        } else {
+            $selectedDomains = GeneralUtility::trimExplode(',', $params['fieldValue'], true);
+        }
 
         if (!empty($domains)) {
             $out[] = '<table class="table table-striped table-hover">';
@@ -97,10 +100,10 @@ class Configuration
 
             // Check: in_array($domain, $selectedDomains) is for configuration coming from EXT:cloudflare < v1.4.0
             $value = $identifier . '|' . $domain;
-            $checked = in_array($domain, $selectedDomains) || in_array($value, $selectedDomains)
+            $checked = in_array($domain, $selectedDomains, true) || in_array($value, $selectedDomains, true)
                 ? ' checked="checked"'
                 : '';
-            $out[] = '<td style="width:20px"><input type="checkbox" id="cloudflare_domain_' . $i . '" value="' . $value . '"' . $checked . ' onclick="toggleCloudflareDomains();" /></td>';
+            $out[] = '<td style="width:20px"><input type="checkbox" class="cloudflare_domain" id="cloudflare_domain_' . $i . '" value="' . $value . '"' . $checked . '" /></td>';
             $out[] = '<td style="padding-right:50px"><label for="cloudflare_domain_' . $i . '">' . htmlspecialchars($domain) . '</label></td>';
             $out[] = '<td><tt>' . htmlspecialchars($identifier) . '</tt></td>';
             $out[] = '</tr>';
@@ -113,9 +116,15 @@ class Configuration
         }
 
         $fieldId = str_replace(['[', ']'], '_', $params['fieldName']);
-        $out[] = '<script type="text/javascript">';
-        $out[] = <<<JS
 
+        // TODO: Check why JS is not executed in TYPO3 v13
+        if ((new Typo3Version())->getMajorVersion() >= 12) {
+            $nonce = GeneralUtility::getContainer()->get(RequestId::class)->nonce->consume();
+            $out[] = '<script nonce="' . $nonce . '">';
+        } else {
+            $out[] = '<script>';
+        }
+        $out[] = <<<JS
 function toggleCloudflareDomains() {
     var domains = new Array();
     for (var i = 0; i < {$i}; i++) {
@@ -126,7 +135,13 @@ function toggleCloudflareDomains() {
     }
     document.getElementById("{$fieldId}").value = domains.join(',');
 }
-
+setTimeout(function() {
+    document.querySelectorAll('.cloudflare_domain').forEach(function (item, idx) {
+        item.addEventListener('click', function (event) {
+            toggleCloudflareDomains();
+        });
+    });
+}, 1000);
 JS;
         $out[] = '</script>';
         $out[] = '<input type="hidden" id="' . $fieldId . '" name="' . $params['fieldName'] . '" value="' . $params['fieldValue'] . '" />';
@@ -140,18 +155,17 @@ JS;
      * @param string $key
      * @return string
      */
-    protected function sL($key)
+    protected function sL(string $key): string
     {
-        $message = $this->getLanguageService()->sL('LLL:EXT:' . $this->extKey . '/Resources/Private/Language/locallang_db.xlf:' . $key);
+        $message = $this->getLanguageService()->sL('LLL:EXT:cloudflare/Resources/Private/Language/locallang_db.xlf:' . $key);
         return $message;
     }
 
     /**
-     * @return \TYPO3\CMS\Lang\LanguageService
+     * @return LanguageService
      */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
-
 }

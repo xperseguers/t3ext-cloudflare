@@ -1,5 +1,5 @@
 <?php
-namespace Causal\Cloudflare\Backend\ToolbarItems;
+declare(strict_types=1);
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,9 +14,19 @@ namespace Causal\Cloudflare\Backend\ToolbarItems;
  * The TYPO3 project - inspiring people to share!
  */
 
+namespace Causal\Cloudflare\Backend\ToolbarItems;
+
+use Causal\Cloudflare\Services\CloudflareService;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use Psr\Http\Message\ResponseInterface;
@@ -30,38 +40,42 @@ use Psr\Http\Message\ServerRequestInterface;
  * @subpackage  tx_cloudflare
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @copyright   Causal Sàrl
- * @license     http://www.gnu.org/copyleft/gpl.html
+ * @license     https://www.gnu.org/licenses/gpl-3.0.html
  */
 class CloudflareToolbarItem implements ToolbarItemInterface
 {
+    protected PageRenderer $pageRenderer;
 
-    /**
-     * @var string
-     */
-    protected $extKey = 'cloudflare';
+    protected CloudflareService $cloudflareService;
 
-    /**
-     * @var array
-     */
-    protected $config;
-
-    /**
-     * @var \Causal\Cloudflare\Services\CloudflareService
-     */
-    protected $cloudflareService;
+    protected array $config;
 
     /**
      * Default constructor.
+     *
+     * @param PageRenderer $pageRenderer
+     * @param CloudflareService $cloudflareService
      */
-    public function __construct()
+    public function __construct(
+        PageRenderer $pageRenderer,
+        CloudflareService $cloudflareService
+    )
     {
-        /** @var array config */
-        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extKey);
+        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('cloudflare') ?? [];
 
-        $this->cloudflareService = GeneralUtility::makeInstance(\Causal\Cloudflare\Services\CloudflareService::class, $this->config);
-        $this->getLanguageService()->includeLLFile('EXT:cloudflare/Resources/Private/Language/locallang.xlf');
-        $pageRenderer = $this->getPageRenderer();
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Cloudflare/Toolbar/CloudflareMenu');
+        $this->pageRenderer = $pageRenderer;
+        $this->cloudflareService = $cloudflareService->setConfiguration($this->config);
+
+        if ((new Typo3Version())->getMajorVersion() >= 12) {
+            $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
+                JavaScriptModuleInstruction::create('@causal/cloudflare/toolbar.js')
+                    ->invoke('create', [
+                        // options go here...
+                    ])
+            );
+        } else {
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Cloudflare/Toolbar/CloudflareMenu');
+        }
     }
 
     /**
@@ -69,7 +83,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      *
      * @return bool true if user has access, false if not
      */
-    public function checkAccess()
+    public function checkAccess(): bool
     {
         return $this->getBackendUser()->isAdmin();
     }
@@ -79,9 +93,9 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      *
      * @return string HTML
      */
-    public function getItem()
+    public function getItem(): string
     {
-        $title = $this->getLanguageService()->getLL('toolbarItem');
+        $title = $this->sL('toolbarItem');
 
         $cloudflare = [];
         $cloudflare[] = '<span title="' . htmlspecialchars($title) . '">' . $this->getSpriteIcon('actions-system-extension-configure', [], 'inline') . '</span>';
@@ -92,13 +106,13 @@ class CloudflareToolbarItem implements ToolbarItemInterface
     }
 
     /**
-     * Renders the drop down.
+     * Renders the dropdown.
      *
      * @return string HTML
      */
-    public function getDropDown()
+    public function getDropDown(): string
     {
-        $languageService = $this->getLanguageService();
+        $typo3Version = (new Typo3Version())->getMajorVersion();
         $entries = [];
 
         $domains = GeneralUtility::trimExplode(',', $this->config['domains'], true);
@@ -127,20 +141,40 @@ class CloudflareToolbarItem implements ToolbarItemInterface
                                 break;
                         }
 
-                        $entries[] = '<div class="dropdown-table-row" data-zone-status="' . $status . '">';
-                        $entries[] = '    <div class="dropdown-table-column dropdown-table-column-top dropdown-table-icon">';
-                        $entries[] = $this->getZoneIcon($status);
-                        $entries[] = '    </div>';
-                        $entries[] = '    <div class="dropdown-table-column">';
-                        $entries[] = htmlspecialchars($zone['name']);
-                        if ($active !== null) {
-                            $onClickCode = 'TYPO3.CloudflareMenu.toggleDevelopmentMode(\'' . $identifier . '\', ' . $active . '); return false;';
-                            $entries[] = '<a href="#" onclick="' . htmlspecialchars($onClickCode) . '">' . $languageService->getLL('toggle_development') . '</a>';
+                        if ($typo3Version >= 12) {
+                            $entries[] = '<li>';
+                            $entries[] = '  <div class="dropdown-item" role="menuitem" data-zone-status="' . $status . '">';
+                            $entries[] = '    <span class="dropdown-item-columns">';
+                            $entries[] = '      <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">'
+                                . $this->getZoneIcon($status) . '</span>';
+                            $entries[] = '      <span class="dropdown-item-column dropdown-item-column-title">';
+                            $entries[] = '        ' . htmlspecialchars($zone['name']) . '<br>';
+                            if ($active !== null) {
+                                $entries[] = '        <a href="#" class="cloudflare-zone" data-zone="' . $identifier . '" data-active="' . $active . '">'
+                                    . $this->sL('toggle_development') . '</a>';
+                            } else {
+                                $entries[] = '        <span class="text-muted">' . $this->sL('zone_inactive') . '</span>';
+                            }
+                            $entries[] = '      </span>';
+                            $entries[] = '    </span>';
+                            $entries[] = '  </div>';
+                            $entries[] = '</li>';
                         } else {
-                            $entries[] = $languageService->getLL('zone_inactive');
+                            $entries[] = '<div class="dropdown-table-row" data-zone-status="' . $status . '">';
+                            $entries[] = '  <div class="dropdown-table-column dropdown-table-column-top dropdown-table-icon">';
+                            $entries[] = $this->getZoneIcon($status);
+                            $entries[] = '  </div>';
+                            $entries[] = '  <div class="dropdown-table-column">';
+                            $entries[] = '    ' . htmlspecialchars($zone['name']);
+                            if ($active !== null) {
+                                $onClickCode = 'TYPO3.CloudflareMenu.toggleDevelopmentMode(\'' . $identifier . '\', ' . $active . '); return false;';
+                                $entries[] = '    <a href="#" onclick="' . htmlspecialchars($onClickCode) . '">' . $this->sL('toggle_development') . '</a>';
+                            } else {
+                                $entries[] = '    ' . $this->sL('zone_inactive');
+                            }
+                            $entries[] = '  </div>';
+                            $entries[] = '</div>';
                         }
-                        $entries[] = '    </div>';
-                        $entries[] = '</div>';
                     }
                 } catch (\RuntimeException $e) {
                     // Nothing to do
@@ -150,11 +184,21 @@ class CloudflareToolbarItem implements ToolbarItemInterface
 
         $content = '';
         if (!empty($entries)) {
-            $content .= '<h3 class="dropdown-headline">Cloudflare</h3>';
-            $content .= '<hr />';
-            $content .= '<div class="dropdown-table">' . implode('', $entries) . '</div>';
+            if ($typo3Version >= 12) {
+                $content .= '<p class="h3 dropdown-headline" id="cloudflare-dropdown-headline">Cloudflare</p>';
+                $content .= '<hr class="dropdown-divider" aria-hidden="true">';
+                $content .= '<nav class="t3js-cloudflaremenu">';
+                $content .= '<ul class="dropdown-list" role="menu" aria-labelledby="cloudflare-dropdown-headline">';
+                $content .= implode(LF, $entries);
+                $content .= '</ul>';
+                $content .= '</nav>';
+            } else {
+                $content .= '<h3 class="dropdown-headline">Cloudflare</h3>';
+                $content .= '<hr />';
+                $content .= '<div class="dropdown-table">' . implode('', $entries) . '</div>';
+            }
         } else {
-            $content .= '<p>' . $languageService->getLL('no_domains') . '</p>';
+            $content .= '<p>' . $this->sL('no_domains') . '</p>';
         }
 
         return $content;
@@ -166,19 +210,18 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      * @param string $status
      * @return string
      */
-    protected function getZoneIcon($status)
+    protected function getZoneIcon(string $status): string
     {
-        $languageService = $this->getLanguageService();
         switch ($status) {
             case 'active':
-                $icon = $this->getSpriteIcon('extensions-cloudflare-online', ['title' => $languageService->getLL('zone_active')]);
+                $icon = $this->getSpriteIcon('cloudflare-online', ['title' => $this->sL('zone_active')]);
                 break;
             case 'dev-mode':
-                $icon = $this->getSpriteIcon('extensions-cloudflare-direct', ['title' => $languageService->getLL('zone_development')]);
+                $icon = $this->getSpriteIcon('cloudflare-direct', ['title' => $this->sL('zone_development')]);
                 break;
             case 'deactivated':
             default:
-                $icon = $this->getSpriteIcon('extensions-cloudflare-offline', ['title' => $languageService->getLL('zone_inactive')]);
+                $icon = $this->getSpriteIcon('cloudflare-offline', ['title' => $this->sL('zone_inactive')]);
                 break;
         }
         return $icon;
@@ -189,10 +232,14 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      *
      * @param string $iconName
      * @param array $options
-     * @param string $alternativeMarkupIdentifier
+     * @param string|null $alternativeMarkupIdentifier
      * @return string
      */
-    protected function getSpriteIcon($iconName, array $options, $alternativeMarkupIdentifier = null)
+    protected function getSpriteIcon(
+        string $iconName,
+        array $options,
+        ?string $alternativeMarkupIdentifier = null
+    ): string
     {
         /** @var IconFactory $iconFactory */
         static $iconFactory = null;
@@ -200,7 +247,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
         if ($iconFactory === null) {
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         }
-        $icon = $iconFactory->getIcon($iconName, \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL)->render($alternativeMarkupIdentifier);
+        $icon = $iconFactory->getIcon($iconName, Icon::SIZE_SMALL)->render($alternativeMarkupIdentifier);
         if (strpos($icon, '<img ') !== false) {
             $icon = str_replace('<img ', '<img title="' . htmlspecialchars($options['title']) . '" ', $icon);
         }
@@ -213,17 +260,17 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      *
      * @return array List item HTML attributes
      */
-    public function getAdditionalAttributes()
+    public function getAdditionalAttributes(): array
     {
         return [];
     }
 
     /**
-     * This item has a drop down.
+     * This item has a dropdown.
      *
      * @return bool
      */
-    public function hasDropDown()
+    public function hasDropDown(): bool
     {
         return true;
     }
@@ -233,7 +280,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      *
      * @return int
      */
-    public function getIndex()
+    public function getIndex(): int
     {
         return 25;
     }
@@ -246,11 +293,9 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      * Renders the menu so that it can be returned as response to an AJAX call
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     *
-     * @return JsonResponse
+     * @return ResponseInterface
      */
-    public function renderAjax(ServerRequestInterface $request)
+    public function renderAjax(ServerRequestInterface $request): ResponseInterface
     {
         $menu = $this->getDropDown();
 
@@ -264,14 +309,18 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      * Toggles development mode for a given zone.
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     *
      * @return JsonResponse
      */
-    public function toggleDevelopmentMode(ServerRequestInterface $request)
+    public function toggleDevelopmentMode(ServerRequestInterface $request): ResponseInterface
     {
-        $zone = GeneralUtility::_GP('zone');
-        $active = GeneralUtility::_GP('active');
+        $params = $request->getParsedBody();
+        if ($params === null) {
+            // TODO: This happens in TYPO3 v12, understand the underlying issue
+            $params = json_decode($request->getBody()->getContents(), true);
+        }
+
+        $zone = $params['zone'] ?? null;
+        $active = (bool)($params['active'] ?? false);
 
         try {
             $ret = $this->cloudflareService->send('/zones/' . $zone . '/settings/development_mode', [
@@ -290,19 +339,15 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      * Purges cache from all configured zones.
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     *
      * @return JsonResponse
      */
-    public function purge(ServerRequestInterface $request)
+    public function purge(ServerRequestInterface $request): ResponseInterface
     {
         /** @var \Causal\Cloudflare\Hooks\TCEmain $tceMain */
         $tceMain = GeneralUtility::makeInstance(\Causal\Cloudflare\Hooks\TCEmain::class);
         $tceMain->clearCache();
 
-        return new JsonResponse([
-            'success' => true,
-        ]);
+        return new HtmlResponse('');
     }
 
     /**********************
@@ -312,32 +357,25 @@ class CloudflareToolbarItem implements ToolbarItemInterface
     /**
      * Returns the current Backend user.
      *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @return BackendUserAuthentication
      */
-    protected function getBackendUser()
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
 
-    /**
-     * Returns current PageRenderer.
-     *
-     * @return \TYPO3\CMS\Core\Page\PageRenderer
-     */
-    protected function getPageRenderer()
+    protected function sL(string $key): string
     {
-        $pageRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
-        return $pageRenderer;
+        return $this->getLanguageService()->sL('LLL:EXT:cloudflare/Resources/Private/Language/locallang.xlf:' . $key);
     }
 
     /**
      * Returns the LanguageService.
      *
-     * @return \TYPO3\CMS\Lang\LanguageService
+     * @return LanguageService
      */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
-
 }

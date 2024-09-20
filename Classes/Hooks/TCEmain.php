@@ -27,14 +27,10 @@ use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
  * @subpackage  tx_cloudflare
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @copyright   Causal Sàrl
- * @license     http://www.gnu.org/copyleft/gpl.html
+ * @license     https://www.gnu.org/licenses/gpl-3.0.html
  */
 class TCEmain
 {
-
-    /** @var string */
-    protected $extKey = 'cloudflare';
-
     /** @var array */
     protected $config;
 
@@ -43,7 +39,7 @@ class TCEmain
      */
     public function __construct()
     {
-        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extKey);
+        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('cloudflare') ?? [];
     }
 
     /**

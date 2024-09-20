@@ -14,8 +14,10 @@ namespace Causal\Cloudflare\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Causal\Cloudflare\Services\CloudflareService;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Dashboard controller.
@@ -25,16 +27,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @subpackage  tx_cloudflare
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @copyright   Causal Sàrl
- * @license     http://www.gnu.org/copyleft/gpl.html
+ * @license     https://www.gnu.org/licenses/gpl-3.0.html
  */
 class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
-
-    /**
-     * @var string
-     */
-    protected $extKey = 'cloudflare';
-
     /**
      * @var array
      */
@@ -56,9 +52,9 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     public function __construct()
     {
         /** @var array config */
-        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extKey);
+        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('cloudflare') ?? [];
 
-        $this->cloudflareService = GeneralUtility::makeInstance(\Causal\Cloudflare\Services\CloudflareService::class, $this->config);
+        $this->cloudflareService = GeneralUtility::makeInstance(CloudflareService::class, $this->config);
 
         $domains = GeneralUtility::trimExplode(',', $this->config['domains'], true);
         $this->zones = [];
@@ -111,7 +107,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
 
         $data = [
             'periods' => $availablePeriods,
-            'period' => $this->translate('period.' . $since),
+            'period' => $this->sL('period.' . $since),
             'timeseries' => $cfData['result']['timeseries'],
         ];
 
@@ -227,12 +223,12 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         }
 
         $periods = [
-            '30' => $this->translate('period.30'),
-            '360' => $this->translate('period.360'),
-            '720' => $this->translate('period.720'),
-            '1440' => $this->translate('period.1440'),
-            '10080' => $this->translate('period.10080'),
-            '43200' => $this->translate('period.43200'),
+            '30' => $this->sL('period.30'),
+            '360' => $this->sL('period.360'),
+            '720' => $this->sL('period.720'),
+            '1440' => $this->sL('period.1440'),
+            '10080' => $this->sL('period.10080'),
+            '43200' => $this->sL('period.43200'),
         ];
 
         $info = $this->cloudflareService->send('/zones/' . $zone);
@@ -265,7 +261,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
      */
     protected function getThreatName($type)
     {
-        $name = $this->translate('dashboard.threats.' . $type);
+        $name = $this->sL('dashboard.threats.' . $type);
         if (empty($name)) {
             $name = $type;
         }
@@ -276,12 +272,11 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
      * Returns the localized label of a given key.
      *
      * @param string $key The key from the LOCAL_LANG array for which to return the value.
-     * @param array $arguments the arguments of the extension, being passed over to vsprintf
+     * @param array|null $arguments the arguments of the extension, being passed over to vsprintf
      * @return string Localized label
      */
-    protected function translate($key, $arguments = null)
+    protected function sL(string $key, ?array $arguments = null): string
     {
-        return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, $this->request->getControllerExtensionKey(), $arguments);
+        return LocalizationUtility::translate($key, $this->request->getControllerExtensionKey(), $arguments);
     }
-
 }

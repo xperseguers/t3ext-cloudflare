@@ -1,0 +1,16 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Causal\Cloudflare\:
+    resource: '../Classes/*'
+
+  Causal\Cloudflare\Backend\ToolbarItems\CloudflareToolbarItem:
+    public: true
+
+  Causal\Cloudflare\EventListener\ClearCacheEventListener:
+    tags:
+      - name: event.listener
+        identifier: 'cloudflare/toolbar/clear-cache'

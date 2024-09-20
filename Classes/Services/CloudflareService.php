@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @subpackage  tx_cloudflare
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @copyright   Causal Sàrl
- * @license     http://www.gnu.org/copyleft/gpl.html
+ * @license     https://www.gnu.org/licenses/gpl-3.0.html
  */
 class CloudflareService implements SingletonInterface
 {
@@ -44,10 +44,12 @@ class CloudflareService implements SingletonInterface
     public function __construct(array $config = [])
     {
         $this->config = $config;
+    }
 
-        if (!empty($this->config['apiEndpoint'])) {
-            $this->apiEndpoint = $this->config['apiEndpoint'] . '?v=4&route=';
-        }
+    public function setConfiguration(array $config): self
+    {
+        $this->config = $config;
+        return $this;
     }
 
     /**

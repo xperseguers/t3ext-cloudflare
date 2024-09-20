@@ -4,7 +4,7 @@
 		<header/>
 		<body>
 			<trans-unit id="settings.useBearerAuthentication">
-				<source>Use Bearer Authentication: Use a Token for Bearer Authentication (RFC 6750) and API key instead of the standard e-mail address and API key.</source>
+				<source>Use Bearer Authentication (recommended): Use a Token for Bearer Authentication (RFC 6750) and API key instead of the standard e-mail address and API key.</source>
 			</trans-unit>
 			<trans-unit id="settings.email">
 				<source>Email: The e-mail address associated with the API key.</source>
@@ -26,9 +26,6 @@
 			</trans-unit>
 			<trans-unit id="settings.enablePurgeByTags">
 				<source>Purge cache by Cache-Tag: Granularly remove individual files from Cloudflare's cache by specifying the associated Cache-Tag. BEWARE: This option requires an Enterprise account.</source>
-			</trans-unit>
-			<trans-unit id="settings.apiEndpoint">
-				<source>API Endpoint: Alternate API endpoint/proxy. Beware: DO NOT change unless you know what you do!</source>
 			</trans-unit>
 			<trans-unit id="settings.labels.emptyList">
 				<source>Empty list fetched from Cloudflare, please check your credentials.</source>
