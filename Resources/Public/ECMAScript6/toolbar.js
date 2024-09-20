@@ -24,9 +24,9 @@ class Toolbar {
         this.selectors = {
             containerSelector: '#causal-cloudflare-backend-toolbaritems-cloudflaretoolbaritem',
             menuContainerSelector: '.dropdown-menu',
-            //menuItemSelector: '.dropdown-menu div.dropdown-table-row',
+            menuItemSelector: '.dropdown-menu ul.dropdown-list div.dropdown-item',
             toolbarIconSelector: '.dropdown-toggle span.t3js-icon',
-            //counterSelector: '#tx-cloudflare-counter'
+            counterSelector: '#tx-cloudflare-counter'
         };
 
         this.initialize();
@@ -60,7 +60,17 @@ class Toolbar {
                 document.querySelector(iconSelector).outerHTML = toolbarItemIcon.outerHTML;
                 document.querySelector(menuSelector).innerHTML = data.html;
                 that.initialize();
+                that.updateNumberOfDomainsInDevelopmentMode();
             });
+    }
+
+    updateNumberOfDomainsInDevelopmentMode() {
+        const zoneSelector = this.selectors.containerSelector + ' ' + this.selectors.menuItemSelector;
+        const num = document.querySelectorAll(zoneSelector + '[data-zone-status=dev-mode]').length;
+        const counter = document.querySelector(this.selectors.counterSelector);
+
+        counter.textContent = num;
+        counter.style.display = num > 0 ? 'block' : 'none';
     }
 
     toggleDevelopmentMode(item) {

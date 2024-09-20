@@ -145,7 +145,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
 
                         if ($typo3Version >= 12) {
                             $entries[] = '<li>';
-                            $entries[] = '  <div class="dropdown-item" role="menuitem">';
+                            $entries[] = '  <div class="dropdown-item" role="menuitem" data-zone-status="' . $status . '">';
                             $entries[] = '    <span class="dropdown-item-columns">';
                             $entries[] = '      <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">'
                                 . $this->getZoneIcon($status) . '</span>';
@@ -189,7 +189,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
             if ($typo3Version >= 12) {
                 $content .= '<p class="h3 dropdown-headline" id="cloudflare-dropdown-headline">Cloudflare</p>';
                 $content .= '<hr class="dropdown-divider" aria-hidden="true">';
-                $content .= '<nav class="t3js-helpmenu">';
+                $content .= '<nav class="t3js-cloudflaremenu">';
                 $content .= '<ul class="dropdown-list" role="menu" aria-labelledby="cloudflare-dropdown-headline">';
                 $content .= implode(LF, $entries);
                 $content .= '</ul>';
