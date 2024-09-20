@@ -1,5 +1,5 @@
 <?php
-namespace Causal\Cloudflare\Hooks;
+declare(strict_types=1);
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,66 +14,67 @@ namespace Causal\Cloudflare\Hooks;
  * The TYPO3 project - inspiring people to share!
  */
 
+namespace Causal\Cloudflare\EventListener;
+
+use TYPO3\CMS\Backend\Backend\Event\ModifyClearCacheActionsEvent;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 
-/**
- * Hook for clearing cache on Cloudflare.
- *
- * @category    Hooks
- * @package     TYPO3
- * @subpackage  tx_cloudflare
- * @author      Xavier Perseguers <xavier@causal.ch>
- * @copyright   Causal Sàrl
- * @license     http://www.gnu.org/copyleft/gpl.html
- */
-class TYPO3backend implements \TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookInterface
+class ClearCacheEventListener
 {
-
-    /**
-     * Default constructor.
-     */
-    public function __construct()
+    public function __invoke(ModifyClearCacheActionsEvent $event): void
     {
+        $config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('cloudflare');
 
-    }
+        if (empty($config['apiKey']) || empty($config['domains'])) {
+            return;
+        }
 
-    /**
-     * Adds cache menu item.
-     *
-     * @param array $cacheActions
-     * @param array $optionValues
-     * @return void
-     */
-    public function manipulateCacheActions(&$cacheActions, &$optionValues)
-    {
         $backendUser = $this->getBackendUser();
 
         $canClearAllCache = (bool)($backendUser->getTSConfig()['options.']['clearCache.']['all'] ?? false);
         $canClearCloudflareCache = (bool)($backendUser->getTSConfig()['options.']['clearCache.']['cloudflare'] ?? false);
 
         if ($backendUser->isAdmin() || $canClearAllCache || $canClearCloudflareCache) {
-            // Add new cache menu item
-            $clearAll = array_shift($cacheActions);
-            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            $cacheActions = $event->getCacheActions();
+            $cacheActionIdentifiers = $event->getCacheActionIdentifiers();
+            
+            /** @var UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $ajaxRoute = (string)$uriBuilder->buildUriFromRoute('ajax_cloudflare_purge');
             $clearCloudflare = [
                 'id' => 'cloudflare',
                 'title' => 'LLL:EXT:cloudflare/Resources/Private/Language/locallang.xlf:clear_cache',
                 'description' => 'LLL:EXT:cloudflare/Resources/Private/Language/locallang.xlf:clear_cache.description',
                 'href' => $ajaxRoute,
+                'severity' => 'warning',
                 'iconIdentifier' => 'actions-system-cache-clear-impact-low',
             ];
-            if ($clearAll !== null) {
-                $cacheActions = array_merge([$clearAll, $clearCloudflare], $cacheActions);
+
+            $posClearAll = array_search('all', $cacheActionIdentifiers);
+            if ($posClearAll !== false) {
+                // Insert Cloudflare cache clear action before 'all'
+                $cacheActions = array_merge(
+                    array_slice($cacheActions, 0, $posClearAll),
+                    [$clearCloudflare],
+                    array_slice($cacheActions, $posClearAll)
+                );
+                $cacheActionIdentifiers = array_merge(
+                    array_slice($cacheActionIdentifiers, 0, $posClearAll),
+                    ['cloudflare'],
+                    array_slice($cacheActionIdentifiers, $posClearAll)
+                );
             } else {
                 $cacheActions[] = $clearCloudflare;
+                $cacheActionIdentifiers[] = 'cloudflare';    
             }
-            $optionValues[] = 'cloudflare';
+            
+            $event->setCacheActions($cacheActions);
+            $event->setCacheActionIdentifiers($cacheActionIdentifiers);
         }
     }
-
+    
     /**
      * Returns the current Backend user.
      *
@@ -93,5 +94,4 @@ class TYPO3backend implements \TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookIn
     {
         return $GLOBALS['LANG'];
     }
-
 }
