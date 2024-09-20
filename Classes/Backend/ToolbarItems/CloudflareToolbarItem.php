@@ -95,7 +95,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      */
     public function getItem(): string
     {
-        $title = $this->translate('toolbarItem');
+        $title = $this->sL('toolbarItem');
 
         $cloudflare = [];
         $cloudflare[] = '<span title="' . htmlspecialchars($title) . '">' . $this->getSpriteIcon('actions-system-extension-configure', [], 'inline') . '</span>';
@@ -151,9 +151,9 @@ class CloudflareToolbarItem implements ToolbarItemInterface
                             $entries[] = '        ' . htmlspecialchars($zone['name']) . '<br>';
                             if ($active !== null) {
                                 $entries[] = '        <a href="#" class="cloudflare-zone" data-zone="' . $identifier . '" data-active="' . $active . '">'
-                                    . $this->translate('toggle_development') . '</a>';
+                                    . $this->sL('toggle_development') . '</a>';
                             } else {
-                                $entries[] = '        <span class="text-muted">' . $this->translate('zone_inactive') . '</span>';
+                                $entries[] = '        <span class="text-muted">' . $this->sL('zone_inactive') . '</span>';
                             }
                             $entries[] = '      </span>';
                             $entries[] = '    </span>';
@@ -168,9 +168,9 @@ class CloudflareToolbarItem implements ToolbarItemInterface
                             $entries[] = '    ' . htmlspecialchars($zone['name']);
                             if ($active !== null) {
                                 $onClickCode = 'TYPO3.CloudflareMenu.toggleDevelopmentMode(\'' . $identifier . '\', ' . $active . '); return false;';
-                                $entries[] = '    <a href="#" onclick="' . htmlspecialchars($onClickCode) . '">' . $this->translate('toggle_development') . '</a>';
+                                $entries[] = '    <a href="#" onclick="' . htmlspecialchars($onClickCode) . '">' . $this->sL('toggle_development') . '</a>';
                             } else {
-                                $entries[] = '    ' . $this->translate('zone_inactive');
+                                $entries[] = '    ' . $this->sL('zone_inactive');
                             }
                             $entries[] = '  </div>';
                             $entries[] = '</div>';
@@ -198,7 +198,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
                 $content .= '<div class="dropdown-table">' . implode('', $entries) . '</div>';
             }
         } else {
-            $content .= '<p>' . $this->translate('no_domains') . '</p>';
+            $content .= '<p>' . $this->sL('no_domains') . '</p>';
         }
 
         return $content;
@@ -214,14 +214,14 @@ class CloudflareToolbarItem implements ToolbarItemInterface
     {
         switch ($status) {
             case 'active':
-                $icon = $this->getSpriteIcon('cloudflare-online', ['title' => $this->translate('zone_active')]);
+                $icon = $this->getSpriteIcon('cloudflare-online', ['title' => $this->sL('zone_active')]);
                 break;
             case 'dev-mode':
-                $icon = $this->getSpriteIcon('cloudflare-direct', ['title' => $this->translate('zone_development')]);
+                $icon = $this->getSpriteIcon('cloudflare-direct', ['title' => $this->sL('zone_development')]);
                 break;
             case 'deactivated':
             default:
-                $icon = $this->getSpriteIcon('cloudflare-offline', ['title' => $this->translate('zone_inactive')]);
+                $icon = $this->getSpriteIcon('cloudflare-offline', ['title' => $this->sL('zone_inactive')]);
                 break;
         }
         return $icon;
@@ -364,7 +364,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
         return $GLOBALS['BE_USER'];
     }
 
-    protected function translate(string $key): string
+    protected function sL(string $key): string
     {
         return $this->getLanguageService()->sL('LLL:EXT:cloudflare/Resources/Private/Language/locallang.xlf:' . $key);
     }

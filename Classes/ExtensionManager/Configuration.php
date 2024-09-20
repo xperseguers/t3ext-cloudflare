@@ -18,6 +18,7 @@ use Causal\Cloudflare\Services\CloudflareService;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -47,10 +48,9 @@ class Configuration
      * Returns an Extension Manager field for selecting domains.
      *
      * @param array $params
-     * @param \TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj
      * @return string
      */
-    public function getDomains(array $params, $pObj)
+    public function getDomains(array $params)
     {
         $domains = [];
         $out = [];
@@ -100,7 +100,7 @@ class Configuration
 
             // Check: in_array($domain, $selectedDomains) is for configuration coming from EXT:cloudflare < v1.4.0
             $value = $identifier . '|' . $domain;
-            $checked = in_array($domain, $selectedDomains) || in_array($value, $selectedDomains)
+            $checked = in_array($domain, $selectedDomains, true) || in_array($value, $selectedDomains, true)
                 ? ' checked="checked"'
                 : '';
             $out[] = '<td style="width:20px"><input type="checkbox" class="cloudflare_domain" id="cloudflare_domain_' . $i . '" value="' . $value . '"' . $checked . '" /></td>';
@@ -153,16 +153,16 @@ JS;
      * @param string $key
      * @return string
      */
-    protected function sL($key)
+    protected function sL(string $key): string
     {
         $message = $this->getLanguageService()->sL('LLL:EXT:cloudflare/Resources/Private/Language/locallang_db.xlf:' . $key);
         return $message;
     }
 
     /**
-     * @return \TYPO3\CMS\Lang\LanguageService
+     * @return LanguageService
      */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
