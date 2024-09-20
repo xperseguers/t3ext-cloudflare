@@ -4,7 +4,7 @@
 		<header/>
 		<body>
 			<trans-unit id="settings.useBearerAuthentication">
-				<source>Use Bearer Authentication: Use a Token for Bearer Authentication (RFC 6750) and API key instead of the standard e-mail address and API key.</source>
+				<source>Use Bearer Authentication (recommended): Use a Token for Bearer Authentication (RFC 6750) and API key instead of the standard e-mail address and API key.</source>
 			</trans-unit>
 			<trans-unit id="settings.email">
 				<source>Email: The e-mail address associated with the API key.</source>
