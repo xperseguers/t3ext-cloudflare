@@ -17,23 +17,23 @@ declare(strict_types = 1);
 use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 
 return [
-    'cloudflare' => [
+    'cloudflare-icon' => [
         'provider' => BitmapIconProvider::class,
         'source' => 'EXT:cloudflare/Resources/Public/Icons/cloudflare-16.png',
     ],
-    'direct' => [
+    'cloudflare-direct' => [
         'provider' => BitmapIconProvider::class,
         'source' => 'EXT:cloudflare/Resources/Public/Icons/direct-16.png',
     ],
-    'offline' => [
+    'cloudflare-offline' => [
         'provider' => BitmapIconProvider::class,
         'source' => 'EXT:cloudflare/Resources/Public/Icons/offline-16.png',
     ],
-    'online' => [
+    'cloudflare-online' => [
         'provider' => BitmapIconProvider::class,
         'source' => 'EXT:cloudflare/Resources/Public/Icons/online-16.png',
     ],
-    'module' => [
+    'cloudflare-module' => [
         'provider' => BitmapIconProvider::class,
         'source' => 'EXT:cloudflare/Resources/Public/Icons/module-cloudflare.png',
     ],

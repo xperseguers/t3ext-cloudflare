@@ -18,6 +18,7 @@ namespace Causal\Cloudflare\Backend\ToolbarItems;
 
 use Causal\Cloudflare\Services\CloudflareService;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -175,14 +176,14 @@ class CloudflareToolbarItem implements ToolbarItemInterface
         $languageService = $this->getLanguageService();
         switch ($status) {
             case 'active':
-                $icon = $this->getSpriteIcon('extensions-cloudflare-online', ['title' => $languageService->getLL('zone_active')]);
+                $icon = $this->getSpriteIcon('cloudflare-online', ['title' => $languageService->getLL('zone_active')]);
                 break;
             case 'dev-mode':
-                $icon = $this->getSpriteIcon('extensions-cloudflare-direct', ['title' => $languageService->getLL('zone_development')]);
+                $icon = $this->getSpriteIcon('cloudflare-direct', ['title' => $languageService->getLL('zone_development')]);
                 break;
             case 'deactivated':
             default:
-                $icon = $this->getSpriteIcon('extensions-cloudflare-offline', ['title' => $languageService->getLL('zone_inactive')]);
+                $icon = $this->getSpriteIcon('cloudflare-offline', ['title' => $languageService->getLL('zone_inactive')]);
                 break;
         }
         return $icon;
@@ -221,17 +222,17 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      *
      * @return array List item HTML attributes
      */
-    public function getAdditionalAttributes()
+    public function getAdditionalAttributes(): array
     {
         return [];
     }
 
     /**
-     * This item has a drop down.
+     * This item has a dropdown.
      *
      * @return bool
      */
-    public function hasDropDown()
+    public function hasDropDown(): bool
     {
         return true;
     }
@@ -241,7 +242,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      *
      * @return int
      */
-    public function getIndex()
+    public function getIndex(): int
     {
         return 25;
     }
@@ -254,11 +255,9 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      * Renders the menu so that it can be returned as response to an AJAX call
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     *
-     * @return JsonResponse
+     * @return ResponseInterface
      */
-    public function renderAjax(ServerRequestInterface $request)
+    public function renderAjax(ServerRequestInterface $request): ResponseInterface
     {
         $menu = $this->getDropDown();
 
@@ -272,11 +271,9 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      * Toggles development mode for a given zone.
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     *
      * @return JsonResponse
      */
-    public function toggleDevelopmentMode(ServerRequestInterface $request)
+    public function toggleDevelopmentMode(ServerRequestInterface $request): ResponseInterface
     {
         $zone = GeneralUtility::_GP('zone');
         $active = GeneralUtility::_GP('active');
@@ -298,11 +295,9 @@ class CloudflareToolbarItem implements ToolbarItemInterface
      * Purges cache from all configured zones.
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     *
      * @return JsonResponse
      */
-    public function purge(ServerRequestInterface $request)
+    public function purge(ServerRequestInterface $request): ResponseInterface
     {
         /** @var \Causal\Cloudflare\Hooks\TCEmain $tceMain */
         $tceMain = GeneralUtility::makeInstance(\Causal\Cloudflare\Hooks\TCEmain::class);
@@ -320,9 +315,9 @@ class CloudflareToolbarItem implements ToolbarItemInterface
     /**
      * Returns the current Backend user.
      *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @return BackendUserAuthentication
      */
-    protected function getBackendUser()
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
