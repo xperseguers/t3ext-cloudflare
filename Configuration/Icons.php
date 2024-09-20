@@ -15,23 +15,20 @@ declare(strict_types = 1);
  */
 
 use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
+use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
 
 return [
-    'cloudflare-icon' => [
-        'provider' => BitmapIconProvider::class,
-        'source' => 'EXT:cloudflare/Resources/Public/Icons/cloudflare-16.png',
-    ],
     'cloudflare-direct' => [
-        'provider' => BitmapIconProvider::class,
-        'source' => 'EXT:cloudflare/Resources/Public/Icons/direct-16.png',
+        'provider' => SvgIconProvider::class,
+        'source' => 'EXT:cloudflare/Resources/Public/Icons/direct.svg',
     ],
     'cloudflare-offline' => [
-        'provider' => BitmapIconProvider::class,
-        'source' => 'EXT:cloudflare/Resources/Public/Icons/offline-16.png',
+        'provider' => SvgIconProvider::class,
+        'source' => 'EXT:cloudflare/Resources/Public/Icons/offline.svg',
     ],
     'cloudflare-online' => [
-        'provider' => BitmapIconProvider::class,
-        'source' => 'EXT:cloudflare/Resources/Public/Icons/online-16.png',
+        'provider' => SvgIconProvider::class,
+        'source' => 'EXT:cloudflare/Resources/Public/Icons/online.svg',
     ],
     'cloudflare-module' => [
         'provider' => BitmapIconProvider::class,
