@@ -27,28 +27,20 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  * @copyright   Causal Sàrl
  * @license     https://www.gnu.org/licenses/gpl-3.0.html
  */
-class ContentProcessor extends \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+class ContentProcessor
 {
-
-    /**
-     * Default constructor to prevent a PHP warning due to missing initialization
-     * arguments for parent constructor.
-     */
-    public function __construct()
-    {
-
-    }
-
     /**
      * Sends Cache-Tags header for Cloudflare.
      *
      * @param TypoScriptFrontendController $parentObject
      * @param int $timeOutTime
      */
-    public function insertPageIncache(TypoScriptFrontendController $parentObject, int $timeOutTime): void
+    public function insertPageIncache(
+        TypoScriptFrontendController $parentObject,
+        int $timeOutTime
+    ): void
     {
-        // Trick: By extending the parent class we may access the protected list of cache tags!
-        $cacheTags = array_unique($parentObject->pageCacheTags);
+        $cacheTags = array_unique($parentObject->getPageCacheTags());
 
         if (!empty($cacheTags)) {
             $chunks = array_chunk($cacheTags, 30);  // Cloudflare does not support more than 30 tags at once
@@ -65,15 +57,15 @@ class ContentProcessor extends \TYPO3\CMS\Frontend\Controller\TypoScriptFrontend
      * go through the whole page generation process. Other possible associated
      * cache tags are not available for reading and are thus not considered. This
      * would probably need a query to the database to do so and is probably not
-     * a must have.
+     * a must-have.
      *
      * @param array $params
      */
     public function sendPageCacheTag(array $params): void
     {
         $cacheTag = 'Cache-Tag: pageId_' . $params['pObj']->id;
-        if (!in_array($cacheTag, headers_list())) {
+        if (!in_array($cacheTag, headers_list(), true)) {
             header($cacheTag);
-        };
+        }
     }
 }
