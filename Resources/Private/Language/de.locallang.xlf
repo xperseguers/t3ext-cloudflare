@@ -7,9 +7,9 @@
         <source>Cloudflare</source>
         <target state="final">Cloudflare</target>
       </trans-unit>
-      <trans-unit id="no_domains">
+      <trans-unit id="no_domains" approved="yes">
         <source>No domains configured for Cloudflare.</source>
-        <target state="needs-translation">No domains configured for Cloudflare.</target>
+        <target state="final">Keine Domains für Cloudflare konfiguriert.</target>
       </trans-unit>
       <trans-unit id="toggle_development" approved="yes">
         <source>Toggle development mode</source>
