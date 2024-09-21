@@ -7,9 +7,9 @@
         <source>Cloudflare</source>
         <target state="final">Cloudflare</target>
       </trans-unit>
-      <trans-unit id="no_domains">
+      <trans-unit id="no_domains" approved="yes">
         <source>No domains configured for Cloudflare.</source>
-        <target state="needs-translation">No domains configured for Cloudflare.</target>
+        <target state="final">Nessun dominio configurato per Cloudflare.</target>
       </trans-unit>
       <trans-unit id="toggle_development" approved="yes">
         <source>Toggle development mode</source>
@@ -68,9 +68,9 @@
         <source>Requests Through Cloudflare</source>
         <target state="final">Richieste tramite Cloudflare</target>
       </trans-unit>
-      <trans-unit id="dashboard.requests.total">
+      <trans-unit id="dashboard.requests.total" approved="yes">
         <source>Total Requests</source>
-        <target state="translated">Totale richieste</target>
+        <target state="final">Totale richieste</target>
       </trans-unit>
       <trans-unit id="dashboard.requests.cached">
         <source>Cached Requests</source>
