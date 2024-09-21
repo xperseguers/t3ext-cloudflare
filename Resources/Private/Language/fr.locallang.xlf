@@ -3,9 +3,9 @@
   <file source-language="en" datatype="plaintext" original="messages" date="2014-12-30T10:37:08Z" product-name="cloudflare" target-language="fr">
     <header/>
     <body>
-      <trans-unit id="toolbarItem">
+      <trans-unit id="toolbarItem" approved="yes">
         <source>Cloudflare</source>
-        <target state="needs-translation">Cloudflare</target>
+        <target state="final">Cloudflare</target>
       </trans-unit>
       <trans-unit id="no_domains" approved="yes">
         <source>No domains configured.</source>
