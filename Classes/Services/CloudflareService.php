@@ -1,5 +1,5 @@
 <?php
-namespace Causal\Cloudflare\Services;
+declare(strict_types=1);
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -13,6 +13,8 @@ namespace Causal\Cloudflare\Services;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace Causal\Cloudflare\Services;
 
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;

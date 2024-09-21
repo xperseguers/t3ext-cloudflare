@@ -1,5 +1,5 @@
 <?php
-namespace Causal\Cloudflare\ExtensionManager;
+declare(strict_types=1);
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -13,6 +13,8 @@ namespace Causal\Cloudflare\ExtensionManager;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace Causal\Cloudflare\ExtensionManager;
 
 use Causal\Cloudflare\Services\CloudflareService;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;

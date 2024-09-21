@@ -1,5 +1,5 @@
 <?php
-namespace Causal\Cloudflare\Hooks;
+declare(strict_types=1);
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,8 +14,11 @@ namespace Causal\Cloudflare\Hooks;
  * The TYPO3 project - inspiring people to share!
  */
 
+namespace Causal\Cloudflare\Hooks;
+
 use Causal\Cloudflare\Services\CloudflareService;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 
@@ -46,10 +49,9 @@ class TCEmain
      * Hooks into the "clear all caches" call.
      *
      * @param array $params
-     * @param \TYPO3\CMS\Core\DataHandling\DataHandler $pObj
-     * @return void
+     * @param DataHandler $pObj
      */
-    public function clear_cacheCmd(array $params, \TYPO3\CMS\Core\DataHandling\DataHandler $pObj)
+    public function clear_cacheCmd(array $params, DataHandler $pObj): void
     {
         static $handledPageUids = [];
         static $handledTags = [];
@@ -97,10 +99,8 @@ class TCEmain
 
     /**
      * Answers to AJAX call invoked when clearing only Cloudflare cache.
-     *
-     * @return void
      */
-    public function clearCache()
+    public function clearCache(): void
     {
         if (!isset($GLOBALS['BE_USER'])) {
             return;
@@ -117,10 +117,9 @@ class TCEmain
     /**
      * Clears the Cloudflare cache.
      *
-     * @param AbstractUserAuthentication $beUser
-     * @return void
+     * @param AbstractUserAuthentication|null $beUser
      */
-    protected function clearCloudflareCache(AbstractUserAuthentication $beUser = null)
+    protected function clearCloudflareCache(AbstractUserAuthentication $beUser = null): void
     {
         $domains = $this->config['domains'] ? GeneralUtility::trimExplode(',', $this->config['domains'], true) : [];
 
@@ -217,7 +216,6 @@ class TCEmain
             return null;
         }
 
-
         // TODO: find a way around this reflection hack
         // Possibly inspire from \TYPO3\CMS\Frontend\Page\PageGenerator::pagegenInit() in TYPO3 v8?
         $class = new \ReflectionClass(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class);
@@ -271,11 +269,13 @@ class TCEmain
     /**
      * Granularly removes an individual file from Cloudflare's cache by specifying the URL.
      *
-     * @param AbstractUserAuthentication $beUser
+     * @param AbstractUserAuthentication|null $beUser
      * @param string $url
-     * @return void
      */
-    protected function purgeIndividualFileByUrl(AbstractUserAuthentication $beUser = null, $url)
+    protected function purgeIndividualFileByUrl(
+        AbstractUserAuthentication $beUser = null,
+        string $url
+    ): void
     {
         $domains = $this->config['domains'] ? GeneralUtility::trimExplode(',', $this->config['domains'], true) : [];
 
@@ -329,7 +329,6 @@ class TCEmain
      *
      * @param AbstractUserAuthentication|null $beUser
      * @param string $cacheTag
-     * @return void
      */
     protected function purgeIndividualFileByCacheTag(AbstractUserAuthentication $beUser = null, $cacheTag)
     {

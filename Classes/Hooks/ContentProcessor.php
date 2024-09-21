@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -42,9 +44,8 @@ class ContentProcessor extends \TYPO3\CMS\Frontend\Controller\TypoScriptFrontend
      *
      * @param TypoScriptFrontendController $parentObject
      * @param int $timeOutTime
-     * @return void
      */
-    public function insertPageIncache(TypoScriptFrontendController $parentObject, $timeOutTime)
+    public function insertPageIncache(TypoScriptFrontendController $parentObject, int $timeOutTime): void
     {
         // Trick: By extending the parent class we may access the protected list of cache tags!
         $cacheTags = array_unique($parentObject->pageCacheTags);
@@ -67,9 +68,8 @@ class ContentProcessor extends \TYPO3\CMS\Frontend\Controller\TypoScriptFrontend
      * a must have.
      *
      * @param array $params
-     * @return void
      */
-    public function sendPageCacheTag(array $params)
+    public function sendPageCacheTag(array $params): void
     {
         $cacheTag = 'Cache-Tag: pageId_' . $params['pObj']->id;
         if (!in_array($cacheTag, headers_list())) {

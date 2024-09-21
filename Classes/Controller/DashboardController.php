@@ -1,5 +1,5 @@
 <?php
-namespace Causal\Cloudflare\Controller;
+declare(strict_types=1);
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -13,6 +13,8 @@ namespace Causal\Cloudflare\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace Causal\Cloudflare\Controller;
 
 use Causal\Cloudflare\Services\CloudflareService;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -66,8 +68,6 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
 
     /**
      * Default action: analytics.
-     *
-     * @return void
      */
     public function analyticsAction()
     {
@@ -88,9 +88,8 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
      *
      * @param string $zone
      * @param int $since
-     * @return void
      */
-    public function ajaxAnalyticsAction($zone, $since)
+    public function ajaxAnalyticsAction(string $zone, int $since)
     {
         if (empty($zone)) {
             $this->returnAjax(null);
