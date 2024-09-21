@@ -72,69 +72,69 @@
         <source>Total Requests</source>
         <target state="final">Anzahl Anfragen</target>
       </trans-unit>
-      <trans-unit id="dashboard.requests.cached">
+      <trans-unit id="dashboard.requests.cached" approved="yes">
         <source>Cached Requests</source>
-        <target state="translated">Gecachte Anfragen</target>
+        <target state="final">Gespeicherte Anfragen</target>
       </trans-unit>
-      <trans-unit id="dashboard.requests.uncached">
+      <trans-unit id="dashboard.requests.uncached" approved="yes">
         <source>Uncached Requests</source>
-        <target state="translated">Ungecachte Anfragen</target>
+        <target state="final">Ungespeicherte Anfragen</target>
       </trans-unit>
-      <trans-unit id="dashboard.bandwidth">
+      <trans-unit id="dashboard.bandwidth" approved="yes">
         <source>Bandwidth</source>
-        <target state="translated">Bandbreite</target>
+        <target state="final">Bandbreite</target>
       </trans-unit>
-      <trans-unit id="dashboard.bandwidth.total">
+      <trans-unit id="dashboard.bandwidth.total" approved="yes">
         <source>Total Bandwidth</source>
-        <target state="translated">Gesamtbandbreite</target>
+        <target state="final">Gesamt-Bandbreite</target>
       </trans-unit>
-      <trans-unit id="dashboard.bandwidth.cached">
+      <trans-unit id="dashboard.bandwidth.cached" approved="yes">
         <source>Cached Bandwidth</source>
-        <target state="translated">Gecachte Bandbreite</target>
+        <target state="final">Zwischengespeicherte Bandbreite</target>
       </trans-unit>
       <trans-unit id="dashboard.bandwidth.uncached">
         <source>Uncached Bandwidth</source>
-        <target state="translated">Ungecachte Bandbreite</target>
+        <target state="translated">Ungespeicherte Bandbreite</target>
       </trans-unit>
       <trans-unit id="dashboard.uniques">
         <source>Unique Visitors</source>
-        <target state="translated">Individueller Besucher</target>
+        <target state="translated">Eindeutige Besucher</target>
       </trans-unit>
       <trans-unit id="dashboard.uniques.total">
         <source>Total Unique Visitors</source>
-        <target state="translated">Gesamte individuelle Besucher</target>
+        <target state="translated">Gesamte eindeutige Besucher</target>
       </trans-unit>
       <trans-unit id="dashboard.uniques.maximum">
         <source>Maximum Unique Visitors</source>
-        <target state="translated">Maximum individueller Besucher</target>
+        <target state="translated">Maximum eindeutige Besucher</target>
       </trans-unit>
       <trans-unit id="dashboard.uniques.minimum">
         <source>Minimum Unique Visitors</source>
-        <target state="translated">Minimum individueller Besucher</target>
+        <target state="translated">Minimum eindeutige Besucher</target>
       </trans-unit>
       <trans-unit id="dashboard.threats">
         <source>Threats</source>
-        <target state="translated">Gefährdungen</target>
+        <target state="translated">Bedrohungen</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.total">
         <source>Total Threats</source>
-        <target state="translated">Gesamte Gefährdungen</target>
+        <target state="translated">Gesamte Bedrohungen</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.topCountry">
         <source>Top Country</source>
-        <target state="translated">Spitzenländer</target>
+        <target state="translated">Top Land</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.topType">
         <source>Top Threat Type</source>
-        <target state="translated">Spitzengefährdungsart</target>
+        <target state="translated">Wichtigste Bedrohungsart</target>
       </trans-unit>
-      <trans-unit id="dashboard.threats.bic.ban.unknown">
+      <trans-unit id="dashboard.threats.bic.ban.unknown" approved="yes">
         <source>Bad Browser</source>
-        <target state="translated">Gefälschter Browser</target>
+        <target state="final">Gefälschter Browser</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.hot.ban.unknown">
         <source>Blocked hotlink</source>
-        <target state="translated">Blockierter hot link</target>
+        <target state="translated">Gesperrter Hotlink</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.macro.ban.unknown">
         <source>Bad IP</source>
