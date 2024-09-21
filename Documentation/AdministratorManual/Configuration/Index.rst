@@ -46,7 +46,6 @@ Category Advanced
 
 - **Purge individual files by URL:** This checkbox allows you to purge individual
   files on Cloudflare's cache using an URL.
-  **Beware:** *This is still highly experimental.*
 
 - **Purge cache by Cache-Tag:** This checkbox allows you to purge individual
   files on Cloudflare's cache using the associated Cache-Tag.

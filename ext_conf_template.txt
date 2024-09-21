@@ -17,7 +17,7 @@ enableAnalyticsModule = 1
 enableOriginatingIPs = 0
 
 # cat=advanced/enable/30; type=boolean; label=LLL:EXT:cloudflare/Resources/Private/Language/locallang_db.xlf:settings.enablePurgeSingleFile
-enablePurgeSingleFile = 0
+enablePurgeSingleFile = 1
 
 # cat=advanced/enable/40; type=boolean; label=LLL:EXT:cloudflare/Resources/Private/Language/locallang_db.xlf:settings.enablePurgeByTags
 enablePurgeByTags = 0
