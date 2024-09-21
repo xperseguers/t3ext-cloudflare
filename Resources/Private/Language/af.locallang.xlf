@@ -8,8 +8,8 @@
         <target state="needs-translation">Cloudflare</target>
       </trans-unit>
       <trans-unit id="no_domains">
-        <source>No domains configured.</source>
-        <target state="needs-translation">No domains configured.</target>
+        <source>No domains configured for Cloudflare.</source>
+        <target state="needs-translation">No domains configured for Cloudflare.</target>
       </trans-unit>
       <trans-unit id="toggle_development">
         <source>Toggle development mode</source>
