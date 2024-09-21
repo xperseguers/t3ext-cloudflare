@@ -54,6 +54,7 @@ class Configuration
      */
     public function getDomains(array $params)
     {
+        $typo3Version = (new Typo3Version())->getMajorVersion();
         $domains = [];
         $out = [];
 
@@ -80,11 +81,30 @@ class Configuration
             $out[] = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver::class)->resolve()->render([$flashMessage]);
         }
 
-        $i = 0;
-        if ((new Typo3Version())->getMajorVersion() >= 12) {
-            $selectedDomains = GeneralUtility::trimExplode(',', $this->config['domains'], true);
+        if ($typo3Version >= 12) {
+            $selectedDomains = GeneralUtility::trimExplode(',', $this->config[$params['fieldName']] ?? '', true);
         } else {
             $selectedDomains = GeneralUtility::trimExplode(',', $params['fieldValue'], true);
+        }
+
+        $numberOfDomains = count($domains);
+
+        // TODO: Candidate for backporting to TYPO3 v11 and v12 and drop JS trick?
+        if ($typo3Version >= 13) {
+            // The configuration is stored in various fields named domains_0, domains_1, etc.
+            // as the trick we used up to TYPO3 v12 with virtual fields and a JavaScript to
+            // bring the values back to the original field is not possible anymore with
+            // TYPO3 v13.
+            $domainsCountName = $params['fieldName'] . '_count';
+            $out[] = '<input type="hidden" name="' . $domainsCountName . '" value="' . $numberOfDomains . '" />';
+
+            for ($i = 0; $i < $numberOfDomains; $i++) {
+                $configKey = $params['fieldName'] . '_' . $i;
+                $value = $this->config[$configKey] ?? '';
+                if (!empty($value)) {
+                    $selectedDomains[] = $value;
+                }
+            }
         }
 
         if (!empty($domains)) {
@@ -97,15 +117,23 @@ class Configuration
             $out[] = '<em>' . htmlspecialchars($this->sL('settings.labels.emptyList')) . '</em>';
         }
 
+        $i = 0;
         foreach ($domains as $identifier => $domain) {
             $out[] = '<tr>';
 
-            // Check: in_array($domain, $selectedDomains) is for configuration coming from EXT:cloudflare < v1.4.0
             $value = $identifier . '|' . $domain;
-            $checked = in_array($domain, $selectedDomains, true) || in_array($value, $selectedDomains, true)
+            $checked = in_array($value, $selectedDomains, true)
                 ? ' checked="checked"'
                 : '';
-            $out[] = '<td style="width:20px"><input type="checkbox" class="cloudflare_domain" id="cloudflare_domain_' . $i . '" value="' . $value . '"' . $checked . '" /></td>';
+            $out[] = '<td style="width:20px">';
+
+            // Virtual checkbox field for TYPO3 v12 and below
+            $checkboxName = $typo3Version >= 13
+                ? ' name="' . $params['fieldName'] . '_' . $i . '"'
+                : '';
+
+            $out[] = '  <input type="checkbox" class="cloudflare_domain" id="cloudflare_domain_' . $i . '" value="' . $value . '"' . $checkboxName . $checked . '" />';
+            $out[] = '</td>';
             $out[] = '<td style="padding-right:50px"><label for="cloudflare_domain_' . $i . '">' . htmlspecialchars($domain) . '</label></td>';
             $out[] = '<td><tt>' . htmlspecialchars($identifier) . '</tt></td>';
             $out[] = '</tr>';
@@ -117,19 +145,19 @@ class Configuration
             $out[] = '</table>';
         }
 
-        $fieldId = str_replace(['[', ']'], '_', $params['fieldName']);
+        if ($typo3Version < 13) {
+            $fieldId = str_replace(['[', ']'], '_', $params['fieldName']);
 
-        // TODO: Check why JS is not executed in TYPO3 v13
-        if ((new Typo3Version())->getMajorVersion() >= 12) {
-            $nonce = GeneralUtility::getContainer()->get(RequestId::class)->nonce->consume();
-            $out[] = '<script nonce="' . $nonce . '">';
-        } else {
-            $out[] = '<script>';
-        }
-        $out[] = <<<JS
+            if ($typo3Version >= 12) {
+                $nonce = GeneralUtility::getContainer()->get(RequestId::class)->nonce->consume();
+                $out[] = '<script nonce="' . $nonce . '">';
+            } else {
+                $out[] = '<script>';
+            }
+            $out[] = <<<JS
 function toggleCloudflareDomains() {
     var domains = new Array();
-    for (var i = 0; i < {$i}; i++) {
+    for (var i = 0; i < {$numberOfDomains}; i++) {
         var e = document.getElementById("cloudflare_domain_" + i);
         if (e.checked) {
             domains.push(e.value);
@@ -145,8 +173,9 @@ setTimeout(function() {
     });
 }, 1000);
 JS;
-        $out[] = '</script>';
-        $out[] = '<input type="hidden" id="' . $fieldId . '" name="' . $params['fieldName'] . '" value="' . $params['fieldValue'] . '" />';
+            $out[] = '</script>';
+            $out[] = '<input type="hidden" id="' . $fieldId . '" name="' . $params['fieldName'] . '" value="' . $params['fieldValue'] . '" />';
+        }
 
         return implode(LF, $out);
     }

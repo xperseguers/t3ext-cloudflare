@@ -17,6 +17,7 @@ declare(strict_types=1);
 namespace Causal\Cloudflare\Hooks;
 
 use Causal\Cloudflare\Services\CloudflareService;
+use Causal\Cloudflare\Traits\ConfiguredDomainsTrait;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -34,8 +35,7 @@ use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
  */
 class TCEmain
 {
-    /** @var array */
-    protected $config;
+    use ConfiguredDomainsTrait;
 
     /**
      * Default constructor.
@@ -121,7 +121,7 @@ class TCEmain
      */
     protected function clearCloudflareCache(AbstractUserAuthentication $beUser = null): void
     {
-        $domains = $this->config['domains'] ? GeneralUtility::trimExplode(',', $this->config['domains'], true) : [];
+        $domains = $this->getDomains();
 
         /** @var CloudflareService $cloudflareService */
         $cloudflareService = GeneralUtility::makeInstance(CloudflareService::class, $this->config);
@@ -277,7 +277,7 @@ class TCEmain
         string $url
     ): void
     {
-        $domains = $this->config['domains'] ? GeneralUtility::trimExplode(',', $this->config['domains'], true) : [];
+        $domains = $this->getDomains();
 
         $domain = null;
         $zoneIdentifier = null;
@@ -332,7 +332,7 @@ class TCEmain
      */
     protected function purgeIndividualFileByCacheTag(AbstractUserAuthentication $beUser = null, $cacheTag)
     {
-        $domains = $this->config['domains'] ? GeneralUtility::trimExplode(',', $this->config['domains'], true) : [];
+        $domains = $this->getDomains();
 
         /** @var CloudflareService $cloudflareService */
         $cloudflareService = GeneralUtility::makeInstance(CloudflareService::class, $this->config);

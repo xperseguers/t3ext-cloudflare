@@ -17,6 +17,7 @@ declare(strict_types=1);
 namespace Causal\Cloudflare\Backend\ToolbarItems;
 
 use Causal\Cloudflare\Services\CloudflareService;
+use Causal\Cloudflare\Traits\ConfiguredDomainsTrait;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -44,11 +45,11 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class CloudflareToolbarItem implements ToolbarItemInterface
 {
+    use ConfiguredDomainsTrait;
+
     protected PageRenderer $pageRenderer;
 
     protected CloudflareService $cloudflareService;
-
-    protected array $config;
 
     /**
      * Default constructor.
@@ -115,7 +116,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
         $typo3Version = (new Typo3Version())->getMajorVersion();
         $entries = [];
 
-        $domains = GeneralUtility::trimExplode(',', $this->config['domains'], true);
+        $domains = $this->getDomains();
         if (!empty($domains)) {
             foreach ($domains as $domain) {
                 list($identifier, ) = explode('|', $domain, 2);

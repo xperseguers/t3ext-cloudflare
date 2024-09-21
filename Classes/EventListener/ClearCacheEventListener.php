@@ -16,6 +16,7 @@ declare(strict_types=1);
 
 namespace Causal\Cloudflare\EventListener;
 
+use Causal\Cloudflare\Traits\ConfiguredDomainsTrait;
 use TYPO3\CMS\Backend\Backend\Event\ModifyClearCacheActionsEvent;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -23,11 +24,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ClearCacheEventListener
 {
+    use ConfiguredDomainsTrait;
+
     public function __invoke(ModifyClearCacheActionsEvent $event): void
     {
-        $config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('cloudflare');
+        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('cloudflare');
 
-        if (empty($config['apiKey']) || empty($config['domains'])) {
+        $domains = $this->getDomains();
+        if (empty($this->config['apiKey']) || empty($domains)) {
             return;
         }
 

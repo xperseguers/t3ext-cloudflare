@@ -17,6 +17,7 @@ declare(strict_types=1);
 namespace Causal\Cloudflare\Controller;
 
 use Causal\Cloudflare\Services\CloudflareService;
+use Causal\Cloudflare\Traits\ConfiguredDomainsTrait;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -33,10 +34,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  */
 class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
-    /**
-     * @var array
-     */
-    protected $config;
+    use ConfiguredDomainsTrait;
 
     /**
      * @var \Causal\Cloudflare\Services\CloudflareService
@@ -58,7 +56,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
 
         $this->cloudflareService = GeneralUtility::makeInstance(CloudflareService::class, $this->config);
 
-        $domains = GeneralUtility::trimExplode(',', $this->config['domains'], true);
+        $domains = $this->getDomains();
         $this->zones = [];
         foreach ($domains as $domain) {
             list($identifier, $zone) = explode('|', $domain);
