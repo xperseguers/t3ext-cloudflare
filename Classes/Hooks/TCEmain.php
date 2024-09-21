@@ -18,6 +18,7 @@ namespace Causal\Cloudflare\Hooks;
 
 use Causal\Cloudflare\Services\CloudflareService;
 use Causal\Cloudflare\Traits\ConfiguredDomainsTrait;
+use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -174,114 +175,20 @@ class TCEmain
 
     /**
      * Returns a Frontend URL corresponding to a given page UID.
-     * Implementation was inspired by EXT:vara_feurlfrombe
      *
-     * @param integer $uid
+     * @param int $uid
      * @return string|null
-     * @todo Add support for multiple Frontend URLs
      */
     protected function getFrontendUrl(int $uid): ?string
     {
-        if (isset($GLOBALS['BE_USER']) && $GLOBALS['BE_USER']->workspace != 0) {
+        if (isset($GLOBALS['BE_USER']) && $GLOBALS['BE_USER']->workspace !== 0) {
             // Preview in workspaces is not supported!
             return null;
         }
 
-        /** @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $tsfe */
-        $tsfe = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-            \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class,
-            $GLOBALS['TYPO3_CONF_VARS'],
-            $uid,
-            ''
-        );
-        $GLOBALS['TSFE'] = $tsfe;
-
-        $GLOBALS['TT'] = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TimeTracker\TimeTracker::class);
-        $GLOBALS['TT']->start();
-        $GLOBALS['TSFE']->config['config']['language'] = 'default';
-
-        // Fire all the required function to get the TYPO3 Frontend all set up
-        $GLOBALS['TSFE']->id = $uid;
-
-        $GLOBALS['TSFE']->settingLanguage();
-        $GLOBALS['TSFE']->settingLocale();
-        $GLOBALS['TSFE']->initFEuser();
-
-        // If the page is not found (if the page is a sysfolder, etc), then return no URL,
-        // preventing any further processing which would result in an error page.
-        $page = $GLOBALS['TSFE']->sys_page->getPage($uid);
-
-        if (empty($page)) {
-            return null;
-        }
-
-        // If the page is a shortcut, look up the page to which the shortcut references,
-        // and do the same check as above.
-        $pageShortcut = null;
-        if ($page['doktype'] == 4) {
-            try {
-                $pageShortcut = $GLOBALS['TSFE']->sys_page->getPageShortcut($page['shortcut'], $page['shortcut_mode'], $page['uid']);
-            } catch (\Exception $e) {
-                // Page is not accessible
-            }
-        }
-        if ($page['doktype'] == 4 && empty($pageShortcut)) {
-            return null;
-        }
-
-        // Spacer pages and sysfolders result in a page not found page too...
-        if ($page['doktype'] == 199 || $page['doktype'] == 254) {
-            return null;
-        }
-
-        // TODO: find a way around this reflection hack
-        // Possibly inspire from \TYPO3\CMS\Frontend\Page\PageGenerator::pagegenInit() in TYPO3 v8?
-        $class = new \ReflectionClass(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class);
-        $method = $class->getMethod('getPageAndRootline');
-        $method->setAccessible(true);
-        $method->invoke($GLOBALS['TSFE']);
-
-        $GLOBALS['TSFE']->initTemplate();
-        $GLOBALS['TSFE']->forceTemplateParsing = 1;
-
-        // Find the root template
-        $GLOBALS['TSFE']->tmpl->start($GLOBALS['TSFE']->rootLine);
-
-        // Fill the pSetup from the same variables from the same location as where
-        // tslib_fe->getConfigArray will get them, so they can be checked before
-        // this function is called
-        //$GLOBALS['TSFE']->sPre = $GLOBALS['TSFE']->tmpl->setup['types.'][$GLOBALS['TSFE']->type];    // toplevel - objArrayName
-        //$GLOBALS['TSFE']->pSetup = $GLOBALS['TSFE']->tmpl->setup[$GLOBALS['TSFE']->sPre . '.'];
-
-        // If there is no root template found, there is no point in continuing which would
-        // result in a 'template not found' page and then call exit PHP.
-        // And the same applies if pSetup is empty, which would result in a
-        // "The page is not configured" message.
-        if (!$GLOBALS['TSFE']->tmpl->loaded || ($GLOBALS['TSFE']->tmpl->loaded && !$GLOBALS['TSFE']->pSetup)) {
-            //return null;
-        }
-
-        $GLOBALS['TSFE']->checkAlternativeIdMethods();
-        $GLOBALS['TSFE']->determineId();
-        try {
-            $GLOBALS['TSFE']->getConfigArray();
-        } catch (\Exception $e) {
-            // Typically problem: #1294587218: No TypoScript template found!
-            return null;
-        }
-
-        /** @var $contentObj \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
-        $contentObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
-        $contentObj->start([], '');
-
-        // Create the URL
-        $link = $contentObj->typolink('', [
-            'parameter' => $uid,
-            'forceAbsoluteUrl' => 1,
-        ]);
-        $url = $contentObj->lastTypoLinkUrl;
-
-        return $url;
+        $previewBuilder = GeneralUtility::makeInstance(PreviewUriBuilder::class, $uid);
+        $url = $previewBuilder->buildUri(['uid' => $uid]);
+        return (string)$url;
     }
 
     /**
