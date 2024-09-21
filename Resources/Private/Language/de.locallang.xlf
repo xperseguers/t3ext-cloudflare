@@ -3,9 +3,9 @@
   <file source-language="en" datatype="plaintext" original="messages" date="2014-12-30T10:37:08Z" product-name="cloudflare" target-language="de">
     <header/>
     <body>
-      <trans-unit id="toolbarItem">
+      <trans-unit id="toolbarItem" approved="yes">
         <source>Cloudflare</source>
-        <target state="needs-translation">Cloudflare</target>
+        <target state="final">Cloudflare</target>
       </trans-unit>
       <trans-unit id="no_domains" approved="yes">
         <source>No domains configured.</source>
@@ -27,13 +27,13 @@
         <source>This zone is in development mode</source>
         <target state="final">Diese Zone ist in Entwicklungsmodus</target>
       </trans-unit>
-      <trans-unit id="clear_cache">
+      <trans-unit id="clear_cache" approved="yes">
         <source>Clear Cloudflare cache</source>
-        <target state="needs-translation">Clear Cloudflare cache</target>
+        <target state="final">Cloudflare-Cache löschen</target>
       </trans-unit>
-      <trans-unit id="clear_cache.description">
+      <trans-unit id="clear_cache.description" approved="yes">
         <source>Clear frontend and page-related caches on Cloudflare.</source>
-        <target state="needs-translation">Clear frontend and page-related caches on Cloudflare.</target>
+        <target state="final">Löschen Sie Frontend- und seitenbezogene Caches auf Cloudflare.</target>
       </trans-unit>
       <!-- dashboard -->
       <trans-unit id="period.30" approved="yes">
@@ -64,9 +64,9 @@
         <source>Requests</source>
         <target state="final">Anfragen</target>
       </trans-unit>
-      <trans-unit id="dashboard.requests.long">
+      <trans-unit id="dashboard.requests.long" approved="yes">
         <source>Requests Through Cloudflare</source>
-        <target state="needs-translation">Requests Through Cloudflare</target>
+        <target state="final">Abfragen durch Cloudflare</target>
       </trans-unit>
       <trans-unit id="dashboard.requests.total" approved="yes">
         <source>Total Requests</source>
@@ -92,97 +92,97 @@
         <source>Cached Bandwidth</source>
         <target state="final">Zwischengespeicherte Bandbreite</target>
       </trans-unit>
-      <trans-unit id="dashboard.bandwidth.uncached">
+      <trans-unit id="dashboard.bandwidth.uncached" approved="yes">
         <source>Uncached Bandwidth</source>
-        <target state="translated">Ungespeicherte Bandbreite</target>
+        <target state="final">Ungespeicherte Bandbreite</target>
       </trans-unit>
-      <trans-unit id="dashboard.uniques">
+      <trans-unit id="dashboard.uniques" approved="yes">
         <source>Unique Visitors</source>
-        <target state="translated">Eindeutige Besucher</target>
+        <target state="final">Eindeutige Besucher</target>
       </trans-unit>
-      <trans-unit id="dashboard.uniques.total">
+      <trans-unit id="dashboard.uniques.total" approved="yes">
         <source>Total Unique Visitors</source>
-        <target state="translated">Gesamte eindeutige Besucher</target>
+        <target state="final">Gesamte eindeutige Besucher</target>
       </trans-unit>
-      <trans-unit id="dashboard.uniques.maximum">
+      <trans-unit id="dashboard.uniques.maximum" approved="yes">
         <source>Maximum Unique Visitors</source>
-        <target state="translated">Maximum eindeutige Besucher</target>
+        <target state="final">Maximum eindeutige Besucher</target>
       </trans-unit>
-      <trans-unit id="dashboard.uniques.minimum">
+      <trans-unit id="dashboard.uniques.minimum" approved="yes">
         <source>Minimum Unique Visitors</source>
-        <target state="translated">Minimum eindeutige Besucher</target>
+        <target state="final">Minimum eindeutige Besucher</target>
       </trans-unit>
-      <trans-unit id="dashboard.threats">
+      <trans-unit id="dashboard.threats" approved="yes">
         <source>Threats</source>
-        <target state="translated">Bedrohungen</target>
+        <target state="final">Bedrohungen</target>
       </trans-unit>
-      <trans-unit id="dashboard.threats.total">
+      <trans-unit id="dashboard.threats.total" approved="yes">
         <source>Total Threats</source>
-        <target state="translated">Gesamte Bedrohungen</target>
+        <target state="final">Gesamte Bedrohungen</target>
       </trans-unit>
-      <trans-unit id="dashboard.threats.topCountry">
+      <trans-unit id="dashboard.threats.topCountry" approved="yes">
         <source>Top Country</source>
-        <target state="translated">Top Land</target>
+        <target state="final">Top Land</target>
       </trans-unit>
-      <trans-unit id="dashboard.threats.topType">
+      <trans-unit id="dashboard.threats.topType" approved="yes">
         <source>Top Threat Type</source>
-        <target state="translated">Wichtigste Bedrohungsart</target>
+        <target state="final">Wichtigste Bedrohungsart</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.bic.ban.unknown" approved="yes">
         <source>Bad Browser</source>
         <target state="final">Gefälschter Browser</target>
       </trans-unit>
-      <trans-unit id="dashboard.threats.hot.ban.unknown">
+      <trans-unit id="dashboard.threats.hot.ban.unknown" approved="yes">
         <source>Blocked hotlink</source>
-        <target state="translated">Gesperrter Hotlink</target>
+        <target state="final">Gesperrter Hotlink</target>
       </trans-unit>
-      <trans-unit id="dashboard.threats.macro.ban.unknown">
+      <trans-unit id="dashboard.threats.macro.ban.unknown" approved="yes">
         <source>Bad IP</source>
-        <target state="translated">Blockierte IP Adresse</target>
+        <target state="final">Blockierte IP Adresse</target>
       </trans-unit>
-      <trans-unit id="dashboard.threats.macro.chl.captchaFail">
+      <trans-unit id="dashboard.threats.macro.chl.captchaFail" approved="yes">
         <source>Human challenged</source>
-        <target state="translated">Captcha fehlgeschlagen</target>
+        <target state="final">Captcha fehlgeschlagen</target>
       </trans-unit>
-      <trans-unit id="dashboard.threats.macro.chl.jschlFail">
+      <trans-unit id="dashboard.threats.macro.chl.jschlFail" approved="yes">
         <source>Browser challenged</source>
-        <target state="translated">Browser hinterfragt</target>
+        <target state="final">Browser hinterfragt</target>
       </trans-unit>
-      <trans-unit id="dashboard.threats.user.ban.ip">
+      <trans-unit id="dashboard.threats.user.ban.ip" approved="yes">
         <source>IP block (user)</source>
-        <target state="translated">IP Adressenblock (Benutzer)</target>
+        <target state="final">IP Adressenblock (Benutzer)</target>
       </trans-unit>
-      <trans-unit id="dashboard.performanceSecurity">
+      <trans-unit id="dashboard.performanceSecurity" approved="yes">
         <source>Performance &amp; Security</source>
-        <target state="translated">Leistung &amp; Sicherheit</target>
+        <target state="final">Leistung &amp; Sicherheit</target>
       </trans-unit>
-      <trans-unit id="dashboard.bandwidthSaved">
+      <trans-unit id="dashboard.bandwidthSaved" approved="yes">
         <source>Bandwidth Saved</source>
-        <target state="translated">Bandbreite eingespart</target>
+        <target state="final">Eingesparte Bandbreite</target>
       </trans-unit>
-      <trans-unit id="dashboard.contentType">
+      <trans-unit id="dashboard.contentType" approved="yes">
         <source>Content Type Breakdown</source>
-        <target state="translated">Aufgliederung nach Inhaltsart</target>
+        <target state="final">Aufgliederung nach Inhaltsart</target>
       </trans-unit>
-      <trans-unit id="dashboard.ssl">
+      <trans-unit id="dashboard.ssl" approved="yes">
         <source>Traffic Served Over SSL</source>
-        <target state="translated">Über SSL ausgeliefert</target>
+        <target state="final">Über SSL ausgeliefert</target>
       </trans-unit>
-      <trans-unit id="dashboard.cached">
+      <trans-unit id="dashboard.cached" approved="yes">
         <source>Cached</source>
-        <target state="translated">Gecacht</target>
+        <target state="final">Gespeichert</target>
       </trans-unit>
-      <trans-unit id="dashboard.uncached">
+      <trans-unit id="dashboard.uncached" approved="yes">
         <source>Uncached</source>
-        <target state="translated">Ungecacht</target>
+        <target state="final">Ungespeichert</target>
       </trans-unit>
-      <trans-unit id="dashboard.encrypted">
+      <trans-unit id="dashboard.encrypted" approved="yes">
         <source>Encrypted</source>
-        <target state="translated">Verschlüsselt</target>
+        <target state="final">Verschlüsselt</target>
       </trans-unit>
-      <trans-unit id="dashboard.unencrypted">
+      <trans-unit id="dashboard.unencrypted" approved="yes">
         <source>Unencrypted</source>
-        <target state="translated">Unverschlüsselt</target>
+        <target state="final">Unverschlüsselt</target>
       </trans-unit>
     </body>
   </file>
