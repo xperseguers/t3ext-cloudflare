@@ -24,8 +24,12 @@ Cloudflare Client
       en
 
    :Description:
-      The Cloudflare TYPO3 extension ensures your TYPO3 website is running
-      optimally on the Cloudflare platform.
+      The Cloudflare extension for TYPO3 is a powerful solution to
+      integrate your website with Cloudflare, whose mission is to help
+      build a better Internet. This extension provides a variety of
+      features to ensure your website is running optimally on the
+      Cloudflare platform, a global leader in web performance and
+      security.
 
    :Keywords:
       cloud, content delivery network, cdn, proxy, reverse proxy, ssl,

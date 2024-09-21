@@ -2,25 +2,16 @@
 
 /***************************************************************
  * Extension Manager/Repository config file for ext "cloudflare".
- *
- * Auto generated 06-01-2015 16:56
- *
- * Manual updates:
- * Only the data in the array - everything else is removed by next
- * writing. "version" and "dependencies" must not be touched!
  ***************************************************************/
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Cloudflare Client',
-    'description' => 'The Cloudflare TYPO3 extension ensures your TYPO3 website is running optimally on the Cloudflare platform.',
+    'description' => 'The Cloudflare extension for TYPO3 is a powerful solution to integrate your website with Cloudflare, whose mission is to help build a better Internet. This extension provides a variety of features to ensure your website is running optimally on the Cloudflare platform, a global leader in web performance and security.',
     'category' => 'services',
     'author' => 'Xavier Perseguers',
     'author_company' => 'Causal Sàrl',
     'author_email' => 'xavier@causal.ch',
     'state' => 'stable',
-    'uploadfolder' => 0,
-    'createDirs' => '',
-    'clearCacheOnLoad' => 0,
     'version' => '2.6.0',
     'constraints' => [
         'depends' => [
