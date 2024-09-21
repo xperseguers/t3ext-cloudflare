@@ -127,7 +127,7 @@ class TCEmain
         $canClearAllCache = (bool)($GLOBALS['BE_USER']->getTSConfig()['options.']['clearCache.']['all'] ?? false);
         $canClearCloudflareCache = (bool)($GLOBALS['BE_USER']->getTSConfig()['options.']['clearCache.']['cloudflare'] ?? false);
 
-        if ($GLOBALS['BE_USER']->isAdmin() || $canClearAllCache || $canClearCloudflareCache) {
+        if ($canClearAllCache || $canClearCloudflareCache || $GLOBALS['BE_USER']->isAdmin()) {
             $this->clearCloudflareCache($GLOBALS['BE_USER']);
         }
     }
@@ -302,8 +302,8 @@ class TCEmain
 
         if (preg_match('#^https?://([^/]+)#', $url, $matches)) {
             $domainParts = explode('.', $matches[1]);
-            if (count($domainParts) > 1) {
-                $size = count($domainParts);
+            $size = count($domainParts);
+            if ($size > 1) {
                 $zoneName = $domainParts[$size - 2] . '.' . $domainParts[$size - 1];
 
                 foreach ($domains as $domain) {
