@@ -37,6 +37,9 @@ class TCEmain
 {
     use ConfiguredDomainsTrait;
 
+    protected static array $handledPageUids = [];
+    protected static array $handledTags = [];
+
     /**
      * Default constructor.
      */
@@ -53,18 +56,11 @@ class TCEmain
      */
     public function clear_cacheCmd(array $params, DataHandler $pObj): void
     {
-        static $handledPageUids = [];
-        static $handledTags = [];
-
-        $enablePurgeByUrl = (bool)($this->config['enablePurgeSingleFile'] ?? false);
         $enablePurgeByTags = (bool)($this->config['enablePurgeByTags'] ?? false);
 
         if (!isset($params['cacheCmd'])) {
-            if ($params['table'] === 'pages' && $enablePurgeByTags) {
-                $this->purgeIndividualFileByCacheTag(
-                    $GLOBALS['BE_USER'] ?? null,
-                    'pageId_' . (int)$params['uid']
-                );
+            if ($params['table'] === 'pages') {
+                $this->tryPurgePage((int)$params['uid']);
             }
             return;
         }
@@ -72,26 +68,48 @@ class TCEmain
         if (GeneralUtility::inList('all,pages', $params['cacheCmd'])) {
             $this->clearCloudflareCache($pObj->BE_USER);
         } else {
-            if (strpos(strtolower($params['cacheCmd']), 'cachetag:') !== false && $enablePurgeByTags) {
+            if ($enablePurgeByTags && stripos($params['cacheCmd'], 'cachetag:') !== false) {
                 $cacheTag = substr($params['cacheCmd'], 9);
-                if (!in_array($cacheTag, $handledTags)) {
-                    $handledTags[] = $cacheTag;
+                if (!in_array($cacheTag, self::$handledTags, true)) {
+                    self::$handledTags[] = $cacheTag;
                     $this->purgeIndividualFileByCacheTag(
                         $GLOBALS['BE_USER'] ?? null,
                         $cacheTag
                     );
                 }
-            } elseif ($enablePurgeByUrl) {
-                $pageUid = (int)$params['cacheCmd'];
-                if ($pageUid && !in_array($pageUid, $handledPageUids)) {
-                    $handledPageUids[] = $pageUid;
-                    $url = $this->getFrontendUrl($pageUid);
-                    if ($url) {
-                        $this->purgeIndividualFileByUrl(
-                            $GLOBALS['BE_USER'] ?? null,
-                            $url
-                        );
-                    }
+            } else {
+                $this->tryPurgePage((int)$params['cacheCmd']);
+            }
+        }
+    }
+
+    protected function tryPurgePage(int $pageUid): void
+    {
+        if (empty($pageUid)) {
+            return;
+        }
+
+        $enablePurgeByUrl = (bool)($this->config['enablePurgeSingleFile'] ?? false);
+        $enablePurgeByTags = (bool)($this->config['enablePurgeByTags'] ?? false);
+
+        if ($enablePurgeByTags) {
+            $cacheTag = 'pageId_' . $pageUid;
+            if (!in_array($cacheTag, self::$handledTags, true)) {
+                self::$handledTags[] = $cacheTag;
+                $this->purgeIndividualFileByCacheTag(
+                    $GLOBALS['BE_USER'] ?? null,
+                    $cacheTag
+                );
+            }
+        } elseif ($enablePurgeByUrl) {
+            if (!in_array($pageUid, self::$handledPageUids, true)) {
+                self::$handledPageUids[] = $pageUid;
+                $url = $this->getFrontendUrl($pageUid);
+                if ($url) {
+                    $this->purgeIndividualFileByUrl(
+                        $GLOBALS['BE_USER'] ?? null,
+                        $url
+                    );
                 }
             }
         }
@@ -325,12 +343,16 @@ class TCEmain
     }
 
     /**
-     * Granularly removes an individual file from Cloudflare's cache by specifying the associated Cache-Tag.
+     * Granularly removes an individual file from Cloudflare's cache by
+     * specifying the associated Cache-Tag.
      *
      * @param AbstractUserAuthentication|null $beUser
      * @param string $cacheTag
      */
-    protected function purgeIndividualFileByCacheTag(AbstractUserAuthentication $beUser = null, $cacheTag)
+    protected function purgeIndividualFileByCacheTag(
+        AbstractUserAuthentication $beUser = null,
+        string $cacheTag
+    ): void
     {
         $domains = $this->getDomains();
 
