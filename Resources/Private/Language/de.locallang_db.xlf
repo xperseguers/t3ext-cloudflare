@@ -27,9 +27,9 @@
         <source>Originating IPs: Tick this checkbox in case you cannot restore the originating IPs at the webserver level.</source>
         <target state="final">Ursprüngliche IPs: Aktivieren Sie dieses Kontrollkästchen, wenn Sie die Ursprungs-IPs auf Webserverebene nicht wiederherstellen können.</target>
       </trans-unit>
-      <trans-unit id="settings.enablePurgeSingleFile" approved="yes">
-        <source>[EXPERIMENTAL] Purge individual files by URL: Granularly remove individual files from Cloudflare's cache by specifying the URL. BEWARE: Highly experimental!</source>
-        <target state="final">[EXPERIMENTAL] Einzelne Dateien nach URL löschen: Entfernen Sie einzelne Dateien aus dem Cache von Cloudflare, indem Sie die URL angeben. VORSICHT: Äußerst experimentell!</target>
+      <trans-unit id="settings.enablePurgeSingleFile">
+        <source>Purge individual files by URL: Granularly remove individual files from Cloudflare's cache by specifying the URL.</source>
+        <target state="needs-translation">Purge individual files by URL: Granularly remove individual files from Cloudflare's cache by specifying the URL.</target>
       </trans-unit>
       <trans-unit id="settings.enablePurgeByTags" approved="yes">
         <source>Purge cache by Cache-Tag: Granularly remove individual files from Cloudflare's cache by specifying the associated Cache-Tag. BEWARE: This option requires an Enterprise account.</source>
