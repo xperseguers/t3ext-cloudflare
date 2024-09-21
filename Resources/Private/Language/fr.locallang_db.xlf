@@ -3,9 +3,9 @@
   <file source-language="en" datatype="plaintext" original="messages" date="2014-12-30T17:07:23Z" product-name="cloudflare" target-language="fr">
     <header/>
     <body>
-      <trans-unit id="settings.useBearerAuthentication">
+      <trans-unit id="settings.useBearerAuthentication" approved="yes">
         <source>Use Bearer Authentication (recommended): Use a Token for Bearer Authentication (RFC 6750) and API key instead of the standard e-mail address and API key.</source>
-        <target state="needs-translation">Use Bearer Authentication (recommended): Use a Token for Bearer Authentication (RFC 6750) and API key instead of the standard e-mail address and API key.</target>
+        <target state="final">Utiliser l'authentification "Bearer" (recommandé): Utiliser un jeton pour l'authentification par porteur (RFC 6750) et une clé API au lieu de l'adresse électronique et de la clé API standard.</target>
       </trans-unit>
       <trans-unit id="settings.email" approved="yes">
         <source>Email: The e-mail address associated with the API key.</source>
@@ -19,9 +19,9 @@
         <source>Domains: Please tick the domains whose cache should be flushed on Cloudflare upon clearing all caches in TYPO3.</source>
         <target state="final">Domaines: Veuillez cocher les domaines pour lesquels le cache doit être vidé sur Cloudflare lorsque vous videz tous les caches dans TYPO3.</target>
       </trans-unit>
-      <trans-unit id="settings.enableAnalyticsModule">
+      <trans-unit id="settings.enableAnalyticsModule" approved="yes">
         <source>Enable Analytics Backend module: Tick this checkbox if you need the Analytics module in Backend (this requires proper Token permissions if using Bearer Authentication).</source>
-        <target state="needs-translation">Enable Analytics Backend module: Tick this checkbox if you need the Analytics module in Backend (this requires proper Token permissions if using Bearer Authentication).</target>
+        <target state="final">Activer le module Backend Analytics: Cocher cette case si vous avez besoin du module d'analyse dans le Backend (cela nécessite des autorisations de jeton appropriées si vous utilisez l'authentification par "Bearer").</target>
       </trans-unit>
       <trans-unit id="settings.enableOriginatingIPs" approved="yes">
         <source>Originating IPs: Tick this checkbox in case you cannot restore the originating IPs at the webserver level.</source>
@@ -31,17 +31,17 @@
         <source>[EXPERIMENTAL] Purge individual files by URL: Granularly remove individual files from Cloudflare's cache by specifying the URL. BEWARE: Highly experimental!</source>
         <target state="final">[EXPÉRIMENTAL] Purger des fichiers uniques: Cochez cette case pour tenter de purger des fichiers uniques sur Cloudflare. Attention: très expérimental !</target>
       </trans-unit>
-      <trans-unit id="settings.enablePurgeByTags">
+      <trans-unit id="settings.enablePurgeByTags" approved="yes">
         <source>Purge cache by Cache-Tag: Granularly remove individual files from Cloudflare's cache by specifying the associated Cache-Tag. BEWARE: This option requires an Enterprise account.</source>
-        <target state="needs-translation">Purge cache by Cache-Tag: Granularly remove individual files from Cloudflare's cache by specifying the associated Cache-Tag. BEWARE: This option requires an Enterprise account.</target>
+        <target state="final">Purger le cache par Cache-Tag: Supprimer granulairement des fichiers individuels du cache de Cloudflare en spécifiant le Cache-Tag associé. ATTENTION : Cette option nécessite un compte Entreprise.</target>
       </trans-unit>
-      <trans-unit id="settings.labels.emptyList">
+      <trans-unit id="settings.labels.emptyList" approved="yes">
         <source>Empty list fetched from Cloudflare, please check your credentials.</source>
-        <target state="needs-translation">Empty list fetched from Cloudflare, please check your credentials.</target>
+        <target state="final">Liste vide extraite de Cloudflare, veuillez vérifier vos informations d'identification.</target>
       </trans-unit>
-      <trans-unit id="settings.labels.zoneIdentifiers">
+      <trans-unit id="settings.labels.zoneIdentifiers" approved="yes">
         <source>Cloudflare API Zone Identifiers</source>
-        <target state="needs-translation">Cloudflare API Zone Identifiers</target>
+        <target state="final">Identifiants de zone de l'API Cloudflare</target>
       </trans-unit>
     </body>
   </file>
