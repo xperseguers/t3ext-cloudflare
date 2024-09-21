@@ -2,12 +2,19 @@
 defined('TYPO3') || die();
 
 (static function (string $_EXTKEY) {
+    $config = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get($_EXTKEY);
+    $enableAnalyticsModule = (bool)($config['enableAnalyticsModule'] ?? true);
+
+    if ($enableAnalyticsModule) {
+        // Require 3rd-party libraries, in case TYPO3 does not run in composer mode
+        $pharFileName = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Libraries/softonic-graphql-client.phar';
+        if (is_file($pharFileName)) {
+            @include 'phar://' . $pharFileName . '/vendor/autoload.php';
+        }
+    }
+
     $typo3Version = (new \TYPO3\CMS\Core\Information\Typo3Version())->getMajorVersion();
     if ($typo3Version < 12) {
-        /** @var array $config */
-        $config = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get($_EXTKEY);
-        $enableAnalyticsModule = (bool)($config['enableAnalyticsModule'] ?? true);
-
         if ($enableAnalyticsModule) {
             // Create a module section "Cloudflare" before 'Admin Tools'
             $moduleConfiguration = [
