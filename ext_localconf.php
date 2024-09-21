@@ -42,7 +42,7 @@ defined('TYPO3') || die();
     ];
 
     $isProxied = false;
-    if (isset($config['enableOriginatingIPs']) && (bool)$config['enableOriginatingIPs']) {
+    if ((bool)($config['enableOriginatingIPs'] ?? false)) {
         if (\TYPO3\CMS\Core\Utility\GeneralUtility::validIPv6($remoteIp)) {
             $isProxied |= \TYPO3\CMS\Core\Utility\GeneralUtility::cmpIPv6($remoteIp, implode(',', $whiteListIPv6s));
         } else {
@@ -64,14 +64,14 @@ defined('TYPO3') || die();
             }
         }
 
-        if (isset($config['enableOriginatingIPs']) && (bool)$config['enableOriginatingIPs']) {
+        if ((bool)($config['enableOriginatingIPs'] ?? false)) {
             if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
                 $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CF_CONNECTING_IP'];
             }
         }
     }
 
-    if (isset($config['enablePurgeByTags']) && (bool)$config['enablePurgeByTags']) {
+    if ((bool)($config['enablePurgeByTags'] ?? false)) {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['insertPageIncache'][$_EXTKEY] =
             \Causal\Cloudflare\Hooks\ContentProcessor::class;
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output'][$_EXTKEY] =

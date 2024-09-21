@@ -56,13 +56,13 @@ class TCEmain
         static $handledPageUids = [];
         static $handledTags = [];
 
-        $enablePurgeByUrl = isset($this->config['enablePurgeSingleFile']) && (bool)$this->config['enablePurgeSingleFile'];
-        $enablePurgeByTags = isset($this->config['enablePurgeByTags']) && (bool)$this->config['enablePurgeByTags'];
+        $enablePurgeByUrl = (bool)($this->config['enablePurgeSingleFile'] ?? false);
+        $enablePurgeByTags = (bool)($this->config['enablePurgeByTags'] ?? false);
 
         if (!isset($params['cacheCmd'])) {
             if ($params['table'] === 'pages' && $enablePurgeByTags) {
                 $this->purgeIndividualFileByCacheTag(
-                    isset($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER'] : null,
+                    $GLOBALS['BE_USER'] ?? null,
                     'pageId_' . (int)$params['uid']
                 );
             }
@@ -77,7 +77,7 @@ class TCEmain
                 if (!in_array($cacheTag, $handledTags)) {
                     $handledTags[] = $cacheTag;
                     $this->purgeIndividualFileByCacheTag(
-                        isset($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER'] : null,
+                        $GLOBALS['BE_USER'] ?? null,
                         $cacheTag
                     );
                 }
@@ -88,7 +88,7 @@ class TCEmain
                     $url = $this->getFrontendUrl($pageUid);
                     if ($url) {
                         $this->purgeIndividualFileByUrl(
-                            isset($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER'] : null,
+                            $GLOBALS['BE_USER'] ?? null,
                             $url
                         );
                     }
@@ -159,10 +159,10 @@ class TCEmain
      * Implementation was inspired by EXT:vara_feurlfrombe
      *
      * @param integer $uid
-     * @return string
+     * @return string|null
      * @todo Add support for multiple Frontend URLs
      */
-    protected function getFrontendUrl($uid)
+    protected function getFrontendUrl(int $uid): ?string
     {
         if (isset($GLOBALS['BE_USER']) && $GLOBALS['BE_USER']->workspace != 0) {
             // Preview in workspaces is not supported!
