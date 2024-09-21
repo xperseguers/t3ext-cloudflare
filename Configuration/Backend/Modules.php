@@ -1,6 +1,6 @@
 <?php
 
-use Causal\Cloudflare\Controller\DashboardController;
+use Causal\Cloudflare\Controller\DashboardModuleController;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -27,7 +27,7 @@ if ($enableAnalyticsModule) {
             'extensionName' => 'Cloudflare',
             'iconIdentifier' => 'cloudflare-module-analytics',
             'controllerActions' => [
-                DashboardController::class => 'analytics, ajaxAnalytics',
+                DashboardModuleController::class => 'analytics, ajaxAnalytics',
             ],
         ],
     ];

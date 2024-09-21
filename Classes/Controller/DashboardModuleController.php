@@ -18,8 +18,15 @@ namespace Causal\Cloudflare\Controller;
 
 use Causal\Cloudflare\Services\CloudflareService;
 use Causal\Cloudflare\Traits\ConfiguredDomainsTrait;
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Backend\Attribute\AsController;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
@@ -32,29 +39,28 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  * @copyright   Causal Sàrl
  * @license     https://www.gnu.org/licenses/gpl-3.0.html
  */
-class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+#[AsController]
+class DashboardModuleController extends ActionController
 {
     use ConfiguredDomainsTrait;
 
-    /**
-     * @var \Causal\Cloudflare\Services\CloudflareService
-     */
-    protected $cloudflareService;
+    protected PageRenderer $pageRenderer;
 
-    /**
-     * @var array
-     */
-    protected $zones;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
 
-    /**
-     * Default constructor.
-     */
-    public function __construct()
-    {
-        /** @var array config */
+    protected CloudflareService $cloudflareService;
+
+    protected array $zones;
+
+    public function __construct(
+        PageRenderer $pageRenderer,
+        ModuleTemplateFactory $moduleTemplateFactory,
+        CloudflareService $cloudflareService
+    ) {
         $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('cloudflare') ?? [];
-
-        $this->cloudflareService = GeneralUtility::makeInstance(CloudflareService::class, $this->config);
+        $this->cloudflareService = $cloudflareService->setConfiguration($this->config);
+        $this->pageRenderer = $pageRenderer;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
 
         $domains = $this->getDomains();
         $this->zones = [];
@@ -66,19 +72,32 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
 
     /**
      * Default action: analytics.
+     *
+     * @return ResponseInterface
      */
-    public function analyticsAction()
+    public function analyticsAction(): ResponseInterface
     {
         $defaultIdentifier = null;
         if (!empty($this->zones)) {
             $defaultIdentifier = key($this->zones);
         }
+
         $this->view->assignMultiple([
             'zones' => $this->zones,
             'defaultIdentifier' => $defaultIdentifier,
             'defaultZone' => $defaultIdentifier !== null ? $this->zones[$defaultIdentifier] : null,
             'periods' => $this->getAvailablePeriods($defaultIdentifier),
         ]);
+
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        // Adding title, menus, buttons, etc. using $moduleTemplate ...
+
+        if ((new Typo3Version())->getMajorVersion() < 12) {
+            $moduleTemplate->setContent($this->view->render());
+            return $this->htmlResponse($moduleTemplate->renderContent());
+        }
+
+        return $moduleTemplate->renderResponse('DashboardModule/Analytics');
     }
 
     /**

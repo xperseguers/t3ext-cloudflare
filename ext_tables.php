@@ -48,7 +48,7 @@ defined('TYPO3') || die();
                 'analytics',
                 '',
                 [
-                    \Causal\Cloudflare\Controller\DashboardController::class => 'analytics, ajaxAnalytics',
+                    \Causal\Cloudflare\Controller\DashboardModuleController::class => 'analytics, ajaxAnalytics',
                 ],
                 [
                     'access' => 'user,group',
