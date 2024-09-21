@@ -14,7 +14,6 @@ declare(strict_types = 1);
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
 
 return [
@@ -31,7 +30,11 @@ return [
         'source' => 'EXT:cloudflare/Resources/Public/Icons/online.svg',
     ],
     'cloudflare-module' => [
-        'provider' => BitmapIconProvider::class,
-        'source' => 'EXT:cloudflare/Resources/Public/Icons/module-cloudflare.png',
+        'provider' => SvgIconProvider::class,
+        'source' => 'EXT:cloudflare/Resources/Public/Icons/module-cloudflare.svg',
+    ],
+    'cloudflare-module-analytics' => [
+        'provider' => SvgIconProvider::class,
+        'source' => 'EXT:cloudflare/Resources/Public/Icons/module-analytics.svg',
     ],
 ];

@@ -8,15 +8,12 @@ defined('TYPO3') || die();
         $config = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get($_EXTKEY);
         $enableAnalyticsModule = (bool)($config['enableAnalyticsModule'] ?? true);
 
-        // Disable analytics module until we have a proper implementation
-        $enableAnalyticsModule = false;
-
         if ($enableAnalyticsModule) {
             // Create a module section "Cloudflare" before 'Admin Tools'
             $moduleConfiguration = [
                 'access' => 'user,group',
                 'name' => 'txcloudflare',
-                'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module-cloudflare.png',
+                'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module-cloudflare.svg',
                 'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod_cloudflare.xlf',
             ];
 
@@ -39,7 +36,7 @@ defined('TYPO3') || die();
             $GLOBALS['TBE_MODULES'] = $temp_TBE_MODULES;
 
             \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-                'Causal.' . $_EXTKEY,
+                'Cloudflare',
                 'txcloudflare',
                 'analytics',
                 '',
