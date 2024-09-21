@@ -15,33 +15,33 @@
         <source>API Key: This is the API key made available on your account page (https://dash.cloudflare.com/profile)</source>
         <target state="final">API-Schlüssel: Dies ist der API-Schlüssel, der auf Ihrer Kontoseite verfügbar ist (https://dash.cloudflare.com/profile)</target>
       </trans-unit>
-      <trans-unit id="settings.domains">
+      <trans-unit id="settings.domains" approved="yes">
         <source>Domains: Please tick the domains whose cache should be flushed on Cloudflare upon clearing all caches in TYPO3.</source>
-        <target state="translated">Domains: Bitte kreuzen Sie die Domains an, deren Cache auf Cloudflare geleert werden soll, wenn alle Caches in TYPO3 gelöscht werden.</target>
+        <target state="final">Domains: Bitte kreuzen Sie die Domains an, deren Cache auf Cloudflare geleert werden soll, wenn alle Caches in TYPO3 gelöscht werden.</target>
       </trans-unit>
       <trans-unit id="settings.enableAnalyticsModule">
         <source>Enable Analytics Backend module: Tick this checkbox if you need the Analytics module in Backend (this requires proper Token permissions if using Bearer Authentication).</source>
         <target state="needs-translation">Enable Analytics Backend module: Tick this checkbox if you need the Analytics module in Backend (this requires proper Token permissions if using Bearer Authentication).</target>
       </trans-unit>
-      <trans-unit id="settings.enableOriginatingIPs">
+      <trans-unit id="settings.enableOriginatingIPs" approved="yes">
         <source>Originating IPs: Tick this checkbox in case you cannot restore the originating IPs at the webserver level.</source>
-        <target state="translated">Ursprüngliche IPs: Aktivieren Sie dieses Kontrollkästchen, wenn Sie die Ursprungs-IPs auf Webserverebene nicht wiederherstellen können.</target>
+        <target state="final">Ursprüngliche IPs: Aktivieren Sie dieses Kontrollkästchen, wenn Sie die Ursprungs-IPs auf Webserverebene nicht wiederherstellen können.</target>
       </trans-unit>
-      <trans-unit id="settings.enablePurgeSingleFile">
+      <trans-unit id="settings.enablePurgeSingleFile" approved="yes">
         <source>[EXPERIMENTAL] Purge individual files by URL: Granularly remove individual files from Cloudflare's cache by specifying the URL. BEWARE: Highly experimental!</source>
-        <target state="translated">[EXPERIMENTAL] Einzelne Dateien nach URL löschen: Entfernen Sie einzelne Dateien aus dem Cache von Cloudflare, indem Sie die URL angeben. VORSICHT: Äußerst experimentell!</target>
+        <target state="final">[EXPERIMENTAL] Einzelne Dateien nach URL löschen: Entfernen Sie einzelne Dateien aus dem Cache von Cloudflare, indem Sie die URL angeben. VORSICHT: Äußerst experimentell!</target>
       </trans-unit>
-      <trans-unit id="settings.enablePurgeByTags">
+      <trans-unit id="settings.enablePurgeByTags" approved="yes">
         <source>Purge cache by Cache-Tag: Granularly remove individual files from Cloudflare's cache by specifying the associated Cache-Tag. BEWARE: This option requires an Enterprise account.</source>
-        <target state="needs-translation">Purge cache by Cache-Tag: Granularly remove individual files from Cloudflare's cache by specifying the associated Cache-Tag. BEWARE: This option requires an Enterprise account.</target>
+        <target state="final">Cache nach Cache-Tag bereinigen: Entfernen Sie einzelne Dateien granular aus dem Cache von Cloudflare, indem Sie den zugehörigen Cache-Tag angeben. ACHTUNG: Für diese Option ist ein Enterprise-Konto erforderlich.</target>
       </trans-unit>
-      <trans-unit id="settings.labels.emptyList">
+      <trans-unit id="settings.labels.emptyList" approved="yes">
         <source>Empty list fetched from Cloudflare, please check your credentials.</source>
-        <target state="translated">Leere Liste von Cloudflare abgerufen, bitte überprüfen Sie Ihre Anmeldedaten.</target>
+        <target state="final">Leere Liste von Cloudflare abgerufen, bitte überprüfen Sie Ihre Anmeldedaten.</target>
       </trans-unit>
-      <trans-unit id="settings.labels.zoneIdentifiers">
+      <trans-unit id="settings.labels.zoneIdentifiers" approved="yes">
         <source>Cloudflare API Zone Identifiers</source>
-        <target state="translated">Cloudflare API-Zonenbezeichner</target>
+        <target state="final">Cloudflare API-Zonenbezeichner</target>
       </trans-unit>
     </body>
   </file>
