@@ -199,7 +199,7 @@ class CloudflareToolbarItem implements ToolbarItemInterface
                 $content .= '<div class="dropdown-table">' . implode('', $entries) . '</div>';
             }
         } else {
-            $content .= '<p>' . $this->sL('no_domains') . '</p>';
+            $content .= '<div class="m-2">' . $this->sL('no_domains') . '</div>';
         }
 
         return $content;

@@ -7,7 +7,7 @@
 				<source>Cloudflare</source>
 			</trans-unit>
 			<trans-unit id="no_domains">
-				<source>No domains configured.</source>
+				<source>No domains configured for Cloudflare.</source>
 			</trans-unit>
 			<trans-unit id="toggle_development">
 				<source>Toggle development mode</source>
