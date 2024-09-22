@@ -77,25 +77,28 @@ class DashboardModuleController extends ActionController
      */
     public function analyticsAction(): ResponseInterface
     {
+        $typo3Version = (new Typo3Version())->getMajorVersion();
+
         $defaultIdentifier = null;
         if (!empty($this->zones)) {
             $defaultIdentifier = key($this->zones);
         }
 
-        $this->view->assignMultiple([
+        // Load CSS and JavaScript
+        $this->pageRenderer->addCssFile('EXT:cloudflare/Resources/Public/Css/dashboard.css');
+
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $view = $typo3Version >= 13 ? $moduleTemplate : $this->view;
+
+        $view->assignMultiple([
             'zones' => $this->zones,
             'defaultIdentifier' => $defaultIdentifier,
             'defaultZone' => $defaultIdentifier !== null ? $this->zones[$defaultIdentifier] : null,
             'periods' => $this->getAvailablePeriods($defaultIdentifier),
         ]);
 
-        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
-        // Adding title, menus, buttons, etc. using $moduleTemplate ...
-
-        $this->pageRenderer->addcssFile('EXT:cloudflare/Resources/Public/Css/dashboard.css');
-
-        if ((new Typo3Version())->getMajorVersion() < 12) {
-            $moduleTemplate->setContent($this->view->render());
+        if ($typo3Version < 12) {
+            $moduleTemplate->setContent($view->render());
             return $this->htmlResponse($moduleTemplate->renderContent());
         }
 
