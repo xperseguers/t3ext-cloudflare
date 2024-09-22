@@ -92,6 +92,8 @@ class DashboardModuleController extends ActionController
         $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         // Adding title, menus, buttons, etc. using $moduleTemplate ...
 
+        $this->pageRenderer->addcssFile('EXT:cloudflare/Resources/Public/Css/dashboard.css');
+
         if ((new Typo3Version())->getMajorVersion() < 12) {
             $moduleTemplate->setContent($this->view->render());
             return $this->htmlResponse($moduleTemplate->renderContent());
