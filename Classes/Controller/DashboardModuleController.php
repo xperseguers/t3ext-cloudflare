@@ -147,10 +147,9 @@ class DashboardModuleController extends ActionController
             $since = key($availablePeriods);
         }
 
-        $since = (int)$since;
-        $sinceTimestamp = time() - $since * 60;
+        $sinceTimestamp = time() - (int)$since * 60;
 
-        switch ($since) {
+        switch ((int)$since) {
             case 30:
                 $requestType = 'httpRequests1mGroups';
                 $orderBy = 'datetimeMinute_ASC';
