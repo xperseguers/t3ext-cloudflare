@@ -48,7 +48,6 @@ class Toolbar {
         const that = this;
         const iconSelector = this.selectors.containerSelector + ' ' + this.selectors.toolbarIconSelector;
         const menuSelector = this.selectors.containerSelector + ' ' + this.selectors.menuContainerSelector;
-        const toolbarItemIcon = document.querySelector(iconSelector);
 
         Icons.getIcon('spinner-circle-light', Icons.sizes.small).then(function (icon) {
             document.querySelector(iconSelector).outerHTML = icon;
@@ -57,7 +56,9 @@ class Toolbar {
         fetch(TYPO3.settings.ajaxUrls['cloudflare_rendermenu'])
             .then(response => response.json())
             .then(data => {
-                document.querySelector(iconSelector).outerHTML = toolbarItemIcon.outerHTML;
+                Icons.getIcon('actions-system-extension-configure', Icons.sizes.small).then(function (icon) {
+                    document.querySelector(iconSelector).outerHTML = icon;
+                });
                 document.querySelector(menuSelector).innerHTML = data.html;
                 that.initialize();
                 that.updateNumberOfDomainsInDevelopmentMode();
@@ -79,7 +80,6 @@ class Toolbar {
         const active = item.dataset.active;
 
         const iconSelector = this.selectors.containerSelector + ' ' + this.selectors.toolbarIconSelector;
-        const toolbarItemIcon = document.querySelector(iconSelector);
 
         Icons.getIcon('spinner-circle-light', Icons.sizes.small).then(function (icon) {
             document.querySelector(iconSelector).outerHTML = icon;
@@ -97,7 +97,6 @@ class Toolbar {
             })
             .then(response => response.json())
             .then(data => {
-                document.querySelector(iconSelector).outerHTML = toolbarItemIcon.outerHTML;
                 that.updateMenu();
             });
     }
