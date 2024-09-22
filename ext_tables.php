@@ -20,7 +20,7 @@ defined('TYPO3') || die();
             $moduleConfiguration = [
                 'access' => 'user,group',
                 'name' => 'txcloudflare',
-                'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module-cloudflare.svg',
+                'iconIdentifier' => 'cloudflare-module',
                 'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod_cloudflare.xlf',
             ];
 
@@ -52,7 +52,7 @@ defined('TYPO3') || die();
                 ],
                 [
                     'access' => 'user,group',
-                    'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module-analytics.png',
+                    'iconIdentifier' => 'cloudflare-module-analytics',
                     'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod_analytics.xlf',
                 ]
             );
