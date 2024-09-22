@@ -146,7 +146,70 @@ class DashboardModuleController extends ActionController
         if (!isset($availablePeriods[$since])) {
             $since = key($availablePeriods);
         }
-        $cfData = $this->cloudflareService->send('/zones/' . $zone . '/analytics/dashboard', ['since' => -$since]);
+
+        // https://developers.cloudflare.com/analytics/graphql-api/migration-guides/zone-analytics/
+        $sinceIsoDate = date('c', time() - $since * 60);
+        $graphQlQuery = <<<GRAPHQL
+query {
+  viewer {
+    zones(filter: {zoneTag: "$zone"}) {
+      httpRequests1mGroups(orderBy: [datetimeMinute_ASC], limit: 100, filter: {
+        datetime_geq: "$sinceIsoDate"
+      }) {
+        dimensions {
+          datetimeMinute
+        }
+        sum {
+          browserMap {
+            pageViews
+            uaBrowserFamily
+          }
+          bytes
+          cachedBytes
+          cachedRequests
+          contentTypeMap {
+            bytes
+            requests
+            edgeResponseContentTypeName
+          }
+          clientSSLMap {
+            requests
+            clientSSLProtocol
+          }
+          countryMap {
+            bytes
+            requests
+            threats
+            clientCountryName
+          }
+          encryptedBytes
+          encryptedRequests
+          ipClassMap {
+            requests
+            ipType
+          }
+          pageViews
+          requests
+          responseStatusMap {
+            requests
+            edgeResponseStatus
+          }
+          threats
+          threatPathingMap {
+            requests
+            threatPathingName
+          }
+        }
+        uniq {
+          uniques
+        }
+      }
+    }
+  }
+}
+GRAPHQL;
+
+        $cfData = $this->cloudflareService->send('/graphql', ['query' => $graphQlQuery], 'POST');
         if (!$cfData['success']) {
             return new JsonResponse([], 400);
         }

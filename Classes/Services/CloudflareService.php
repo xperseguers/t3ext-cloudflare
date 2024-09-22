@@ -63,7 +63,11 @@ class CloudflareService implements SingletonInterface
      * @return array
      * @throws \RuntimeException
      */
-    public function send($route, array $parameters = [], $request = 'GET')
+    public function send(
+        string $route,
+        array $parameters = [],
+        string $request = 'GET'
+    ): array
     {
         if (!trim($this->config['apiKey'])) {
             throw new \RuntimeException('Cannot clear cache on Cloudflare: Invalid apiKey for EXT:cloudflare', 1337770232);
@@ -139,7 +143,12 @@ class CloudflareService implements SingletonInterface
      * @return array JSON payload returned by Cloudflare
      * @throws \RuntimeException
      */
-    protected function sendHttpRequest($method, $url, array $headers, array $data)
+    protected function sendHttpRequest(
+        string $method,
+        string $url,
+        array $headers,
+        array $data
+    ): array
     {
         $ch = curl_init();
 
@@ -180,11 +189,11 @@ class CloudflareService implements SingletonInterface
         }
 
         if (!($result = curl_exec($ch))) {
-            trigger_error(curl_errno($ch));
+            trigger_error(curl_error($ch));
         }
         curl_close($ch);
 
-        return json_decode($result, true);
+        return json_decode($result, true, 512, JSON_THROW_ON_ERROR) ?? [];
     }
 
 }
