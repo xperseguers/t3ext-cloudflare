@@ -236,16 +236,41 @@ query {
 GRAPHQL;
 
         $cfData = $this->cloudflareService->send('/graphql', ['query' => $graphQlQuery], 'POST');
-        if (!$cfData['success']) {
+        if (!empty($cfData['errors'] ?? null)) {
             return new JsonResponse([], 400);
         }
+
+        // Normalize the resulting data
+        $cfData = $cfData['data']['viewer']['zones'][0][$requestType];
 
         // TODO: Adapt to new structure in GraphQL response
 
         $data = [
             'periods' => $availablePeriods,
             'period' => $this->sL('period.' . $since),
-            'timeseries' => $cfData['result']['timeseries'],
+            'timeseries' => [],
+            'totals' => [
+                'requests' => [
+                    'all' => 0,
+                    'cached' => 0,
+                    'uncached' => 0,
+                ],
+                'bandwidth' => [
+                    'all' => 0,
+                    'cached' => 0,
+                    'uncached' => 0,
+                ],
+                'uniques' => [
+                    'all' => 0,
+                    'maximum' => 0,
+                    'minimum' => PHP_INT_MAX,
+                ],
+                'threats' => [
+                    'all' => 0,
+                    'country' => [],
+                    'type' => [],
+                ],
+            ],
         ];
 
         // Compute some additional statistics
@@ -256,6 +281,39 @@ GRAPHQL;
         $threatsMaximumType = 0;
         $threatsTopType = 'N/A';
 
+        foreach ($cfData as $info) {
+            $dataSince = $info['dimensions'][$dimensions];
+
+            $data['timeseries'][] = [
+                'since' => $dataSince,
+                'requests' => [
+                    'all' => $info['sum']['requests'],
+                    'cached' => $info['sum']['cachedRequests'],
+                    'uncached' => $info['sum']['requests'] - $info['sum']['cachedRequests'],
+                ],
+                'bandwidth' => [
+                    'all' => $info['sum']['bytes'],
+                    'cached' => $info['sum']['cachedBytes'],
+                    'uncached' => $info['sum']['bytes'] - $info['sum']['cachedBytes'],
+                ],
+                'uniques' => $info['uniq']['uniques'],
+                'threats' => $info['sum']['threats'],
+            ];
+
+            $data['totals']['requests']['all'] += $info['sum']['requests'];
+            $data['totals']['requests']['cached'] += $info['sum']['cachedRequests'];
+            $data['totals']['requests']['uncached'] += $info['sum']['requests'] - $info['sum']['cachedRequests'];
+            $data['totals']['bandwidth']['all'] += $info['sum']['bytes'];
+            $data['totals']['bandwidth']['cached'] += $info['sum']['cachedBytes'];
+            $data['totals']['bandwidth']['uncached'] += $info['sum']['bytes'] - $info['sum']['cachedBytes'];
+            $data['totals']['uniques']['all'] += $info['uniq']['uniques'];
+            $data['totals']['threats']['all'] += $info['sum']['threats'];
+
+            $uniquesMinimum = min($uniquesMinimum, $info['uniq']['uniques']);
+            $uniquesMaximum = max($uniquesMaximum, $info['uniq']['uniques']);
+        }
+
+        /*
         foreach ($data['timeseries'] as $tsKey => $info) {
             $threats = [
                 'all' => $info['threats']['all'],
@@ -319,10 +377,11 @@ GRAPHQL;
                 'c3' => $threatsTopType,
             ],
         ]);
+        */
 
         // Sort some data for better display as graphs
-        arsort($data['totals']['bandwidth']['content_type']);
-        arsort($data['totals']['requests']['content_type']);
+        //arsort($data['totals']['bandwidth']['content_type']);
+        //arsort($data['totals']['requests']['content_type']);
 
         return new JsonResponse($data);
     }
