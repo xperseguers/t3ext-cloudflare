@@ -147,17 +147,44 @@ class DashboardModuleController extends ActionController
             $since = key($availablePeriods);
         }
 
-        // https://developers.cloudflare.com/analytics/graphql-api/migration-guides/zone-analytics/
-        $sinceIsoDate = date('c', time() - $since * 60);
+        $since = (int)$since;
+        $sinceTimestamp = time() - $since * 60;
+
+        switch ($since) {
+            case 30:
+                $requestType = 'httpRequests1mGroups';
+                $orderBy = 'datetimeMinute_ASC';
+                $filterKey = 'datetime_geq';
+                $filterValue = date('c', $sinceTimestamp);
+                $dimensions = 'datetimeMinute';
+                break;
+            case 360:
+            case 720:
+            case 1440:
+                $requestType = 'httpRequests1hGroups';
+                $orderBy = 'datetime_ASC';
+                $filterKey = 'datetime_geq';
+                $filterValue = date('c', $sinceTimestamp);
+                $dimensions = 'datetime';
+                break;
+            default:
+                $requestType = 'httpRequests1dGroups';
+                $orderBy = 'date_ASC';
+                $filterKey = 'date_geq';
+                $filterValue = date('Y-m-d', $sinceTimestamp);
+                $dimensions = 'date';
+                break;
+        }
+
         $graphQlQuery = <<<GRAPHQL
 query {
   viewer {
     zones(filter: {zoneTag: "$zone"}) {
-      httpRequests1mGroups(orderBy: [datetimeMinute_ASC], limit: 100, filter: {
-        datetime_geq: "$sinceIsoDate"
+      $requestType(orderBy: [$orderBy], limit: 100, filter: {
+        $filterKey: "$filterValue"
       }) {
         dimensions {
-          datetimeMinute
+          $dimensions
         }
         sum {
           browserMap {
@@ -213,6 +240,8 @@ GRAPHQL;
         if (!$cfData['success']) {
             return new JsonResponse([], 400);
         }
+
+        // TODO: Adapt to new structure in GraphQL response
 
         $data = [
             'periods' => $availablePeriods,
@@ -302,10 +331,10 @@ GRAPHQL;
     /**
      * Returns the available periods for a given zone (depends on the Cloudflare plan).
      *
-     * @param string $zone
+     * @param string|null $zone
      * @return array
      */
-    protected function getAvailablePeriods(string $zone): array
+    protected function getAvailablePeriods(?string $zone): array
     {
         if ($zone === null) {
             return [];
