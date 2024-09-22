@@ -3,9 +3,9 @@
   <file source-language="en" datatype="plaintext" original="messages" date="2014-12-30T17:07:23Z" product-name="cloudflare" target-language="da">
     <header/>
     <body>
-      <trans-unit id="settings.useBearerAuthentication">
+      <trans-unit id="settings.useBearerAuthentication" approved="yes">
         <source>Use Bearer Authentication (recommended): Use a Token for Bearer Authentication (RFC 6750) and API key instead of the standard e-mail address and API key.</source>
-        <target state="needs-translation">Use Bearer Authentication (recommended): Use a Token for Bearer Authentication (RFC 6750) and API key instead of the standard e-mail address and API key.</target>
+        <target state="final">Brug Bearer Authentication (anbefalet): Brug en Token til Bearer Authentication (RFC 6750) og API-nøgle i stedet for standard e-mail-adresse og API-nøgle.</target>
       </trans-unit>
       <trans-unit id="settings.email" approved="yes">
         <source>Email: The e-mail address associated with the API key.</source>
@@ -27,9 +27,9 @@
         <source>Originating IPs: Tick this checkbox in case you cannot restore the originating IPs at the webserver level.</source>
         <target state="final">Oprindelige IP'er: Markér dette afkrydsningsfelt, hvis du ikke kan gendanne de oprindelige IP'er på webserverniveau.</target>
       </trans-unit>
-      <trans-unit id="settings.enablePurgeSingleFile">
+      <trans-unit id="settings.enablePurgeSingleFile" approved="yes">
         <source>Purge individual files by URL: Granularly remove individual files from Cloudflare's cache by specifying the URL.</source>
-        <target state="needs-translation">Purge individual files by URL: Granularly remove individual files from Cloudflare's cache by specifying the URL.</target>
+        <target state="final">Ryd individuelle filer ved hjælp af URL: Fjern detaljeret individuelle filer fra Cloudflare's cache ved at angive URL.</target>
       </trans-unit>
       <trans-unit id="settings.enablePurgeByTags" approved="yes">
         <source>Purge cache by Cache-Tag: Granularly remove individual files from Cloudflare's cache by specifying the associated Cache-Tag. BEWARE: This option requires an Enterprise account.</source>
