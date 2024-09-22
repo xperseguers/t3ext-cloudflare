@@ -19,10 +19,12 @@ namespace Causal\Cloudflare\Controller;
 use Causal\Cloudflare\Services\CloudflareService;
 use Causal\Cloudflare\Traits\ConfiguredDomainsTrait;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -130,14 +132,14 @@ class DashboardModuleController extends ActionController
 
     /**
      * Returns the JSON data for the requests analytics.
-     *
-     * @param string $zone
-     * @param int $since
      */
-    public function ajaxAnalyticsAction(string $zone, int $since)
+    public function fetchAnalytics(ServerRequestInterface $request): ResponseInterface
     {
+        $zone = $request->getQueryParams()['zone'] ?? null;
+        $since = (int)($request->getQueryParams()['since'] ?? 1440);
+
         if (empty($zone)) {
-            $this->returnAjax(null);
+            return new JsonResponse([], 400);
         }
 
         $availablePeriods = $this->getAvailablePeriods($zone);
@@ -146,7 +148,7 @@ class DashboardModuleController extends ActionController
         }
         $cfData = $this->cloudflareService->send('/zones/' . $zone . '/analytics/dashboard', ['since' => -$since]);
         if (!$cfData['success']) {
-            $this->returnAjax(null);
+            return new JsonResponse([], 400);
         }
 
         $data = [
@@ -231,27 +233,7 @@ class DashboardModuleController extends ActionController
         arsort($data['totals']['bandwidth']['content_type']);
         arsort($data['totals']['requests']['content_type']);
 
-        $this->returnAjax($data);
-    }
-
-    /**
-     * Returns an AJAX response.
-     *
-     * @param array $response
-     * @param bool $wrapForIframe see http://cmlenz.github.io/jquery-iframe-transport/#section-13
-     * return void
-     */
-    protected function returnAjax(array $response = null, $wrapForIframe = false)
-    {
-        $payload = json_encode($response);
-        if (!$wrapForIframe) {
-            header('Content-type: application/json');
-        } else {
-            header('Content-type: text/html');
-            $payload = '<textarea data-type="application/json">' . $payload . '</textarea>';
-        }
-        echo $payload;
-        exit;
+        return new JsonResponse($data);
     }
 
     /**
@@ -260,7 +242,7 @@ class DashboardModuleController extends ActionController
      * @param string $zone
      * @return array
      */
-    protected function getAvailablePeriods($zone)
+    protected function getAvailablePeriods(string $zone): array
     {
         if ($zone === null) {
             return [];
@@ -321,6 +303,6 @@ class DashboardModuleController extends ActionController
      */
     protected function sL(string $key, ?array $arguments = null): string
     {
-        return LocalizationUtility::translate($key, $this->request->getControllerExtensionKey(), $arguments);
+        return LocalizationUtility::translate($key, 'cloudflare', $arguments);
     }
 }

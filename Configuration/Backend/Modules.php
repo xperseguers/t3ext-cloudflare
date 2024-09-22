@@ -27,7 +27,7 @@ if ($enableAnalyticsModule) {
             'extensionName' => 'Cloudflare',
             'iconIdentifier' => 'cloudflare-module-analytics',
             'controllerActions' => [
-                DashboardModuleController::class => 'analytics, ajaxAnalytics',
+                DashboardModuleController::class => 'analytics',
             ],
         ],
     ];

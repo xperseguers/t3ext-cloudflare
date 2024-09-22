@@ -185,7 +185,11 @@ define([
         var self = this;
 
         $.ajax({
-            url: dataUrl.replace(/_ZONE_/, zone).replace(/_SINCE_/, since),
+            url: TYPO3.settings.ajaxUrls['cloudflare_fetchanalytics'],
+            data: {
+                zone: zone,
+                since: since
+            },
             success: function (data) {
                 self.timeseries = data.timeseries;
                 self.totals = data.totals;
