@@ -102,6 +102,11 @@ class DashboardModuleController extends ActionController
                     ])
             );
         } else {
+            $this->pageRenderer->addInlineLanguageLabelFile(
+                'EXT:cloudflare/Resources/Private/Language/locallang.xlf',
+                'dashboard.'
+            );
+
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Cloudflare/Analytics');
         }
 

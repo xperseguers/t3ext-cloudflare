@@ -9,17 +9,6 @@ define([
     'use strict';
 
     var CloudflareAnalytics = {
-        labels: {
-            requests: '',
-            bandwidth: '',
-            uniques: '',
-            threats: '',
-            cached: '',
-            uncached: '',
-            encrypted: '',
-            unencrypted: ''
-        },
-
         timeseries: null,
         totals: null,
     };
@@ -47,8 +36,8 @@ define([
             })
         });
         this.createGraph(elementId, key, [
-            this.getGraphDefinition('#f68b1f', this.labels.cached, 'data1'),
-            this.getGraphDefinition('#2f7bbf', this.labels.uncached, 'data2')
+            this.getGraphDefinition('#f68b1f', TYPO3.lang['dashboard.cached'], 'data1'),
+            this.getGraphDefinition('#2f7bbf', TYPO3.lang['dashboard.uncached'], 'data2')
         ], data);
     };
 
@@ -216,11 +205,11 @@ define([
 
                 var donutData = [
                     {
-                        'title': self.labels.cached,
+                        'title': TYPO3.lang['dashboard.cached'],
                         'value': data.totals.bandwidth.cached
                     },
                     {
-                        'title': self.labels.uncached,
+                        'title': TYPO3.lang['dashboard.uncached'],
                         'value': data.totals.bandwidth.uncached
                     }
                 ];
@@ -237,11 +226,11 @@ define([
 
                 donutData = [
                     {
-                        'title': self.labels.encrypted,
+                        'title': TYPO3.lang['dashboard.encrypted'],
                         'value': data.totals.requests.ssl.encrypted
                     },
                     {
-                        'title': self.labels.unencrypted,
+                        'title': TYPO3.lang['dashboard.unencrypted'],
                         'value': data.totals.requests.ssl.unencrypted
                     }
                 ];

@@ -69,19 +69,9 @@
 
     </section>
 
-    <!-- amCharts javascript code -->
     <script type="text/javascript">
         // Initialize the dashboard's actions and labels
         var dataUrl = "{f:uri.action(controller:'Dashboard', action:'ajaxAnalytics', arguments:{zone: '_ZONE_', since: '_SINCE_'}) -> f:format.raw()}";
-
-        CloudflareAnalytics.labels.requests = "{f:translate(key:'dashboard.requests')}";
-        CloudflareAnalytics.labels.bandwidth = "{f:translate(key:'dashboard.bandwidth')}";
-        CloudflareAnalytics.labels.uniques = "{f:translate(key:'dashboard.uniques')}";
-        CloudflareAnalytics.labels.threats = "{f:translate(key:'dashboard.threats')}";
-        CloudflareAnalytics.labels.cached = "{f:translate(key:'dashboard.cached')}";
-        CloudflareAnalytics.labels.uncached = "{f:translate(key:'dashboard.uncached')}";
-        CloudflareAnalytics.labels.encrypted = "{f:translate(key:'dashboard.encrypted')}";
-        CloudflareAnalytics.labels.unencrypted = "{f:translate(key:'dashboard.unencrypted')}";
     </script>
 
 </f:section>
