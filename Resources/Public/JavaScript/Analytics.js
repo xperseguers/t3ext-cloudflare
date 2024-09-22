@@ -1,19 +1,30 @@
-CloudflareAnalytics = {
-    labels: {
-        requests: '',
-        bandwidth: '',
-        uniques: '',
-        threats: '',
-        cached: '',
-        uncached: '',
-        encrypted: '',
-        unencrypted: ''
-    },
+/**
+ * Module: TYPO3/CMS/Cloudflare/Analytics
+ * JavaScript module for EXT:cloudflare
+ */
+define([
+    'jquery',
+    'TYPO3/CMS/Backend/AjaxDataHandler'
+], function ($, DataHandler) {
+    'use strict';
 
-    timeseries: null,
-    totals: null,
+    var CloudflareAnalytics = {
+        labels: {
+            requests: '',
+            bandwidth: '',
+            uniques: '',
+            threats: '',
+            cached: '',
+            uncached: '',
+            encrypted: '',
+            unencrypted: ''
+        },
 
-    createSimpleGraph: function (elementId, key) {
+        timeseries: null,
+        totals: null,
+    };
+
+    CloudflareAnalytics.createSimpleGraph = function (elementId, key) {
         var data = [];
         $.each(this.timeseries, function (index, object) {
             data.push({
@@ -24,9 +35,9 @@ CloudflareAnalytics = {
         this.createGraph(elementId, key, [
             this.getGraphDefinition('#2f7bbf', this.labels[key], 'data1')
         ], data);
-    },
+    };
 
-    createCacheGraph: function (elementId, key) {
+    CloudflareAnalytics.createCacheGraph = function (elementId, key) {
         var data = [];
         $.each(this.timeseries, function (index, object) {
             data.push({
@@ -39,9 +50,9 @@ CloudflareAnalytics = {
             this.getGraphDefinition('#f68b1f', this.labels.cached, 'data1'),
             this.getGraphDefinition('#2f7bbf', this.labels.uncached, 'data2')
         ], data);
-    },
+    };
 
-    createThreatsGraph: function (elementId) {
+    CloudflareAnalytics.createThreatsGraph = function (elementId) {
         var threats = {
             'bic.ban.unknown': {        // Bad browser
                 'enable': false,
@@ -100,9 +111,9 @@ CloudflareAnalytics = {
         });
 
         this.createGraph(elementId, 'threats', graphs, data);
-    },
+    };
 
-    createGraph: function (elementId, key, graphs, data) {
+    CloudflareAnalytics.createGraph = function (elementId, key, graphs, data) {
         AmCharts.makeChart(elementId, {
             'type': 'serial',
             'theme': 'light',
@@ -137,9 +148,9 @@ CloudflareAnalytics = {
         $('#' + key + 'C1').html(this.totals[key].c1);
         $('#' + key + 'C2').html(this.totals[key].c2);
         $('#' + key + 'C3').html(this.totals[key].c3);
-    },
+    };
 
-    getGraphDefinition: function (color, title, field) {
+    CloudflareAnalytics.getGraphDefinition = function (color, title, field) {
         return {
             'lineColor': color,
             'lineThickness': 3,
@@ -151,9 +162,9 @@ CloudflareAnalytics = {
             'valueField': field,
             'balloonText': '[[title]]: [[value]]'
         };
-    },
+    };
 
-    createDonut: function (elementId, data, colors) {
+    CloudflareAnalytics.createDonut = function (elementId, data, colors) {
         var options = {
             'type': 'pie',
             'theme': 'light',
@@ -179,9 +190,9 @@ CloudflareAnalytics = {
             var value = Math.floor(data[0].value * 100 / total);
             chart.addLabel("50%", "42%", "" + value + "%", "middle", 20);
         }
-    },
+    };
 
-    update: function (zone, since) {
+    CloudflareAnalytics.update = function (zone, since) {
         var self = this;
 
         $.ajax({
@@ -240,32 +251,34 @@ CloudflareAnalytics = {
             }
         });
     }
-};
 
-$(document).ready(function () {
-    $('.tabs a').click(function (event) {
-        event.preventDefault();
-        $(this).parent().addClass('active');
-        $(this).parent().siblings().removeClass('active');
-        var tab = $(this).attr('href');
-        $('.tab-content').not(tab).css('display', 'none');
-        $(tab).fadeIn();
+    $(document).ready(function () {
+        $('.tabs a').click(function (event) {
+            event.preventDefault();
+            $(this).parent().addClass('active');
+            $(this).parent().siblings().removeClass('active');
+            var tab = $(this).attr('href');
+            $('.tab-content').not(tab).css('display', 'none');
+            $(tab).fadeIn();
+        });
+        $('#requests').fadeIn();
+
+        $('#zone').change(function () {
+            var zone = $(this).val();
+            var period = $('#period').val();
+
+            CloudflareAnalytics.update(zone, period);
+        });
+
+        $('#period').change(function () {
+            var zone = $('#zone').val();
+            var period = $(this).val();
+
+            CloudflareAnalytics.update(zone, period);
+        });
+
+        $('#period').change();
     });
-    $('#requests').fadeIn();
 
-    $('#zone').change(function () {
-        var zone = $(this).val();
-        var period = $('#period').val();
-
-        CloudflareAnalytics.update(zone, period);
-    });
-
-    $('#period').change(function () {
-        var zone = $('#zone').val();
-        var period = $(this).val();
-
-        CloudflareAnalytics.update(zone, period);
-    });
-
-    $('#period').change();
+    return CloudflareAnalytics;
 });

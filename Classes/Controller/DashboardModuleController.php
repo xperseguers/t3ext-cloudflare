@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -86,6 +87,23 @@ class DashboardModuleController extends ActionController
 
         // Load CSS and JavaScript
         $this->pageRenderer->addCssFile('EXT:cloudflare/Resources/Public/Css/dashboard.css');
+        /**
+         * <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/amcharts/amcharts.js')}"></script>
+         * <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/amcharts/serial.js')}"></script>
+         * <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/amcharts/pie.js')}"></script>
+         * <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/amcharts/themes/light.js')}"></script>
+         */
+
+        if ($typo3Version >= 12) {
+            $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
+                JavaScriptModuleInstruction::create('@causal/cloudflare/module-analytics.js')
+                    ->invoke('create', [
+                        // options go here...
+                    ])
+            );
+        } else {
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Cloudflare/Analytics');
+        }
 
         $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         $view = $typo3Version >= 13 ? $moduleTemplate : $this->view;
