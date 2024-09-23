@@ -144,21 +144,28 @@ class CloudflareToolbarItem implements ToolbarItemInterface
 
                         if ($typo3Version >= 12) {
                             $entries[] = '<li>';
-                            $entries[] = '  <div class="dropdown-item" role="menuitem" data-zone-status="' . $status . '">';
+                            if ($active !== null) {
+                                $entries[] = '  <a href="#" class="cloudflare-zone dropdown-item" role="menuitem" data-zone-status="' . $status . '" data-zone="' . $identifier . '" data-active="' . $active . '">';
+                            } else {
+                                $entries[] = '  <div class="dropdown-item" role="menuitem" data-zone-status="' . $status . '">';
+                            }
                             $entries[] = '    <span class="dropdown-item-columns">';
                             $entries[] = '      <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">'
                                 . $this->getZoneIcon($status) . '</span>';
                             $entries[] = '      <span class="dropdown-item-column dropdown-item-column-title">';
                             $entries[] = '        ' . htmlspecialchars($zone['name']) . '<br>';
-                            if ($active !== null) {
-                                $entries[] = '        <a href="#" class="cloudflare-zone" data-zone="' . $identifier . '" data-active="' . $active . '">'
-                                    . $this->sL('toggle_development') . '</a>';
-                            } else {
-                                $entries[] = '        <span class="text-muted">' . $this->sL('zone_inactive') . '</span>';
-                            }
+                            $entries[] = '      <small class="text-body-secondary">' .
+                                                    ($active !== null
+                                                        ? $this->sL('toggle_development')
+                                                        : $this->sL('zone_inactive')) .
+                                                '</small>';
                             $entries[] = '      </span>';
                             $entries[] = '    </span>';
-                            $entries[] = '  </div>';
+                            if ($active !== null) {
+                                $entries[] = '  </a>';
+                            } else {
+                                $entries[] = '  </div>';
+                            }
                             $entries[] = '</li>';
                         } else {
                             $entries[] = '<div class="dropdown-table-row" data-zone-status="' . $status . '">';
