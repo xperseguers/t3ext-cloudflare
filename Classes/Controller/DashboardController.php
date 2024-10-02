@@ -18,8 +18,10 @@ namespace Causal\Cloudflare\Controller;
 
 use Causal\Cloudflare\Services\CloudflareService;
 use Causal\Cloudflare\Traits\ConfiguredDomainsTrait;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
@@ -32,29 +34,22 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  * @copyright   Causal Sàrl
  * @license     https://www.gnu.org/licenses/gpl-3.0.html
  */
-class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class DashboardController extends ActionController
 {
     use ConfiguredDomainsTrait;
 
-    /**
-     * @var \Causal\Cloudflare\Services\CloudflareService
-     */
-    protected $cloudflareService;
-
-    /**
-     * @var array
-     */
-    protected $zones;
+    protected array $zones;
 
     /**
      * Default constructor.
+     *
+     * @param CloudflareService $cloudflareService
      */
-    public function __construct()
+    public function __construct(
+        CloudflareService $cloudflareService
+    )
     {
-        /** @var array config */
-        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('cloudflare') ?? [];
-
-        $this->cloudflareService = GeneralUtility::makeInstance(CloudflareService::class, $this->config);
+        $this->cloudflareService = $cloudflareService;
 
         $domains = $this->getDomains();
         $this->zones = [];

@@ -16,22 +16,29 @@ declare(strict_types=1);
 
 namespace Causal\Cloudflare\EventListener;
 
+use Causal\Cloudflare\Services\CloudflareService;
 use Causal\Cloudflare\Traits\ConfiguredDomainsTrait;
 use TYPO3\CMS\Backend\Backend\Event\ModifyClearCacheActionsEvent;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ClearCacheEventListener
 {
     use ConfiguredDomainsTrait;
 
+    public function __construct(
+        CloudflareService $cloudflareService
+    )
+    {
+        $this->cloudflareService = $cloudflareService;
+    }
+
     public function __invoke(ModifyClearCacheActionsEvent $event): void
     {
-        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('cloudflare');
+        $config = $this->cloudflareService->getConfiguration();
 
         $domains = $this->getDomains();
-        if (empty($this->config['apiKey']) || empty($domains)) {
+        if (empty($config['apiKey']) || empty($domains)) {
             return;
         }
 
@@ -43,7 +50,7 @@ class ClearCacheEventListener
         if ($backendUser->isAdmin() || $canClearAllCache || $canClearCloudflareCache) {
             $cacheActions = $event->getCacheActions();
             $cacheActionIdentifiers = $event->getCacheActionIdentifiers();
-            
+
             /** @var UriBuilder $uriBuilder */
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $ajaxRoute = (string)$uriBuilder->buildUriFromRoute('ajax_cloudflare_purge');
@@ -71,14 +78,14 @@ class ClearCacheEventListener
                 );
             } else {
                 $cacheActions[] = $clearCloudflare;
-                $cacheActionIdentifiers[] = 'cloudflare';    
+                $cacheActionIdentifiers[] = 'cloudflare';
             }
-            
+
             $event->setCacheActions($cacheActions);
             $event->setCacheActionIdentifiers($cacheActionIdentifiers);
         }
     }
-    
+
     /**
      * Returns the current Backend user.
      *

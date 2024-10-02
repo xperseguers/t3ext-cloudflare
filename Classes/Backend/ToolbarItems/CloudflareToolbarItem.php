@@ -20,7 +20,6 @@ use Causal\Cloudflare\Services\CloudflareService;
 use Causal\Cloudflare\Traits\ConfiguredDomainsTrait;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -49,8 +48,6 @@ class CloudflareToolbarItem implements ToolbarItemInterface
 
     protected PageRenderer $pageRenderer;
 
-    protected CloudflareService $cloudflareService;
-
     /**
      * Default constructor.
      *
@@ -62,10 +59,8 @@ class CloudflareToolbarItem implements ToolbarItemInterface
         CloudflareService $cloudflareService
     )
     {
-        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('cloudflare') ?? [];
-
         $this->pageRenderer = $pageRenderer;
-        $this->cloudflareService = $cloudflareService->setConfiguration($this->config);
+        $this->cloudflareService = $cloudflareService;
 
         if ((new Typo3Version())->getMajorVersion() >= 12) {
             $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(

@@ -16,27 +16,30 @@ declare(strict_types=1);
 
 namespace Causal\Cloudflare\Traits;
 
+use Causal\Cloudflare\Services\CloudflareService;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 trait ConfiguredDomainsTrait
 {
     // Expected to be initialized during class construction
-    protected array $config;
+    protected CloudflareService $cloudflareService;
 
     protected function getDomains(): array
     {
+        $config = $this->cloudflareService->getConfiguration();
+
         if ((new Typo3Version())->getMajorVersion() >= 13) {
             $domains = [];
-            $numberOfDomains = (int)($this->config['domains_count'] ?? 0);
+            $numberOfDomains = (int)($config['domains_count'] ?? 0);
             for ($i = 0; $i < $numberOfDomains; $i++) {
-                $value = $this->config['domains_' . $i] ?? '';
+                $value = $config['domains_' . $i] ?? '';
                 if ($value !== '') {
                     $domains[] = $value;
                 }
             }
         } else {
-            $domains = GeneralUtility::trimExplode(',', $this->config['domains'] ?? '', true);
+            $domains = GeneralUtility::trimExplode(',', $config['domains'] ?? '', true);
         }
 
         return $domains;

@@ -19,7 +19,6 @@ namespace Causal\Cloudflare\Hooks;
 use Causal\Cloudflare\Services\CloudflareService;
 use Causal\Cloudflare\Traits\ConfiguredDomainsTrait;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
-use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
@@ -46,7 +45,8 @@ class TCEmain
      */
     public function __construct()
     {
-        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('cloudflare') ?? [];
+        // DI is not available in this context
+        $this->cloudflareService = GeneralUtility::makeInstance(CloudflareService::class);
     }
 
     /**
@@ -57,7 +57,8 @@ class TCEmain
      */
     public function clear_cacheCmd(array $params, DataHandler $pObj): void
     {
-        $enablePurgeByTags = (bool)($this->config['enablePurgeByTags'] ?? false);
+        $config = $this->cloudflareService->getConfiguration();
+        $enablePurgeByTags = (bool)($config['enablePurgeByTags'] ?? false);
 
         if (!isset($params['cacheCmd'])) {
             if ($params['table'] === 'pages') {
@@ -90,8 +91,9 @@ class TCEmain
             return;
         }
 
-        $enablePurgeByUrl = (bool)($this->config['enablePurgeSingleFile'] ?? false);
-        $enablePurgeByTags = (bool)($this->config['enablePurgeByTags'] ?? false);
+        $config = $this->cloudflareService->getConfiguration();
+        $enablePurgeByUrl = (bool)($config['enablePurgeSingleFile'] ?? false);
+        $enablePurgeByTags = (bool)($config['enablePurgeByTags'] ?? false);
 
         if ($enablePurgeByTags) {
             $cacheTag = 'pageId_' . $pageUid;
@@ -142,13 +144,10 @@ class TCEmain
     {
         $domains = $this->getDomains();
 
-        /** @var CloudflareService $cloudflareService */
-        $cloudflareService = GeneralUtility::makeInstance(CloudflareService::class, $this->config);
-
         foreach ($domains as $domain) {
             try {
                 list($identifier, $zoneName) = explode('|', $domain, 2);
-                $ret = $cloudflareService->send('/zones/' . $identifier . '/purge_cache', [
+                $ret = $this->cloudflareService->send('/zones/' . $identifier . '/purge_cache', [
                     'purge_everything' => true,
                 ], 'DELETE');
                 if (!is_array($ret)) {
@@ -227,11 +226,8 @@ class TCEmain
             return;
         }
 
-        /** @var CloudflareService $cloudflareService */
-        $cloudflareService = GeneralUtility::makeInstance(CloudflareService::class, $this->config);
-
         try {
-            $ret = $cloudflareService->send('/zones/' . $zoneIdentifier . '/purge_cache', [
+            $ret = $this->cloudflareService->send('/zones/' . $zoneIdentifier . '/purge_cache', [
                 'files' => [$url],
             ], 'DELETE');
 
@@ -263,13 +259,10 @@ class TCEmain
     {
         $domains = $this->getDomains();
 
-        /** @var CloudflareService $cloudflareService */
-        $cloudflareService = GeneralUtility::makeInstance(CloudflareService::class, $this->config);
-
         foreach ($domains as $domain) {
             try {
                 list($identifier, $zoneName) = explode('|', $domain, 2);
-                $ret = $cloudflareService->send('/zones/' . $identifier . '/purge_cache', [
+                $ret = $this->cloudflareService->send('/zones/' . $identifier . '/purge_cache', [
                     'tags' => [$cacheTag],
                 ], 'DELETE');
                 if (!is_array($ret)) {

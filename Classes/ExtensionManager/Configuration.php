@@ -17,10 +17,11 @@ declare(strict_types=1);
 namespace Causal\Cloudflare\ExtensionManager;
 
 use Causal\Cloudflare\Services\CloudflareService;
-use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -35,15 +36,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class Configuration
 {
-    /** @var array */
-    protected $config;
+    protected CloudflareService $cloudflareService;
 
     /**
      * Default constructor.
      */
     public function __construct()
     {
-        $this->config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('cloudflare') ?? [];
+        // DI is not available in this context
+        $this->cloudflareService = GeneralUtility::makeInstance(CloudflareService::class);
     }
 
     /**
@@ -52,37 +53,35 @@ class Configuration
      * @param array $params
      * @return string
      */
-    public function getDomains(array $params)
+    public function getDomains(array $params): string
     {
+        $config = $this->cloudflareService->getConfiguration();
         $typo3Version = (new Typo3Version())->getMajorVersion();
         $domains = [];
         $out = [];
 
-        /** @var CloudflareService $cloudflareService */
-        $cloudflareService = GeneralUtility::makeInstance(CloudflareService::class, $this->config);
-
         try {
-            $ret = $cloudflareService->send('/zones/');
+            $ret = $this->cloudflareService->send('/zones/');
             if ($ret['success']) {
-                $data = $cloudflareService->sort($ret, 'name');
+                $data = $this->cloudflareService->sort($ret, 'name');
                 foreach ($data['result'] as $zone) {
                     $domains[$zone['id']] = $zone['name'];
                 }
             }
         } catch (\RuntimeException $e) {
-            /** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
+            /** @var FlashMessage $flashMessage */
             $flashMessage = GeneralUtility::makeInstance(
-                \TYPO3\CMS\Core\Messaging\FlashMessage::class,
+                FlashMessage::class,
                 $e->getMessage(),
                 '',
-                \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR,
+                FlashMessage::ERROR,
                 true
             );
-            $out[] = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver::class)->resolve()->render([$flashMessage]);
+            $out[] = GeneralUtility::makeInstance(FlashMessageRendererResolver::class)->resolve()->render([$flashMessage]);
         }
 
         if ($typo3Version >= 12) {
-            $selectedDomains = GeneralUtility::trimExplode(',', $this->config[$params['fieldName']] ?? '', true);
+            $selectedDomains = GeneralUtility::trimExplode(',', $config[$params['fieldName']] ?? '', true);
         } else {
             $selectedDomains = GeneralUtility::trimExplode(',', $params['fieldValue'], true);
         }
@@ -100,7 +99,7 @@ class Configuration
 
             for ($i = 0; $i < $numberOfDomains; $i++) {
                 $configKey = $params['fieldName'] . '_' . $i;
-                $value = $this->config[$configKey] ?? '';
+                $value = $config[$configKey] ?? '';
                 if (!empty($value)) {
                     $selectedDomains[] = $value;
                 }
