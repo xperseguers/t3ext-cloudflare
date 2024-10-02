@@ -30,6 +30,10 @@ body {
     font-family: 'Open Sans', Helvetica, Arial, sans-serif;
 }
 
+.module-body {
+    padding: 0 !important;
+}
+
 h2 {
     padding-top: 0.73333rem;
     color: #7c7c7c;

@@ -21,7 +21,6 @@ use Causal\Cloudflare\Traits\ConfiguredDomainsTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
-use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\JsonResponse;
@@ -123,6 +122,7 @@ class DashboardModuleController extends ActionController
         ]);
 
         if ($typo3Version < 12) {
+            $moduleTemplate->getDocHeaderComponent()->disable();
             $moduleTemplate->setContent($view->render());
             return $this->htmlResponse($moduleTemplate->renderContent());
         }
@@ -453,6 +453,6 @@ GRAPHQL;
      */
     protected function sL(string $key, ?array $arguments = null): string
     {
-        return LocalizationUtility::translate($key, 'cloudflare', $arguments);
+        return LocalizationUtility::translate($key, 'cloudflare', $arguments) ?? $key;
     }
 }
