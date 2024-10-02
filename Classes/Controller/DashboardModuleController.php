@@ -88,12 +88,11 @@ class DashboardModuleController extends ActionController
 
         // Load CSS and JavaScript
         $this->pageRenderer->addCssFile('EXT:cloudflare/Resources/Public/Css/dashboard.css');
-        /**
-         * <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/amcharts/amcharts.js')}"></script>
-         * <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/amcharts/serial.js')}"></script>
-         * <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/amcharts/pie.js')}"></script>
-         * <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/amcharts/themes/light.js')}"></script>
-         */
+
+        $this->pageRenderer->addJsFile('https://cdn.amcharts.com/lib/5/index.js');
+        $this->pageRenderer->addJsFile('https://cdn.amcharts.com/lib/5/xy.js');
+        $this->pageRenderer->addJsFile('https://cdn.amcharts.com/lib/5/themes/Animated.js');
+        $this->pageRenderer->addJsFile('https://cdn.amcharts.com/lib/5/themes/locales/fr_FR.js');
 
         if ($typo3Version >= 12) {
             $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
