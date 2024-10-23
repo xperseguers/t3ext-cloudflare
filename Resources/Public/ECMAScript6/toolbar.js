@@ -24,7 +24,7 @@ class Toolbar {
         this.selectors = {
             containerSelector: '#causal-cloudflare-backend-toolbaritems-cloudflaretoolbaritem',
             menuContainerSelector: '.dropdown-menu',
-            menuItemSelector: '.dropdown-menu ul.dropdown-list div.dropdown-item',
+            menuItemSelector: '.dropdown-menu ul.dropdown-list .dropdown-item',
             toolbarIconSelector: '.dropdown-toggle span.t3js-icon',
             counterSelector: '#tx-cloudflare-counter'
         };
