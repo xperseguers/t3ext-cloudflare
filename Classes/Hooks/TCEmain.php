@@ -140,7 +140,7 @@ class TCEmain
      *
      * @param AbstractUserAuthentication|null $beUser
      */
-    protected function clearCloudflareCache(AbstractUserAuthentication $beUser = null): void
+    protected function clearCloudflareCache(?AbstractUserAuthentication $beUser = null): void
     {
         $domains = $this->getDomains();
 
@@ -197,7 +197,7 @@ class TCEmain
      * @param string $url
      */
     protected function purgeIndividualFileByUrl(
-        AbstractUserAuthentication $beUser = null,
+        ?AbstractUserAuthentication $beUser = null,
         string $url
     ): void
     {
@@ -253,7 +253,7 @@ class TCEmain
      * @param string $cacheTag
      */
     protected function purgeIndividualFileByCacheTag(
-        AbstractUserAuthentication $beUser = null,
+        ?AbstractUserAuthentication $beUser = null,
         string $cacheTag
     ): void
     {
