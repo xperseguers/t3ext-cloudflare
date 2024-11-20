@@ -198,7 +198,7 @@ class TCEmain
      */
     protected function purgeIndividualFileByUrl(
         ?AbstractUserAuthentication $beUser = null,
-        string $url
+        string $url = ''
     ): void
     {
         $domains = $this->getDomains();
@@ -254,7 +254,7 @@ class TCEmain
      */
     protected function purgeIndividualFileByCacheTag(
         ?AbstractUserAuthentication $beUser = null,
-        string $cacheTag
+        string $cacheTag = ''
     ): void
     {
         $domains = $this->getDomains();
