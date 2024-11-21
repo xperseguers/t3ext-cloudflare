@@ -29,7 +29,7 @@ trait ConfiguredDomainsTrait
     {
         $config = $this->cloudflareService->getConfiguration();
 
-        if ((new Typo3Version())->getMajorVersion() >= 13) {
+        if ((new Typo3Version())->getMajorVersion() >= 12) {
             $domains = [];
             $numberOfDomains = (int)($config['domains_count'] ?? 0);
             for ($i = 0; $i < $numberOfDomains; $i++) {
