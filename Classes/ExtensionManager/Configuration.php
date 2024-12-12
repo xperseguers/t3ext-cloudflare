@@ -17,7 +17,6 @@ declare(strict_types=1);
 namespace Causal\Cloudflare\ExtensionManager;
 
 use Causal\Cloudflare\Services\CloudflareService;
-use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -88,12 +87,12 @@ class Configuration
 
         $numberOfDomains = count($domains);
 
-        // TODO: Candidate for backporting to TYPO3 v11 and v12 and drop JS trick?
-        if ($typo3Version >= 13) {
+        // TODO: Candidate for backporting to TYPO3 v11 and drop JS trick?
+        if ($typo3Version >= 12) {
             // The configuration is stored in various fields named domains_0, domains_1, etc.
-            // as the trick we used up to TYPO3 v12 with virtual fields and a JavaScript to
+            // as the trick we used up to TYPO3 v11 with virtual fields and a JavaScript to
             // bring the values back to the original field is not possible anymore with
-            // TYPO3 v13.
+            // TYPO3 v12.
             $domainsCountName = $params['fieldName'] . '_count';
             $out[] = '<input type="hidden" name="' . $domainsCountName . '" value="' . $numberOfDomains . '" />';
 
@@ -127,7 +126,7 @@ class Configuration
             $out[] = '<td style="width:20px">';
 
             // Virtual checkbox field for TYPO3 v12 and below
-            $checkboxName = $typo3Version >= 13
+            $checkboxName = $typo3Version >= 12
                 ? ' name="' . $params['fieldName'] . '_' . $i . '"'
                 : '';
 
@@ -144,15 +143,10 @@ class Configuration
             $out[] = '</table>';
         }
 
-        if ($typo3Version < 13) {
+        if ($typo3Version < 12) {
             $fieldId = str_replace(['[', ']'], '_', $params['fieldName']);
 
-            if ($typo3Version >= 12) {
-                $nonce = GeneralUtility::getContainer()->get(RequestId::class)->nonce->consume();
-                $out[] = '<script nonce="' . $nonce . '">';
-            } else {
-                $out[] = '<script>';
-            }
+            $out[] = '<script>';
             $out[] = <<<JS
 function toggleCloudflareDomains() {
     var domains = new Array();
