@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="en" datatype="plaintext" original="messages" date="2014-12-30T10:37:08Z" product-name="cloudflare" target-language="da">
+    <header/>
+    <body>
+      <trans-unit id="toolbarItem" approved="yes">
+        <source>Cloudflare</source>
+        <target state="final">Cloudflare</target>
+      </trans-unit>
+      <trans-unit id="no_domains" approved="yes">
+        <source>No domains configured for Cloudflare.</source>
+        <target state="final">Ingen domæner konfigureret til Cloudflare.</target>
+      </trans-unit>
+      <trans-unit id="toggle_development" approved="yes">
+        <source>Toggle development mode</source>
+        <target state="final">Skift udviklertilstand</target>
+      </trans-unit>
+      <trans-unit id="zone_active" approved="yes">
+        <source>This zone is active</source>
+        <target state="final">Denne zone er aktiv</target>
+      </trans-unit>
+      <trans-unit id="zone_inactive" approved="yes">
+        <source>This zone is currently inactive</source>
+        <target state="final">Denne zone er i øjeblikket inaktiv</target>
+      </trans-unit>
+      <trans-unit id="zone_development" approved="yes">
+        <source>This zone is in development mode</source>
+        <target state="final">Denne zone er i udviklertilstand</target>
+      </trans-unit>
+      <trans-unit id="clear_cache" approved="yes">
+        <source>Clear Cloudflare cache</source>
+        <target state="final">Ryd Cloudflare cache</target>
+      </trans-unit>
+      <trans-unit id="clear_cache.description" approved="yes">
+        <source>Clear frontend and page-related caches on Cloudflare.</source>
+        <target state="final">Ryd frontend og side-relaterede caches på Cloudflare.</target>
+      </trans-unit>
+      <!-- dashboard -->
+      <trans-unit id="period.30" approved="yes">
+        <source>Last 30 Minutes</source>
+        <target state="final">Sidste 30 Minutter</target>
+      </trans-unit>
+      <trans-unit id="period.360" approved="yes">
+        <source>Last 6 Hours</source>
+        <target state="final">Sidste 6 timer</target>
+      </trans-unit>
+      <trans-unit id="period.720" approved="yes">
+        <source>Last 12 Hours</source>
+        <target state="final">Sidste 12 timer</target>
+      </trans-unit>
+      <trans-unit id="period.1440" approved="yes">
+        <source>Last 24 Hours</source>
+        <target state="final">Sidste 24 timer</target>
+      </trans-unit>
+      <trans-unit id="period.10080" approved="yes">
+        <source>Last Week</source>
+        <target state="final">Sidste uge</target>
+      </trans-unit>
+      <trans-unit id="period.43200" approved="yes">
+        <source>Last Month</source>
+        <target state="final">Sidste måned</target>
+      </trans-unit>
+      <trans-unit id="dashboard.requests" approved="yes">
+        <source>Requests</source>
+        <target state="final">Forespørgsler</target>
+      </trans-unit>
+      <trans-unit id="dashboard.requests.long" approved="yes">
+        <source>Requests Through Cloudflare</source>
+        <target state="final">Forespørgsler gennem Cloudflare</target>
+      </trans-unit>
+      <trans-unit id="dashboard.requests.total" approved="yes">
+        <source>Total Requests</source>
+        <target state="final">Samlet antal forespørgsler</target>
+      </trans-unit>
+      <trans-unit id="dashboard.requests.cached" approved="yes">
+        <source>Cached Requests</source>
+        <target state="final">Cache-lagrede forespørgsler</target>
+      </trans-unit>
+      <trans-unit id="dashboard.requests.uncached" approved="yes">
+        <source>Uncached Requests</source>
+        <target state="final">Ikke-cachede forespørgsler</target>
+      </trans-unit>
+      <trans-unit id="dashboard.bandwidth" approved="yes">
+        <source>Bandwidth</source>
+        <target state="final">Båndbredde</target>
+      </trans-unit>
+      <trans-unit id="dashboard.bandwidth.total" approved="yes">
+        <source>Total Bandwidth</source>
+        <target state="final">Total båndbredde</target>
+      </trans-unit>
+      <trans-unit id="dashboard.bandwidth.cached" approved="yes">
+        <source>Cached Bandwidth</source>
+        <target state="final">Cache-lagret båndbredde</target>
+      </trans-unit>
+      <trans-unit id="dashboard.bandwidth.uncached" approved="yes">
+        <source>Uncached Bandwidth</source>
+        <target state="final">Ikke-cachelagret båndbredde</target>
+      </trans-unit>
+      <trans-unit id="dashboard.uniques" approved="yes">
+        <source>Unique Visitors</source>
+        <target state="final">Unikke besøgende</target>
+      </trans-unit>
+      <trans-unit id="dashboard.uniques.total" approved="yes">
+        <source>Total Unique Visitors</source>
+        <target state="final">Samlede antal unikke besøgende</target>
+      </trans-unit>
+      <trans-unit id="dashboard.uniques.maximum" approved="yes">
+        <source>Maximum Unique Visitors</source>
+        <target state="final">Maksimum antal unikke besøgende</target>
+      </trans-unit>
+      <trans-unit id="dashboard.uniques.minimum" approved="yes">
+        <source>Minimum Unique Visitors</source>
+        <target state="final">Minimum antal unikke besøgende</target>
+      </trans-unit>
+      <trans-unit id="dashboard.threats" approved="yes">
+        <source>Threats</source>
+        <target state="final">Trusler</target>
+      </trans-unit>
+      <trans-unit id="dashboard.threats.total" approved="yes">
+        <source>Total Threats</source>
+        <target state="final">Samlede antal trusler</target>
+      </trans-unit>
+      <trans-unit id="dashboard.threats.topCountry" approved="yes">
+        <source>Top Country</source>
+        <target state="final">Top land</target>
+      </trans-unit>
+      <trans-unit id="dashboard.threats.topType" approved="yes">
+        <source>Top Threat Type</source>
+        <target state="final">Top trusselstype</target>
+      </trans-unit>
+      <trans-unit id="dashboard.threats.bic.ban.unknown" approved="yes">
+        <source>Bad Browser</source>
+        <target state="final">Dårlig browser</target>
+      </trans-unit>
+      <trans-unit id="dashboard.threats.hot.ban.unknown" approved="yes">
+        <source>Blocked hotlink</source>
+        <target state="final">Blokeret hotlink</target>
+      </trans-unit>
+      <trans-unit id="dashboard.threats.macro.ban.unknown" approved="yes">
+        <source>Bad IP</source>
+        <target state="final">Dårlig IP</target>
+      </trans-unit>
+      <trans-unit id="dashboard.threats.macro.chl.captchaFail" approved="yes">
+        <source>Human challenged</source>
+        <target state="final">Menneskelig udfordret</target>
+      </trans-unit>
+      <trans-unit id="dashboard.threats.macro.chl.jschlFail" approved="yes">
+        <source>Browser challenged</source>
+        <target state="final">Browser udfordret</target>
+      </trans-unit>
+      <trans-unit id="dashboard.threats.user.ban.ip" approved="yes">
+        <source>IP block (user)</source>
+        <target state="final">IP blokering (bruger)</target>
+      </trans-unit>
+      <trans-unit id="dashboard.performanceSecurity" approved="yes">
+        <source>Performance &amp; Security</source>
+        <target state="final">Ydeevne &amp; sikkerhed</target>
+      </trans-unit>
+      <trans-unit id="dashboard.bandwidthSaved" approved="yes">
+        <source>Bandwidth Saved</source>
+        <target state="final">Båndbredde gemt</target>
+      </trans-unit>
+      <trans-unit id="dashboard.contentType" approved="yes">
+        <source>Content Type Breakdown</source>
+        <target state="final">Opdeling af Indholdstype</target>
+      </trans-unit>
+      <trans-unit id="dashboard.ssl" approved="yes">
+        <source>Traffic Served Over SSL</source>
+        <target state="final">Trafik leveret over SSL</target>
+      </trans-unit>
+      <trans-unit id="dashboard.cached" approved="yes">
+        <source>Cached</source>
+        <target state="final">Cachet</target>
+      </trans-unit>
+      <trans-unit id="dashboard.uncached" approved="yes">
+        <source>Uncached</source>
+        <target state="final">Ikke cachet</target>
+      </trans-unit>
+      <trans-unit id="dashboard.encrypted" approved="yes">
+        <source>Encrypted</source>
+        <target state="final">Krypteret</target>
+      </trans-unit>
+      <trans-unit id="dashboard.unencrypted" approved="yes">
+        <source>Unencrypted</source>
+        <target state="final">Ukrypteret</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
