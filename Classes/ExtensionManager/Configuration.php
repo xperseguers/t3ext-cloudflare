@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -73,7 +74,7 @@ class Configuration
                 FlashMessage::class,
                 $e->getMessage(),
                 '',
-                FlashMessage::ERROR,
+                defined('TYPO3\CMS\Core\Messaging\FlashMessagey::ERROR') ? FlashMessage::ERROR : ContextualFeedbackSeverity::ERROR,
                 true
             );
             $out[] = GeneralUtility::makeInstance(FlashMessageRendererResolver::class)->resolve()->render([$flashMessage]);
