@@ -9,5 +9,5 @@
                edit-on-github-branch="master"
                edit-on-github="xperseguers/t3ext-cloudflare"
                typo3-core-preferred="stable"/>
-    <project title="Cloudflare Client" release="2.6.2" version="2.6" copyright="2012-2024"/>
+    <project title="Cloudflare Client" release="2.6.3" version="2.6" copyright="2012-2025"/>
 </guides>

@@ -36,7 +36,7 @@ Cloudflare Client
       performance
 
    :Copyright:
-      2012-2024
+      2012-2025
 
    :Author:
       Xavier Perseguers

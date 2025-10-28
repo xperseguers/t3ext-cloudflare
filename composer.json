@@ -28,7 +28,7 @@
   ],
   "license": "GPL-3.0-or-later",
   "require": {
-    "php": ">= 7.4.0, <= 8.4.99",
+    "php": ">= 7.4.0, <= 8.5.99",
     "ext-curl": "*",
     "typo3/cms-core": "^11 || ^12 || ^13"
   },
