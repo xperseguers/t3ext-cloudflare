@@ -185,11 +185,11 @@ class DashboardController extends ActionController
     /**
      * Returns an AJAX response.
      *
-     * @param array $response
+     * @param array|null $response
      * @param bool $wrapForIframe see http://cmlenz.github.io/jquery-iframe-transport/#section-13
      * return void
      */
-    protected function returnAjax(array $response = null, $wrapForIframe = false)
+    protected function returnAjax(?array $response = null, bool $wrapForIframe = false): void
     {
         $payload = json_encode($response);
         if (!$wrapForIframe) {
