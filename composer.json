@@ -30,7 +30,7 @@
   "require": {
     "php": ">= 7.4.0, <= 8.5.99",
     "ext-curl": "*",
-    "typo3/cms-core": "^11 || ^12 || ^13"
+    "typo3/cms-core": "^11 || ^12 || ^13 || 14.*.*@dev"
   },
   "autoload": {
     "psr-4": {
@@ -40,6 +40,7 @@
   "extra": {
     "branch-alias": {
       "dev-master": "2.6.x-dev",
+      "dev-features/TYPO3v14": "2.7.x-dev",
       "dev-typo3/v11": "2.5.x-dev",
       "dev-typo3/v8": "2.3.x-dev"
     },
