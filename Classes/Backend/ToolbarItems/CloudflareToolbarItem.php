@@ -250,7 +250,11 @@ class CloudflareToolbarItem implements ToolbarItemInterface
         if ($iconFactory === null) {
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         }
-        $icon = $iconFactory->getIcon($iconName, Icon::SIZE_SMALL)->render($alternativeMarkupIdentifier);
+        $typo3Version = (new Typo3Version())->getMajorVersion();
+        $iconSize = $typo3Version >= 13
+            ? \TYPO3\CMS\Core\Imaging\IconSize::SMALL
+            : \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL;
+        $icon = $iconFactory->getIcon($iconName, $iconSize)->render($alternativeMarkupIdentifier);
         if (strpos($icon, '<img ') !== false) {
             $icon = str_replace('<img ', '<img title="' . htmlspecialchars($options['title']) . '" ', $icon);
         }
