@@ -186,7 +186,11 @@ class CloudflareService implements SingletonInterface
         if (!($result = curl_exec($ch))) {
             trigger_error(curl_error($ch));
         }
-        curl_close($ch);
+        if (PHP_VERSION_ID >= 80000) {
+            unset($ch);
+        } else {
+            curl_close($ch);
+        }
 
         return json_decode($result, true) ?? [];
     }
