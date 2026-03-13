@@ -74,7 +74,9 @@ class Configuration
                 FlashMessage::class,
                 $e->getMessage(),
                 '',
-                defined('TYPO3\CMS\Core\Messaging\FlashMessagey::ERROR') ? FlashMessage::ERROR : ContextualFeedbackSeverity::ERROR,
+                $typo3Version >= 12
+                     ? ContextualFeedbackSeverity::ERROR
+                     : FlashMessage::ERROR,
                 true
             );
             $out[] = GeneralUtility::makeInstance(FlashMessageRendererResolver::class)->resolve()->render([$flashMessage]);
