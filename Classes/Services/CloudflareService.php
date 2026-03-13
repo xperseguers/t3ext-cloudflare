@@ -192,6 +192,6 @@ class CloudflareService implements SingletonInterface
             curl_close($ch);
         }
 
-        return json_decode($result, true) ?? [];
+        return json_decode($result ?: '', true) ?? [];
     }
 }
