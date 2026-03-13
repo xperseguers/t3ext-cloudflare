@@ -20,6 +20,7 @@ use Causal\Cloudflare\Services\CloudflareService;
 use Causal\Cloudflare\Traits\ConfiguredDomainsTrait;
 use TYPO3\CMS\Backend\Backend\Event\ModifyClearCacheActionsEvent;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ClearCacheEventListener
@@ -54,14 +55,25 @@ class ClearCacheEventListener
             /** @var UriBuilder $uriBuilder */
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $ajaxRoute = (string)$uriBuilder->buildUriFromRoute('ajax_cloudflare_purge');
-            $clearCloudflare = [
-                'id' => 'cloudflare',
-                'title' => 'LLL:EXT:cloudflare/Resources/Private/Language/locallang.xlf:clear_cache',
-                'description' => 'LLL:EXT:cloudflare/Resources/Private/Language/locallang.xlf:clear_cache.description',
-                'href' => $ajaxRoute,
-                'severity' => 'success',
-                'iconIdentifier' => 'actions-system-cache-clear-impact-low',
-            ];
+            if ((new Typo3Version())->getMajorVersion() >= 14) {
+                $clearCloudflare = [
+                    'id' => 'cloudflare',
+                    'title' => 'LLL:EXT:cloudflare/Resources/Private/Language/locallang.xlf:clear_cache',
+                    'description' => 'LLL:EXT:cloudflare/Resources/Private/Language/locallang.xlf:clear_cache.description',
+                    'endpoint' => $ajaxRoute,
+                    'severity' => 'success',
+                    'iconIdentifier' => 'actions-system-cache-clear-impact-low',
+                ];
+            } else {
+                $clearCloudflare = [
+                    'id' => 'cloudflare',
+                    'title' => 'LLL:EXT:cloudflare/Resources/Private/Language/locallang.xlf:clear_cache',
+                    'description' => 'LLL:EXT:cloudflare/Resources/Private/Language/locallang.xlf:clear_cache.description',
+                    'href' => $ajaxRoute,
+                    'severity' => 'success',
+                    'iconIdentifier' => 'actions-system-cache-clear-impact-low',
+                ];
+            }
 
             $posClearAll = array_search('all', $cacheActionIdentifiers);
             if ($posClearAll !== false) {
