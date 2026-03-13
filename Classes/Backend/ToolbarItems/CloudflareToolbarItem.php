@@ -354,7 +354,17 @@ class CloudflareToolbarItem implements ToolbarItemInterface
         $tceMain = GeneralUtility::makeInstance(\Causal\Cloudflare\Hooks\TCEmain::class);
         $tceMain->clearCache();
 
-        return new HtmlResponse('');
+        if ((new Typo3Version())->getMajorVersion() < 14) {
+            return new HtmlResponse('');
+        }
+
+        $languageService = $this->getLanguageService();
+        // TODO: Provide something more meaningful as response, e.g., explicitly mentioning Cloudflare?
+        return new JsonResponse([
+            'success' => true,
+            'title' => $languageService->sL('core.cache:notification.group.pages.success.title'),
+            'message' => $languageService->sL('core.cache:notification.group.pages.success.message'),
+        ]);
     }
 
     /**********************
