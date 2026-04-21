@@ -30,7 +30,7 @@
   "require": {
     "php": ">= 7.4.0, <= 8.5.99",
     "ext-curl": "*",
-    "typo3/cms-core": "^11 || ^12 || ^13 || 14.*.*@dev"
+    "typo3/cms-core": "^11 || ^12 || ^13 || ^14"
   },
   "autoload": {
     "psr-4": {
