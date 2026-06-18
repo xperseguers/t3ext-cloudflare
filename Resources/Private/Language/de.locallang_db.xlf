@@ -5,7 +5,7 @@
     <body>
       <trans-unit id="settings.useBearerAuthentication">
         <source>Use Bearer Authentication (recommended): Use a Token for Bearer Authentication (RFC 6750) and API key instead of the standard e-mail address and API key.</source>
-        <target state="needs-translation">Use Bearer Authentication (recommended): Use a Token for Bearer Authentication (RFC 6750) and API key instead of the standard e-mail address and API key.</target>
+        <target state="translated">Inhaberauthentifizierung verwenden (empfohlen): Verwenden Sie einen Schlüssel (Token) für Inhaberauthentifizierung (RFC 6750) mit API-Schlüssel anstelle der Standard E-Mail-Adresse mit API-Schlüssel.</target>
       </trans-unit>
       <trans-unit id="settings.email" approved="yes">
         <source>Email: The e-mail address associated with the API key.</source>
@@ -21,7 +21,7 @@
       </trans-unit>
       <trans-unit id="settings.enableAnalyticsModule">
         <source>Enable Analytics Backend module: Tick this checkbox if you need the Analytics module in Backend (this requires proper Token permissions if using Bearer Authentication).</source>
-        <target state="needs-translation">Enable Analytics Backend module: Tick this checkbox if you need the Analytics module in Backend (this requires proper Token permissions if using Bearer Authentication).</target>
+        <target state="translated">Analytics Backend Modul aktivieren: Aktivieren Sie dieses Kontrollkästchen, wenn Sie das Analytics-Modul im Backend benötigen (hierfür sind korrekte Token-Berechtigungen nötig, wenn Inhaberauthentifizierung genutzt wird).</target>
       </trans-unit>
       <trans-unit id="settings.enableOriginatingIPs" approved="yes">
         <source>Originating IPs: Tick this checkbox in case you cannot restore the originating IPs at the webserver level.</source>
