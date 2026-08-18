@@ -5,184 +5,184 @@
     <body>
       <trans-unit id="toolbarItem">
         <source>Cloudflare</source>
-        <target state="needs-translation">Cloudflare</target>
+        <target state="translated">Cloudflare</target>
       </trans-unit>
       <trans-unit id="no_domains">
         <source>No domains configured for Cloudflare.</source>
-        <target state="needs-translation">No domains configured for Cloudflare.</target>
+        <target state="translated">Nincs a Cloudflare-hez konfigurált tartomány.</target>
       </trans-unit>
       <trans-unit id="toggle_development">
         <source>Toggle development mode</source>
-        <target state="needs-translation">Toggle development mode</target>
+        <target state="translated">Fejlesztési mód váltása</target>
       </trans-unit>
       <trans-unit id="zone_active">
         <source>This zone is active</source>
-        <target state="needs-translation">This zone is active</target>
+        <target state="translated">Ez a zóna aktív</target>
       </trans-unit>
       <trans-unit id="zone_inactive">
         <source>This zone is currently inactive</source>
-        <target state="needs-translation">This zone is currently inactive</target>
+        <target state="translated">Ez a zóna jelenleg inaktív</target>
       </trans-unit>
       <trans-unit id="zone_development">
         <source>This zone is in development mode</source>
-        <target state="needs-translation">This zone is in development mode</target>
+        <target state="translated">Ez a zóna fejlesztési módban van</target>
       </trans-unit>
       <trans-unit id="clear_cache">
         <source>Clear Cloudflare cache</source>
-        <target state="needs-translation">Clear Cloudflare cache</target>
+        <target state="translated">Cloudflare-gyorsítótár ürítése</target>
       </trans-unit>
       <trans-unit id="clear_cache.description">
         <source>Clear frontend and page-related caches on Cloudflare.</source>
-        <target state="needs-translation">Clear frontend and page-related caches on Cloudflare.</target>
+        <target state="translated">Frontend- és oldalgyorsítótárak ürítése a Cloudflare-en.</target>
       </trans-unit>
       <!-- dashboard -->
       <trans-unit id="period.30">
         <source>Last 30 Minutes</source>
-        <target state="needs-translation">Last 30 Minutes</target>
+        <target state="translated">Utolsó 30 perc</target>
       </trans-unit>
       <trans-unit id="period.360">
         <source>Last 6 Hours</source>
-        <target state="needs-translation">Last 6 Hours</target>
+        <target state="translated">Utolsó 6 óra</target>
       </trans-unit>
       <trans-unit id="period.720">
         <source>Last 12 Hours</source>
-        <target state="needs-translation">Last 12 Hours</target>
+        <target state="translated">Utolsó 12 óra</target>
       </trans-unit>
       <trans-unit id="period.1440">
         <source>Last 24 Hours</source>
-        <target state="needs-translation">Last 24 Hours</target>
+        <target state="translated">Utolsó 24 óra</target>
       </trans-unit>
       <trans-unit id="period.10080">
         <source>Last Week</source>
-        <target state="needs-translation">Last Week</target>
+        <target state="translated">Utolsó hét</target>
       </trans-unit>
       <trans-unit id="period.43200">
         <source>Last Month</source>
-        <target state="needs-translation">Last Month</target>
+        <target state="translated">Utolsó hónap</target>
       </trans-unit>
       <trans-unit id="dashboard.requests">
         <source>Requests</source>
-        <target state="needs-translation">Requests</target>
+        <target state="translated">Kérések</target>
       </trans-unit>
       <trans-unit id="dashboard.requests.long">
         <source>Requests Through Cloudflare</source>
-        <target state="needs-translation">Requests Through Cloudflare</target>
+        <target state="translated">Cloudflare-en keresztüli kérések</target>
       </trans-unit>
       <trans-unit id="dashboard.requests.total">
         <source>Total Requests</source>
-        <target state="needs-translation">Total Requests</target>
+        <target state="translated">Összes kérés</target>
       </trans-unit>
       <trans-unit id="dashboard.requests.cached">
         <source>Cached Requests</source>
-        <target state="needs-translation">Cached Requests</target>
+        <target state="translated">Gyorsítótárazott kérések</target>
       </trans-unit>
       <trans-unit id="dashboard.requests.uncached">
         <source>Uncached Requests</source>
-        <target state="needs-translation">Uncached Requests</target>
+        <target state="translated">Gyorsítótárazatlan kérések</target>
       </trans-unit>
       <trans-unit id="dashboard.bandwidth">
         <source>Bandwidth</source>
-        <target state="needs-translation">Bandwidth</target>
+        <target state="translated">Sávszélesség</target>
       </trans-unit>
       <trans-unit id="dashboard.bandwidth.total">
         <source>Total Bandwidth</source>
-        <target state="needs-translation">Total Bandwidth</target>
+        <target state="translated">Összes sávszélesség</target>
       </trans-unit>
       <trans-unit id="dashboard.bandwidth.cached">
         <source>Cached Bandwidth</source>
-        <target state="needs-translation">Cached Bandwidth</target>
+        <target state="translated">Gyorsítótárazott sávszélesség</target>
       </trans-unit>
       <trans-unit id="dashboard.bandwidth.uncached">
         <source>Uncached Bandwidth</source>
-        <target state="needs-translation">Uncached Bandwidth</target>
+        <target state="translated">Gyorsítótárazatlan sávszélesség</target>
       </trans-unit>
       <trans-unit id="dashboard.uniques">
         <source>Unique Visitors</source>
-        <target state="needs-translation">Unique Visitors</target>
+        <target state="translated">Egyedi látogatók</target>
       </trans-unit>
       <trans-unit id="dashboard.uniques.total">
         <source>Total Unique Visitors</source>
-        <target state="needs-translation">Total Unique Visitors</target>
+        <target state="translated">Összes egyedi látogató</target>
       </trans-unit>
       <trans-unit id="dashboard.uniques.maximum">
         <source>Maximum Unique Visitors</source>
-        <target state="needs-translation">Maximum Unique Visitors</target>
+        <target state="translated">Maximális egyedi látogatók</target>
       </trans-unit>
       <trans-unit id="dashboard.uniques.minimum">
         <source>Minimum Unique Visitors</source>
-        <target state="needs-translation">Minimum Unique Visitors</target>
+        <target state="translated">Minimális egyedi látogatók</target>
       </trans-unit>
       <trans-unit id="dashboard.threats">
         <source>Threats</source>
-        <target state="needs-translation">Threats</target>
+        <target state="translated">Fenyegetések</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.total">
         <source>Total Threats</source>
-        <target state="needs-translation">Total Threats</target>
+        <target state="translated">Összes fenyegetés</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.topCountry">
         <source>Top Country</source>
-        <target state="needs-translation">Top Country</target>
+        <target state="translated">Legnépszerűbb ország</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.topType">
         <source>Top Threat Type</source>
-        <target state="needs-translation">Top Threat Type</target>
+        <target state="translated">Leggyakoribb fenyegetéstípus</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.bic.ban.unknown">
         <source>Bad Browser</source>
-        <target state="needs-translation">Bad Browser</target>
+        <target state="translated">Rossz böngésző</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.hot.ban.unknown">
         <source>Blocked hotlink</source>
-        <target state="needs-translation">Blocked hotlink</target>
+        <target state="translated">Letiltott hotlink</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.macro.ban.unknown">
         <source>Bad IP</source>
-        <target state="needs-translation">Bad IP</target>
+        <target state="translated">Rossz IP</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.macro.chl.captchaFail">
         <source>Human challenged</source>
-        <target state="needs-translation">Human challenged</target>
+        <target state="translated">Emberi ellenőrzés</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.macro.chl.jschlFail">
         <source>Browser challenged</source>
-        <target state="needs-translation">Browser challenged</target>
+        <target state="translated">Böngésző-ellenőrzés</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.user.ban.ip">
         <source>IP block (user)</source>
-        <target state="needs-translation">IP block (user)</target>
+        <target state="translated">IP-blokkolás (felhasználó)</target>
       </trans-unit>
       <trans-unit id="dashboard.performanceSecurity">
         <source>Performance &amp; Security</source>
-        <target state="needs-translation">Performance &amp; Security</target>
+        <target state="translated">Teljesítmény &amp; biztonság</target>
       </trans-unit>
       <trans-unit id="dashboard.bandwidthSaved">
         <source>Bandwidth Saved</source>
-        <target state="needs-translation">Bandwidth Saved</target>
+        <target state="translated">Megtakarított sávszélesség</target>
       </trans-unit>
       <trans-unit id="dashboard.contentType">
         <source>Content Type Breakdown</source>
-        <target state="needs-translation">Content Type Breakdown</target>
+        <target state="translated">Tartalomtípus-bontás</target>
       </trans-unit>
       <trans-unit id="dashboard.ssl">
         <source>Traffic Served Over SSL</source>
-        <target state="needs-translation">Traffic Served Over SSL</target>
+        <target state="translated">SSL-en keresztül kiszolgált forgalom</target>
       </trans-unit>
       <trans-unit id="dashboard.cached">
         <source>Cached</source>
-        <target state="needs-translation">Cached</target>
+        <target state="translated">Gyorsítótárazva</target>
       </trans-unit>
       <trans-unit id="dashboard.uncached">
         <source>Uncached</source>
-        <target state="needs-translation">Uncached</target>
+        <target state="translated">Gyorsítótárazatlan</target>
       </trans-unit>
       <trans-unit id="dashboard.encrypted">
         <source>Encrypted</source>
-        <target state="needs-translation">Encrypted</target>
+        <target state="translated">Titkosított</target>
       </trans-unit>
       <trans-unit id="dashboard.unencrypted">
         <source>Unencrypted</source>
-        <target state="needs-translation">Unencrypted</target>
+        <target state="translated">Titkosítatlan</target>
       </trans-unit>
     </body>
   </file>
