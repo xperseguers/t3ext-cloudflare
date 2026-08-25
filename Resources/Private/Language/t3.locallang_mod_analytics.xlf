@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="en" datatype="plaintext" original="messages" date="2015-08-30T11:11:08Z" product-name="cloudflare" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="mlang_tabs_tab">
+        <source>Analytics</source>
+        <target>crwdns227763:0crwdne227763:0</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr">
+        <source>This module allows you to show Cloudflare's analytics.</source>
+        <target>crwdns227765:0crwdne227765:0</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tablabel">
+        <source>Cloudflare Analytics</source>
+        <target>crwdns227767:0crwdne227767:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

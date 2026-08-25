@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="en" datatype="plaintext" original="messages" date="2014-12-30T17:07:23Z" product-name="cloudflare" target-language="hu">
+    <header/>
+    <body>
+      <trans-unit id="settings.useBearerAuthentication">
+        <source>Use Bearer Authentication (recommended): Use a Token for Bearer Authentication (RFC 6750) and API key instead of the standard e-mail address and API key.</source>
+        <target state="translated">Bearer-hitelesítés használata (ajánlott): Használjon Tokent a Bearer-hitelesítéshez (RFC 6750) és API-kulcsot a szokásos e-mail cím és API-kulcs helyett.</target>
+      </trans-unit>
+      <trans-unit id="settings.email">
+        <source>Email: The e-mail address associated with the API key.</source>
+        <target state="translated">E-mail: Az API-kulcshoz tartozó e-mail cím.</target>
+      </trans-unit>
+      <trans-unit id="settings.apiKey">
+        <source>API Key: This is the API key made available on your account page (https://dash.cloudflare.com/profile)</source>
+        <target state="translated">API-kulcs: Ez az API-kulcs a fiókoldalán érhető el (https://dash.cloudflare.com/profile)</target>
+      </trans-unit>
+      <trans-unit id="settings.domains">
+        <source>Domains: Please tick the domains whose cache should be flushed on Cloudflare upon clearing all caches in TYPO3.</source>
+        <target state="translated">Tartományok: Jelölje be azokat a tartományokat, amelyek gyorsítótárát üríteni kell a Cloudflare-en, amikor a TYPO3-ban minden gyorsítótárat törölnek.</target>
+      </trans-unit>
+      <trans-unit id="settings.enableAnalyticsModule">
+        <source>Enable Analytics Backend module: Tick this checkbox if you need the Analytics module in Backend (this requires proper Token permissions if using Bearer Authentication).</source>
+        <target state="translated">Analytics Backend-modul engedélyezése: Jelölje be ezt a jelölőnégyzetet, ha szüksége van az Analytics modulra a Backendben (ehhez megfelelő Token-engedélyek szükségesek Bearer-hitelesítés esetén).</target>
+      </trans-unit>
+      <trans-unit id="settings.enableOriginatingIPs">
+        <source>Originating IPs: Tick this checkbox in case you cannot restore the originating IPs at the webserver level.</source>
+        <target state="translated">Eredeti IP-címek: Jelölje be ezt a jelölőnégyzetet, ha nem tudja visszaállítani az eredeti IP-címeket a webszerver szintjén.</target>
+      </trans-unit>
+      <trans-unit id="settings.enablePurgeSingleFile">
+        <source>Purge individual files by URL: Granularly remove individual files from Cloudflare's cache by specifying the URL.</source>
+        <target state="translated">Egyes fájlok ürítése URL alapján: Az egyes fájlok szelektív eltávolítása a Cloudflare gyorsítótárából az URL megadásával.</target>
+      </trans-unit>
+      <trans-unit id="settings.enablePurgeByTags">
+        <source>Purge cache by Cache-Tag: Granularly remove individual files from Cloudflare's cache by specifying the associated Cache-Tag. BEWARE: This option requires an Enterprise account.</source>
+        <target state="translated">Gyorsítótár ürítése Cache-Tag alapján: Az egyes fájlok szelektív eltávolítása a Cloudflare gyorsítótárából a hozzá tartozó Cache-Tag megadásával. FIGYELEM: Ehhez a beállításhoz Enterprise-fiók szükséges.</target>
+      </trans-unit>
+      <trans-unit id="settings.labels.emptyList">
+        <source>Empty list fetched from Cloudflare, please check your credentials.</source>
+        <target state="translated">A Cloudflare üres listát adott vissza, ellenőrizze a bejelentkezési adatait.</target>
+      </trans-unit>
+      <trans-unit id="settings.labels.zoneIdentifiers">
+        <source>Cloudflare API Zone Identifiers</source>
+        <target state="translated">Cloudflare API-zónaazonosítók</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

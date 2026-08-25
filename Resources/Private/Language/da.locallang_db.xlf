@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="en" datatype="plaintext" original="messages" date="2014-12-30T17:07:23Z" product-name="cloudflare" target-language="da">
+    <header/>
+    <body>
+      <trans-unit id="settings.useBearerAuthentication" approved="yes">
+        <source>Use Bearer Authentication (recommended): Use a Token for Bearer Authentication (RFC 6750) and API key instead of the standard e-mail address and API key.</source>
+        <target state="final">Brug Bearer Authentication (anbefalet): Brug en Token til Bearer Authentication (RFC 6750) og API-nøgle i stedet for standard e-mail-adresse og API-nøgle.</target>
+      </trans-unit>
+      <trans-unit id="settings.email" approved="yes">
+        <source>Email: The e-mail address associated with the API key.</source>
+        <target state="final">E-mail: E-mailadressen i forbindelse med API-nøglen.</target>
+      </trans-unit>
+      <trans-unit id="settings.apiKey" approved="yes">
+        <source>API Key: This is the API key made available on your account page (https://dash.cloudflare.com/profile)</source>
+        <target state="final">API-nøgle: Dette er den API-nøgle, der gøres tilgængelig på din kontoside (https://dash.cloudflare.com/profile)</target>
+      </trans-unit>
+      <trans-unit id="settings.domains" approved="yes">
+        <source>Domains: Please tick the domains whose cache should be flushed on Cloudflare upon clearing all caches in TYPO3.</source>
+        <target state="final">Domæner: Sæt kryds i de domæner, hvis cache skal ryddes på Cloudflare ved sletning af alle caches i TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="settings.enableAnalyticsModule" approved="yes">
+        <source>Enable Analytics Backend module: Tick this checkbox if you need the Analytics module in Backend (this requires proper Token permissions if using Bearer Authentication).</source>
+        <target state="final">Aktiv+er Analytics Backend modulet: Markér dette afkrydsningsfelt, hvis du har brug for Analytics modulet i Backend (dette kræver korrekte token tilladelser hvis du bruger Bearer Authentication).</target>
+      </trans-unit>
+      <trans-unit id="settings.enableOriginatingIPs" approved="yes">
+        <source>Originating IPs: Tick this checkbox in case you cannot restore the originating IPs at the webserver level.</source>
+        <target state="final">Oprindelige IP'er: Markér dette afkrydsningsfelt, hvis du ikke kan gendanne de oprindelige IP'er på webserverniveau.</target>
+      </trans-unit>
+      <trans-unit id="settings.enablePurgeSingleFile" approved="yes">
+        <source>Purge individual files by URL: Granularly remove individual files from Cloudflare's cache by specifying the URL.</source>
+        <target state="final">Ryd individuelle filer ved hjælp af URL: Fjern detaljeret individuelle filer fra Cloudflare's cache ved at angive URL.</target>
+      </trans-unit>
+      <trans-unit id="settings.enablePurgeByTags" approved="yes">
+        <source>Purge cache by Cache-Tag: Granularly remove individual files from Cloudflare's cache by specifying the associated Cache-Tag. BEWARE: This option requires an Enterprise account.</source>
+        <target state="final">Ryd cache via Cache-Tag: Fjern granulerede individuelle filer fra Cloudflare's cache ved at angive den tilknyttede Cache-Tag. PAS PÅ: Denne indstilling kræver en Enterprise-konto.</target>
+      </trans-unit>
+      <trans-unit id="settings.labels.emptyList" approved="yes">
+        <source>Empty list fetched from Cloudflare, please check your credentials.</source>
+        <target state="final">Tom liste hentet fra Cloudflare, tjek venligst dine legitimationsoplysninger.</target>
+      </trans-unit>
+      <trans-unit id="settings.labels.zoneIdentifiers" approved="yes">
+        <source>Cloudflare API Zone Identifiers</source>
+        <target state="final">Cloudflare API Zone identifikatorer</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
