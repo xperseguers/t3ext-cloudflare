@@ -44,7 +44,11 @@
       "dev-typo3/v8": "2.3.x-dev"
     },
     "typo3/cms": {
-      "extension-key": "cloudflare"
+      "extension-key": "cloudflare",
+      "version": "2.7.0",
+      "Package": {
+        "providesPackages": {}
+      }
     }
   }
 }
