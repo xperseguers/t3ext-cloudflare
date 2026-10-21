@@ -5,184 +5,184 @@
     <body>
       <trans-unit id="toolbarItem">
         <source>Cloudflare</source>
-        <target state="needs-translation">Cloudflare</target>
+        <target state="translated">Cloudflare</target>
       </trans-unit>
       <trans-unit id="no_domains">
         <source>No domains configured for Cloudflare.</source>
-        <target state="needs-translation">No domains configured for Cloudflare.</target>
+        <target state="translated">Pro Cloudflare nejsou nakonfigurovány žádné domény.</target>
       </trans-unit>
       <trans-unit id="toggle_development">
         <source>Toggle development mode</source>
-        <target state="needs-translation">Toggle development mode</target>
+        <target state="translated">Přepnout vývojový režim</target>
       </trans-unit>
       <trans-unit id="zone_active">
         <source>This zone is active</source>
-        <target state="needs-translation">This zone is active</target>
+        <target state="translated">Tato zóna je aktivní</target>
       </trans-unit>
       <trans-unit id="zone_inactive">
         <source>This zone is currently inactive</source>
-        <target state="needs-translation">This zone is currently inactive</target>
+        <target state="translated">Tato zóna je momentálně neaktivní</target>
       </trans-unit>
       <trans-unit id="zone_development">
         <source>This zone is in development mode</source>
-        <target state="needs-translation">This zone is in development mode</target>
+        <target state="translated">Tato zóna je ve vývojovém režimu</target>
       </trans-unit>
       <trans-unit id="clear_cache">
         <source>Clear Cloudflare cache</source>
-        <target state="needs-translation">Clear Cloudflare cache</target>
+        <target state="translated">Vymazat cache Cloudflare</target>
       </trans-unit>
       <trans-unit id="clear_cache.description">
         <source>Clear frontend and page-related caches on Cloudflare.</source>
-        <target state="needs-translation">Clear frontend and page-related caches on Cloudflare.</target>
+        <target state="translated">Vymaže frontendovou cache a cache související se stránkami na Cloudflare.</target>
       </trans-unit>
       <!-- dashboard -->
       <trans-unit id="period.30">
         <source>Last 30 Minutes</source>
-        <target state="needs-translation">Last 30 Minutes</target>
+        <target state="translated">Posledních 30 minut</target>
       </trans-unit>
       <trans-unit id="period.360">
         <source>Last 6 Hours</source>
-        <target state="needs-translation">Last 6 Hours</target>
+        <target state="translated">Posledních 6 hodin</target>
       </trans-unit>
       <trans-unit id="period.720">
         <source>Last 12 Hours</source>
-        <target state="needs-translation">Last 12 Hours</target>
+        <target state="translated">Posledních 12 hodin</target>
       </trans-unit>
       <trans-unit id="period.1440">
         <source>Last 24 Hours</source>
-        <target state="needs-translation">Last 24 Hours</target>
+        <target state="translated">Posledních 24 hodin</target>
       </trans-unit>
       <trans-unit id="period.10080">
         <source>Last Week</source>
-        <target state="needs-translation">Last Week</target>
+        <target state="translated">Poslední týden</target>
       </trans-unit>
       <trans-unit id="period.43200">
         <source>Last Month</source>
-        <target state="needs-translation">Last Month</target>
+        <target state="translated">Poslední měsíc</target>
       </trans-unit>
       <trans-unit id="dashboard.requests">
         <source>Requests</source>
-        <target state="needs-translation">Requests</target>
+        <target state="translated">Požadavky</target>
       </trans-unit>
       <trans-unit id="dashboard.requests.long">
         <source>Requests Through Cloudflare</source>
-        <target state="needs-translation">Requests Through Cloudflare</target>
+        <target state="translated">Požadavky přes Cloudflare</target>
       </trans-unit>
       <trans-unit id="dashboard.requests.total">
         <source>Total Requests</source>
-        <target state="needs-translation">Total Requests</target>
+        <target state="translated">Celkem požadavků</target>
       </trans-unit>
       <trans-unit id="dashboard.requests.cached">
         <source>Cached Requests</source>
-        <target state="needs-translation">Cached Requests</target>
+        <target state="translated">Požadavky z cache</target>
       </trans-unit>
       <trans-unit id="dashboard.requests.uncached">
         <source>Uncached Requests</source>
-        <target state="needs-translation">Uncached Requests</target>
+        <target state="translated">Požadavky mimo cache</target>
       </trans-unit>
       <trans-unit id="dashboard.bandwidth">
         <source>Bandwidth</source>
-        <target state="needs-translation">Bandwidth</target>
+        <target state="translated">Šířka pásma</target>
       </trans-unit>
       <trans-unit id="dashboard.bandwidth.total">
         <source>Total Bandwidth</source>
-        <target state="needs-translation">Total Bandwidth</target>
+        <target state="translated">Celková šířka pásma</target>
       </trans-unit>
       <trans-unit id="dashboard.bandwidth.cached">
         <source>Cached Bandwidth</source>
-        <target state="needs-translation">Cached Bandwidth</target>
+        <target state="translated">Šířka pásma z cache</target>
       </trans-unit>
       <trans-unit id="dashboard.bandwidth.uncached">
         <source>Uncached Bandwidth</source>
-        <target state="needs-translation">Uncached Bandwidth</target>
+        <target state="translated">Šířka pásma mimo cache</target>
       </trans-unit>
       <trans-unit id="dashboard.uniques">
         <source>Unique Visitors</source>
-        <target state="needs-translation">Unique Visitors</target>
+        <target state="translated">Unikátní návštěvníci</target>
       </trans-unit>
       <trans-unit id="dashboard.uniques.total">
         <source>Total Unique Visitors</source>
-        <target state="needs-translation">Total Unique Visitors</target>
+        <target state="translated">Celkem unikátních návštěvníků</target>
       </trans-unit>
       <trans-unit id="dashboard.uniques.maximum">
         <source>Maximum Unique Visitors</source>
-        <target state="needs-translation">Maximum Unique Visitors</target>
+        <target state="translated">Maximum unikátních návštěvníků</target>
       </trans-unit>
       <trans-unit id="dashboard.uniques.minimum">
         <source>Minimum Unique Visitors</source>
-        <target state="needs-translation">Minimum Unique Visitors</target>
+        <target state="translated">Minimum unikátních návštěvníků</target>
       </trans-unit>
       <trans-unit id="dashboard.threats">
         <source>Threats</source>
-        <target state="needs-translation">Threats</target>
+        <target state="translated">Hrozby</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.total">
         <source>Total Threats</source>
-        <target state="needs-translation">Total Threats</target>
+        <target state="translated">Celkem hrozeb</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.topCountry">
         <source>Top Country</source>
-        <target state="needs-translation">Top Country</target>
+        <target state="translated">Nejčastější země</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.topType">
         <source>Top Threat Type</source>
-        <target state="needs-translation">Top Threat Type</target>
+        <target state="translated">Nejčastější typ hrozby</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.bic.ban.unknown">
         <source>Bad Browser</source>
-        <target state="needs-translation">Bad Browser</target>
+        <target state="translated">Špatný prohlížeč</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.hot.ban.unknown">
         <source>Blocked hotlink</source>
-        <target state="needs-translation">Blocked hotlink</target>
+        <target state="translated">Zablokovaný hotlink</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.macro.ban.unknown">
         <source>Bad IP</source>
-        <target state="needs-translation">Bad IP</target>
+        <target state="translated">Špatná IP adresa</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.macro.chl.captchaFail">
         <source>Human challenged</source>
-        <target state="needs-translation">Human challenged</target>
+        <target state="translated">Ověření člověka</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.macro.chl.jschlFail">
         <source>Browser challenged</source>
-        <target state="needs-translation">Browser challenged</target>
+        <target state="translated">Ověření prohlížeče</target>
       </trans-unit>
       <trans-unit id="dashboard.threats.user.ban.ip">
         <source>IP block (user)</source>
-        <target state="needs-translation">IP block (user)</target>
+        <target state="translated">Blokace IP (uživatel)</target>
       </trans-unit>
       <trans-unit id="dashboard.performanceSecurity">
         <source>Performance &amp; Security</source>
-        <target state="needs-translation">Performance &amp; Security</target>
+        <target state="translated">Výkon a zabezpečení</target>
       </trans-unit>
       <trans-unit id="dashboard.bandwidthSaved">
         <source>Bandwidth Saved</source>
-        <target state="needs-translation">Bandwidth Saved</target>
+        <target state="translated">Ušetřená šířka pásma</target>
       </trans-unit>
       <trans-unit id="dashboard.contentType">
         <source>Content Type Breakdown</source>
-        <target state="needs-translation">Content Type Breakdown</target>
+        <target state="translated">Rozpis podle typu obsahu</target>
       </trans-unit>
       <trans-unit id="dashboard.ssl">
         <source>Traffic Served Over SSL</source>
-        <target state="needs-translation">Traffic Served Over SSL</target>
+        <target state="translated">Provoz obsluhovaný přes SSL</target>
       </trans-unit>
       <trans-unit id="dashboard.cached">
         <source>Cached</source>
-        <target state="needs-translation">Cached</target>
+        <target state="translated">V cache</target>
       </trans-unit>
       <trans-unit id="dashboard.uncached">
         <source>Uncached</source>
-        <target state="needs-translation">Uncached</target>
+        <target state="translated">Mimo cache</target>
       </trans-unit>
       <trans-unit id="dashboard.encrypted">
         <source>Encrypted</source>
-        <target state="needs-translation">Encrypted</target>
+        <target state="translated">Šifrováno</target>
       </trans-unit>
       <trans-unit id="dashboard.unencrypted">
         <source>Unencrypted</source>
-        <target state="needs-translation">Unencrypted</target>
+        <target state="translated">Nešifrováno</target>
       </trans-unit>
     </body>
   </file>
