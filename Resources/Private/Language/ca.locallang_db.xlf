@@ -5,43 +5,43 @@
     <body>
       <trans-unit id="settings.useBearerAuthentication">
         <source>Use Bearer Authentication (recommended): Use a Token for Bearer Authentication (RFC 6750) and API key instead of the standard e-mail address and API key.</source>
-        <target state="needs-translation">Use Bearer Authentication (recommended): Use a Token for Bearer Authentication (RFC 6750) and API key instead of the standard e-mail address and API key.</target>
+        <target state="translated">Utilitza l'autenticació Bearer (recomanat): Utilitzeu un testimoni per a l'autenticació Bearer (RFC 6750) i la clau d'API en lloc de l'adreça electrònica i la clau d'API estàndard.</target>
       </trans-unit>
       <trans-unit id="settings.email">
         <source>Email: The e-mail address associated with the API key.</source>
-        <target state="needs-translation">Email: The e-mail address associated with the API key.</target>
+        <target state="translated">Correu electrònic: L'adreça electrònica associada a la clau d'API.</target>
       </trans-unit>
       <trans-unit id="settings.apiKey">
         <source>API Key: This is the API key made available on your account page (https://dash.cloudflare.com/profile)</source>
-        <target state="needs-translation">API Key: This is the API key made available on your account page (https://dash.cloudflare.com/profile)</target>
+        <target state="translated">Clau d'API: Aquesta és la clau d'API disponible a la pàgina del vostre compte (https://dash.cloudflare.com/profile)</target>
       </trans-unit>
       <trans-unit id="settings.domains">
         <source>Domains: Please tick the domains whose cache should be flushed on Cloudflare upon clearing all caches in TYPO3.</source>
-        <target state="needs-translation">Domains: Please tick the domains whose cache should be flushed on Cloudflare upon clearing all caches in TYPO3.</target>
+        <target state="translated">Dominis: Marqueu els dominis dels quals s'ha de buidar la memòria cau a Cloudflare quan es buidin totes les memòries cau a TYPO3.</target>
       </trans-unit>
       <trans-unit id="settings.enableAnalyticsModule">
         <source>Enable Analytics Backend module: Tick this checkbox if you need the Analytics module in Backend (this requires proper Token permissions if using Bearer Authentication).</source>
-        <target state="needs-translation">Enable Analytics Backend module: Tick this checkbox if you need the Analytics module in Backend (this requires proper Token permissions if using Bearer Authentication).</target>
+        <target state="translated">Activa el mòdul Analytics del backend: Marqueu aquesta casella si necessiteu el mòdul Analytics al backend (això requereix els permisos adequats del testimoni si utilitzeu l'autenticació Bearer).</target>
       </trans-unit>
       <trans-unit id="settings.enableOriginatingIPs">
         <source>Originating IPs: Tick this checkbox in case you cannot restore the originating IPs at the webserver level.</source>
-        <target state="needs-translation">Originating IPs: Tick this checkbox in case you cannot restore the originating IPs at the webserver level.</target>
+        <target state="translated">IP d'origen: Marqueu aquesta casella si no podeu restaurar les IP d'origen a nivell de servidor web.</target>
       </trans-unit>
       <trans-unit id="settings.enablePurgeSingleFile">
         <source>Purge individual files by URL: Granularly remove individual files from Cloudflare's cache by specifying the URL.</source>
-        <target state="needs-translation">Purge individual files by URL: Granularly remove individual files from Cloudflare's cache by specifying the URL.</target>
+        <target state="translated">Purga fitxers individuals per URL: Elimineu de manera granular fitxers individuals de la memòria cau de Cloudflare especificant l'URL.</target>
       </trans-unit>
       <trans-unit id="settings.enablePurgeByTags">
         <source>Purge cache by Cache-Tag: Granularly remove individual files from Cloudflare's cache by specifying the associated Cache-Tag. BEWARE: This option requires an Enterprise account.</source>
-        <target state="needs-translation">Purge cache by Cache-Tag: Granularly remove individual files from Cloudflare's cache by specifying the associated Cache-Tag. BEWARE: This option requires an Enterprise account.</target>
+        <target state="translated">Purga la memòria cau per Cache-Tag: Elimineu de manera granular fitxers individuals de la memòria cau de Cloudflare especificant el Cache-Tag associat. ATENCIÓ: Aquesta opció requereix un compte Enterprise.</target>
       </trans-unit>
       <trans-unit id="settings.labels.emptyList">
         <source>Empty list fetched from Cloudflare, please check your credentials.</source>
-        <target state="needs-translation">Empty list fetched from Cloudflare, please check your credentials.</target>
+        <target state="translated">S'ha obtingut una llista buida de Cloudflare, comproveu les vostres credencials.</target>
       </trans-unit>
       <trans-unit id="settings.labels.zoneIdentifiers">
         <source>Cloudflare API Zone Identifiers</source>
-        <target state="needs-translation">Cloudflare API Zone Identifiers</target>
+        <target state="translated">Identificadors de zona de l'API de Cloudflare</target>
       </trans-unit>
     </body>
   </file>
