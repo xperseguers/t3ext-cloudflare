@@ -3,186 +3,186 @@
   <file source-language="en" datatype="plaintext" original="messages" date="2014-12-30T10:37:08Z" product-name="cloudflare" target-language="ja">
     <header/>
     <body>
-      <trans-unit id="toolbarItem">
+      <trans-unit id="toolbarItem" approved="yes">
         <source>Cloudflare</source>
-        <target state="translated">Cloudflare</target>
+        <target state="final">Cloudflare</target>
       </trans-unit>
-      <trans-unit id="no_domains">
+      <trans-unit id="no_domains" approved="yes">
         <source>No domains configured for Cloudflare.</source>
-        <target state="translated">Cloudflare にドメインが設定されていません。</target>
+        <target state="final">Cloudflare にドメインが設定されていません。</target>
       </trans-unit>
-      <trans-unit id="toggle_development">
+      <trans-unit id="toggle_development" approved="yes">
         <source>Toggle development mode</source>
-        <target state="translated">開発モードを切り替え</target>
+        <target state="final">開発モードを切り替え</target>
       </trans-unit>
-      <trans-unit id="zone_active">
+      <trans-unit id="zone_active" approved="yes">
         <source>This zone is active</source>
-        <target state="translated">このゾーンは有効です</target>
+        <target state="final">このゾーンは有効です</target>
       </trans-unit>
-      <trans-unit id="zone_inactive">
+      <trans-unit id="zone_inactive" approved="yes">
         <source>This zone is currently inactive</source>
-        <target state="translated">このゾーンは現在無効です</target>
+        <target state="final">このゾーンは現在無効です</target>
       </trans-unit>
-      <trans-unit id="zone_development">
+      <trans-unit id="zone_development" approved="yes">
         <source>This zone is in development mode</source>
-        <target state="translated">このゾーンは開発モードです</target>
+        <target state="final">このゾーンは開発モードです</target>
       </trans-unit>
-      <trans-unit id="clear_cache">
+      <trans-unit id="clear_cache" approved="yes">
         <source>Clear Cloudflare cache</source>
-        <target state="translated">Cloudflare キャッシュをクリア</target>
+        <target state="final">Cloudflare キャッシュをクリア</target>
       </trans-unit>
-      <trans-unit id="clear_cache.description">
+      <trans-unit id="clear_cache.description" approved="yes">
         <source>Clear frontend and page-related caches on Cloudflare.</source>
-        <target state="translated">Cloudflare 上のフロントエンドおよびページ関連のキャッシュをクリアします。</target>
+        <target state="final">Cloudflare 上のフロントエンドおよびページ関連のキャッシュをクリアします。</target>
       </trans-unit>
       <!-- dashboard -->
-      <trans-unit id="period.30">
+      <trans-unit id="period.30" approved="yes">
         <source>Last 30 Minutes</source>
-        <target state="translated">過去30分</target>
+        <target state="final">過去30分</target>
       </trans-unit>
-      <trans-unit id="period.360">
+      <trans-unit id="period.360" approved="yes">
         <source>Last 6 Hours</source>
-        <target state="translated">過去6時間</target>
+        <target state="final">過去6時間</target>
       </trans-unit>
-      <trans-unit id="period.720">
+      <trans-unit id="period.720" approved="yes">
         <source>Last 12 Hours</source>
-        <target state="translated">過去12時間</target>
+        <target state="final">過去12時間</target>
       </trans-unit>
-      <trans-unit id="period.1440">
+      <trans-unit id="period.1440" approved="yes">
         <source>Last 24 Hours</source>
-        <target state="translated">過去24時間</target>
+        <target state="final">過去24時間</target>
       </trans-unit>
-      <trans-unit id="period.10080">
+      <trans-unit id="period.10080" approved="yes">
         <source>Last Week</source>
-        <target state="translated">過去1週間</target>
+        <target state="final">過去1週間</target>
       </trans-unit>
-      <trans-unit id="period.43200">
+      <trans-unit id="period.43200" approved="yes">
         <source>Last Month</source>
-        <target state="translated">過去1か月</target>
+        <target state="final">過去1か月</target>
       </trans-unit>
-      <trans-unit id="dashboard.requests">
+      <trans-unit id="dashboard.requests" approved="yes">
         <source>Requests</source>
-        <target state="translated">リクエスト</target>
+        <target state="final">リクエスト</target>
       </trans-unit>
-      <trans-unit id="dashboard.requests.long">
+      <trans-unit id="dashboard.requests.long" approved="yes">
         <source>Requests Through Cloudflare</source>
-        <target state="translated">Cloudflare 経由のリクエスト</target>
+        <target state="final">Cloudflare 経由のリクエスト</target>
       </trans-unit>
-      <trans-unit id="dashboard.requests.total">
+      <trans-unit id="dashboard.requests.total" approved="yes">
         <source>Total Requests</source>
-        <target state="translated">リクエスト合計</target>
+        <target state="final">リクエスト合計</target>
       </trans-unit>
-      <trans-unit id="dashboard.requests.cached">
+      <trans-unit id="dashboard.requests.cached" approved="yes">
         <source>Cached Requests</source>
-        <target state="translated">キャッシュされたリクエスト</target>
+        <target state="final">キャッシュされたリクエスト</target>
       </trans-unit>
-      <trans-unit id="dashboard.requests.uncached">
+      <trans-unit id="dashboard.requests.uncached" approved="yes">
         <source>Uncached Requests</source>
-        <target state="translated">キャッシュされていないリクエスト</target>
+        <target state="final">キャッシュされていないリクエスト</target>
       </trans-unit>
-      <trans-unit id="dashboard.bandwidth">
+      <trans-unit id="dashboard.bandwidth" approved="yes">
         <source>Bandwidth</source>
-        <target state="translated">帯域幅</target>
+        <target state="final">帯域幅</target>
       </trans-unit>
-      <trans-unit id="dashboard.bandwidth.total">
+      <trans-unit id="dashboard.bandwidth.total" approved="yes">
         <source>Total Bandwidth</source>
-        <target state="translated">帯域幅合計</target>
+        <target state="final">帯域幅合計</target>
       </trans-unit>
-      <trans-unit id="dashboard.bandwidth.cached">
+      <trans-unit id="dashboard.bandwidth.cached" approved="yes">
         <source>Cached Bandwidth</source>
-        <target state="translated">キャッシュされた帯域幅</target>
+        <target state="final">キャッシュされた帯域幅</target>
       </trans-unit>
-      <trans-unit id="dashboard.bandwidth.uncached">
+      <trans-unit id="dashboard.bandwidth.uncached" approved="yes">
         <source>Uncached Bandwidth</source>
-        <target state="translated">キャッシュされていない帯域幅</target>
+        <target state="final">キャッシュされていない帯域幅</target>
       </trans-unit>
-      <trans-unit id="dashboard.uniques">
+      <trans-unit id="dashboard.uniques" approved="yes">
         <source>Unique Visitors</source>
-        <target state="translated">ユニークビジター</target>
+        <target state="final">ユニークビジター</target>
       </trans-unit>
-      <trans-unit id="dashboard.uniques.total">
+      <trans-unit id="dashboard.uniques.total" approved="yes">
         <source>Total Unique Visitors</source>
-        <target state="translated">ユニークビジター合計</target>
+        <target state="final">ユニークビジター合計</target>
       </trans-unit>
-      <trans-unit id="dashboard.uniques.maximum">
+      <trans-unit id="dashboard.uniques.maximum" approved="yes">
         <source>Maximum Unique Visitors</source>
-        <target state="translated">ユニークビジター最大数</target>
+        <target state="final">ユニークビジター最大数</target>
       </trans-unit>
-      <trans-unit id="dashboard.uniques.minimum">
+      <trans-unit id="dashboard.uniques.minimum" approved="yes">
         <source>Minimum Unique Visitors</source>
-        <target state="translated">ユニークビジター最小数</target>
+        <target state="final">ユニークビジター最小数</target>
       </trans-unit>
-      <trans-unit id="dashboard.threats">
+      <trans-unit id="dashboard.threats" approved="yes">
         <source>Threats</source>
-        <target state="translated">脅威</target>
+        <target state="final">脅威</target>
       </trans-unit>
-      <trans-unit id="dashboard.threats.total">
+      <trans-unit id="dashboard.threats.total" approved="yes">
         <source>Total Threats</source>
-        <target state="translated">脅威の合計</target>
+        <target state="final">脅威の合計</target>
       </trans-unit>
-      <trans-unit id="dashboard.threats.topCountry">
+      <trans-unit id="dashboard.threats.topCountry" approved="yes">
         <source>Top Country</source>
-        <target state="translated">上位の国</target>
+        <target state="final">上位の国</target>
       </trans-unit>
-      <trans-unit id="dashboard.threats.topType">
+      <trans-unit id="dashboard.threats.topType" approved="yes">
         <source>Top Threat Type</source>
-        <target state="translated">上位の脅威タイプ</target>
+        <target state="final">上位の脅威タイプ</target>
       </trans-unit>
-      <trans-unit id="dashboard.threats.bic.ban.unknown">
+      <trans-unit id="dashboard.threats.bic.ban.unknown" approved="yes">
         <source>Bad Browser</source>
-        <target state="translated">不正なブラウザ</target>
+        <target state="final">不正なブラウザ</target>
       </trans-unit>
-      <trans-unit id="dashboard.threats.hot.ban.unknown">
+      <trans-unit id="dashboard.threats.hot.ban.unknown" approved="yes">
         <source>Blocked hotlink</source>
-        <target state="translated">ブロックされたホットリンク</target>
+        <target state="final">ブロックされたホットリンク</target>
       </trans-unit>
-      <trans-unit id="dashboard.threats.macro.ban.unknown">
+      <trans-unit id="dashboard.threats.macro.ban.unknown" approved="yes">
         <source>Bad IP</source>
-        <target state="translated">不正な IP</target>
+        <target state="final">不正な IP</target>
       </trans-unit>
-      <trans-unit id="dashboard.threats.macro.chl.captchaFail">
+      <trans-unit id="dashboard.threats.macro.chl.captchaFail" approved="yes">
         <source>Human challenged</source>
-        <target state="translated">人間によるチャレンジ</target>
+        <target state="final">人間によるチャレンジ</target>
       </trans-unit>
-      <trans-unit id="dashboard.threats.macro.chl.jschlFail">
+      <trans-unit id="dashboard.threats.macro.chl.jschlFail" approved="yes">
         <source>Browser challenged</source>
-        <target state="translated">ブラウザによるチャレンジ</target>
+        <target state="final">ブラウザによるチャレンジ</target>
       </trans-unit>
-      <trans-unit id="dashboard.threats.user.ban.ip">
+      <trans-unit id="dashboard.threats.user.ban.ip" approved="yes">
         <source>IP block (user)</source>
-        <target state="translated">IP ブロック (ユーザー)</target>
+        <target state="final">IP ブロック (ユーザー)</target>
       </trans-unit>
-      <trans-unit id="dashboard.performanceSecurity">
+      <trans-unit id="dashboard.performanceSecurity" approved="yes">
         <source>Performance &amp; Security</source>
-        <target state="translated">パフォーマンスとセキュリティ</target>
+        <target state="final">パフォーマンスとセキュリティ</target>
       </trans-unit>
-      <trans-unit id="dashboard.bandwidthSaved">
+      <trans-unit id="dashboard.bandwidthSaved" approved="yes">
         <source>Bandwidth Saved</source>
-        <target state="translated">節約された帯域幅</target>
+        <target state="final">節約された帯域幅</target>
       </trans-unit>
-      <trans-unit id="dashboard.contentType">
+      <trans-unit id="dashboard.contentType" approved="yes">
         <source>Content Type Breakdown</source>
-        <target state="translated">コンテンツタイプ別の内訳</target>
+        <target state="final">コンテンツタイプ別の内訳</target>
       </trans-unit>
-      <trans-unit id="dashboard.ssl">
+      <trans-unit id="dashboard.ssl" approved="yes">
         <source>Traffic Served Over SSL</source>
-        <target state="translated">SSL で配信されたトラフィック</target>
+        <target state="final">SSL で配信されたトラフィック</target>
       </trans-unit>
-      <trans-unit id="dashboard.cached">
+      <trans-unit id="dashboard.cached" approved="yes">
         <source>Cached</source>
-        <target state="translated">キャッシュ済み</target>
+        <target state="final">キャッシュ済み</target>
       </trans-unit>
-      <trans-unit id="dashboard.uncached">
+      <trans-unit id="dashboard.uncached" approved="yes">
         <source>Uncached</source>
-        <target state="translated">未キャッシュ</target>
+        <target state="final">未キャッシュ</target>
       </trans-unit>
-      <trans-unit id="dashboard.encrypted">
+      <trans-unit id="dashboard.encrypted" approved="yes">
         <source>Encrypted</source>
-        <target state="translated">暗号化</target>
+        <target state="final">暗号化</target>
       </trans-unit>
-      <trans-unit id="dashboard.unencrypted">
+      <trans-unit id="dashboard.unencrypted" approved="yes">
         <source>Unencrypted</source>
-        <target state="translated">非暗号化</target>
+        <target state="final">非暗号化</target>
       </trans-unit>
     </body>
   </file>
