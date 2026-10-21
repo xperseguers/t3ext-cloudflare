@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="en" datatype="plaintext" original="messages" date="2014-12-30T10:37:08Z" product-name="cloudflare" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="toolbarItem">
+        <source>Cloudflare</source>
+        <target>crwdns227651:0crwdne227651:0</target>
+      </trans-unit>
+      <trans-unit id="no_domains">
+        <source>No domains configured for Cloudflare.</source>
+        <target>crwdns340548:0crwdne340548:0</target>
+      </trans-unit>
+      <trans-unit id="toggle_development">
+        <source>Toggle development mode</source>
+        <target>crwdns227655:0crwdne227655:0</target>
+      </trans-unit>
+      <trans-unit id="zone_active">
+        <source>This zone is active</source>
+        <target>crwdns227657:0crwdne227657:0</target>
+      </trans-unit>
+      <trans-unit id="zone_inactive">
+        <source>This zone is currently inactive</source>
+        <target>crwdns227659:0crwdne227659:0</target>
+      </trans-unit>
+      <trans-unit id="zone_development">
+        <source>This zone is in development mode</source>
+        <target>crwdns227661:0crwdne227661:0</target>
+      </trans-unit>
+      <trans-unit id="clear_cache">
+        <source>Clear Cloudflare cache</source>
+        <target>crwdns227663:0crwdne227663:0</target>
+      </trans-unit>
+      <trans-unit id="clear_cache.description">
+        <source>Clear frontend and page-related caches on Cloudflare.</source>
+        <target>crwdns227665:0crwdne227665:0</target>
+      </trans-unit>
+      <!-- dashboard -->
+      <trans-unit id="period.30">
+        <source>Last 30 Minutes</source>
+        <target>crwdns227667:0crwdne227667:0</target>
+      </trans-unit>
+      <trans-unit id="period.360">
+        <source>Last 6 Hours</source>
+        <target>crwdns227669:0crwdne227669:0</target>
+      </trans-unit>
+      <trans-unit id="period.720">
+        <source>Last 12 Hours</source>
+        <target>crwdns227671:0crwdne227671:0</target>
+      </trans-unit>
+      <trans-unit id="period.1440">
+        <source>Last 24 Hours</source>
+        <target>crwdns227673:0crwdne227673:0</target>
+      </trans-unit>
+      <trans-unit id="period.10080">
+        <source>Last Week</source>
+        <target>crwdns227675:0crwdne227675:0</target>
+      </trans-unit>
+      <trans-unit id="period.43200">
+        <source>Last Month</source>
+        <target>crwdns227677:0crwdne227677:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.requests">
+        <source>Requests</source>
+        <target>crwdns227679:0crwdne227679:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.requests.long">
+        <source>Requests Through Cloudflare</source>
+        <target>crwdns227681:0crwdne227681:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.requests.total">
+        <source>Total Requests</source>
+        <target>crwdns227683:0crwdne227683:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.requests.cached">
+        <source>Cached Requests</source>
+        <target>crwdns227685:0crwdne227685:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.requests.uncached">
+        <source>Uncached Requests</source>
+        <target>crwdns227687:0crwdne227687:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.bandwidth">
+        <source>Bandwidth</source>
+        <target>crwdns227689:0crwdne227689:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.bandwidth.total">
+        <source>Total Bandwidth</source>
+        <target>crwdns227691:0crwdne227691:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.bandwidth.cached">
+        <source>Cached Bandwidth</source>
+        <target>crwdns227693:0crwdne227693:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.bandwidth.uncached">
+        <source>Uncached Bandwidth</source>
+        <target>crwdns227695:0crwdne227695:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.uniques">
+        <source>Unique Visitors</source>
+        <target>crwdns227697:0crwdne227697:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.uniques.total">
+        <source>Total Unique Visitors</source>
+        <target>crwdns227699:0crwdne227699:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.uniques.maximum">
+        <source>Maximum Unique Visitors</source>
+        <target>crwdns227701:0crwdne227701:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.uniques.minimum">
+        <source>Minimum Unique Visitors</source>
+        <target>crwdns227703:0crwdne227703:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.threats">
+        <source>Threats</source>
+        <target>crwdns227705:0crwdne227705:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.threats.total">
+        <source>Total Threats</source>
+        <target>crwdns227707:0crwdne227707:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.threats.topCountry">
+        <source>Top Country</source>
+        <target>crwdns227709:0crwdne227709:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.threats.topType">
+        <source>Top Threat Type</source>
+        <target>crwdns227711:0crwdne227711:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.threats.bic.ban.unknown">
+        <source>Bad Browser</source>
+        <target>crwdns227713:0crwdne227713:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.threats.hot.ban.unknown">
+        <source>Blocked hotlink</source>
+        <target>crwdns227715:0crwdne227715:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.threats.macro.ban.unknown">
+        <source>Bad IP</source>
+        <target>crwdns227717:0crwdne227717:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.threats.macro.chl.captchaFail">
+        <source>Human challenged</source>
+        <target>crwdns227719:0crwdne227719:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.threats.macro.chl.jschlFail">
+        <source>Browser challenged</source>
+        <target>crwdns227721:0crwdne227721:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.threats.user.ban.ip">
+        <source>IP block (user)</source>
+        <target>crwdns227723:0crwdne227723:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.performanceSecurity">
+        <source>Performance &amp; Security</source>
+        <target>crwdns227725:0crwdne227725:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.bandwidthSaved">
+        <source>Bandwidth Saved</source>
+        <target>crwdns227727:0crwdne227727:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.contentType">
+        <source>Content Type Breakdown</source>
+        <target>crwdns227729:0crwdne227729:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.ssl">
+        <source>Traffic Served Over SSL</source>
+        <target>crwdns227731:0crwdne227731:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.cached">
+        <source>Cached</source>
+        <target>crwdns227733:0crwdne227733:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.uncached">
+        <source>Uncached</source>
+        <target>crwdns227735:0crwdne227735:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.encrypted">
+        <source>Encrypted</source>
+        <target>crwdns227737:0crwdne227737:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.unencrypted">
+        <source>Unencrypted</source>
+        <target>crwdns227739:0crwdne227739:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

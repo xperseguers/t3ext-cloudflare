@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="en" datatype="plaintext" original="messages" date="2014-12-30T17:07:23Z" product-name="cloudflare" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="settings.useBearerAuthentication" approved="yes">
+        <source>Use Bearer Authentication (recommended): Use a Token for Bearer Authentication (RFC 6750) and API key instead of the standard e-mail address and API key.</source>
+        <target state="final">استخدام مصادقة Bearer (موصى به): استخدم رمزًا لمصادقة Bearer (RFC 6750) ومفتاح API بدلًا من عنوان البريد الإلكتروني ومفتاح API القياسيين.</target>
+      </trans-unit>
+      <trans-unit id="settings.email" approved="yes">
+        <source>Email: The e-mail address associated with the API key.</source>
+        <target state="final">البريد الإلكتروني: عنوان البريد الإلكتروني المرتبط بمفتاح API.</target>
+      </trans-unit>
+      <trans-unit id="settings.apiKey" approved="yes">
+        <source>API Key: This is the API key made available on your account page (https://dash.cloudflare.com/profile)</source>
+        <target state="final">مفتاح API: هذا هو مفتاح API المتاح في صفحة حسابك (https://dash.cloudflare.com/profile)</target>
+      </trans-unit>
+      <trans-unit id="settings.domains" approved="yes">
+        <source>Domains: Please tick the domains whose cache should be flushed on Cloudflare upon clearing all caches in TYPO3.</source>
+        <target state="final">النطاقات: يرجى تحديد النطاقات التي يجب مسح ذاكرتها المؤقتة على Cloudflare عند مسح جميع الذاكرات المؤقتة في TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="settings.enableAnalyticsModule" approved="yes">
+        <source>Enable Analytics Backend module: Tick this checkbox if you need the Analytics module in Backend (this requires proper Token permissions if using Bearer Authentication).</source>
+        <target state="final">تفعيل وحدة Analytics في الواجهة الخلفية: حدّد هذا المربع إذا كنت بحاجة إلى وحدة Analytics في الواجهة الخلفية (يتطلب ذلك أذونات رمز مناسبة عند استخدام مصادقة Bearer).</target>
+      </trans-unit>
+      <trans-unit id="settings.enableOriginatingIPs" approved="yes">
+        <source>Originating IPs: Tick this checkbox in case you cannot restore the originating IPs at the webserver level.</source>
+        <target state="final">عناوين IP الأصلية: حدّد هذا المربع إذا تعذّر عليك استعادة عناوين IP الأصلية على مستوى خادم الويب.</target>
+      </trans-unit>
+      <trans-unit id="settings.enablePurgeSingleFile" approved="yes">
+        <source>Purge individual files by URL: Granularly remove individual files from Cloudflare's cache by specifying the URL.</source>
+        <target state="final">مسح ملفات فردية حسب URL: إزالة ملفات فردية بشكل دقيق من ذاكرة Cloudflare المؤقتة عبر تحديد URL.</target>
+      </trans-unit>
+      <trans-unit id="settings.enablePurgeByTags" approved="yes">
+        <source>Purge cache by Cache-Tag: Granularly remove individual files from Cloudflare's cache by specifying the associated Cache-Tag. BEWARE: This option requires an Enterprise account.</source>
+        <target state="final">مسح الذاكرة المؤقتة حسب Cache-Tag: إزالة ملفات فردية بشكل دقيق من ذاكرة Cloudflare المؤقتة عبر تحديد Cache-Tag المرتبط. تنبيه: يتطلب هذا الخيار حساب Enterprise.</target>
+      </trans-unit>
+      <trans-unit id="settings.labels.emptyList" approved="yes">
+        <source>Empty list fetched from Cloudflare, please check your credentials.</source>
+        <target state="final">تم جلب قائمة فارغة من Cloudflare، يرجى التحقق من بيانات الاعتماد.</target>
+      </trans-unit>
+      <trans-unit id="settings.labels.zoneIdentifiers" approved="yes">
+        <source>Cloudflare API Zone Identifiers</source>
+        <target state="final">معرّفات منطقة Cloudflare API</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="en" datatype="plaintext" original="messages" date="2014-12-30T17:07:23Z" product-name="cloudflare" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="settings.useBearerAuthentication">
+        <source>Use Bearer Authentication (recommended): Use a Token for Bearer Authentication (RFC 6750) and API key instead of the standard e-mail address and API key.</source>
+        <target>crwdns340544:0crwdne340544:0</target>
+      </trans-unit>
+      <trans-unit id="settings.email">
+        <source>Email: The e-mail address associated with the API key.</source>
+        <target>crwdns227743:0crwdne227743:0</target>
+      </trans-unit>
+      <trans-unit id="settings.apiKey">
+        <source>API Key: This is the API key made available on your account page (https://dash.cloudflare.com/profile)</source>
+        <target>crwdns227745:0crwdne227745:0</target>
+      </trans-unit>
+      <trans-unit id="settings.domains">
+        <source>Domains: Please tick the domains whose cache should be flushed on Cloudflare upon clearing all caches in TYPO3.</source>
+        <target>crwdns227747:0crwdne227747:0</target>
+      </trans-unit>
+      <trans-unit id="settings.enableAnalyticsModule">
+        <source>Enable Analytics Backend module: Tick this checkbox if you need the Analytics module in Backend (this requires proper Token permissions if using Bearer Authentication).</source>
+        <target>crwdns227749:0crwdne227749:0</target>
+      </trans-unit>
+      <trans-unit id="settings.enableOriginatingIPs">
+        <source>Originating IPs: Tick this checkbox in case you cannot restore the originating IPs at the webserver level.</source>
+        <target>crwdns227751:0crwdne227751:0</target>
+      </trans-unit>
+      <trans-unit id="settings.enablePurgeSingleFile">
+        <source>Purge individual files by URL: Granularly remove individual files from Cloudflare's cache by specifying the URL.</source>
+        <target>crwdns340546:0crwdne340546:0</target>
+      </trans-unit>
+      <trans-unit id="settings.enablePurgeByTags">
+        <source>Purge cache by Cache-Tag: Granularly remove individual files from Cloudflare's cache by specifying the associated Cache-Tag. BEWARE: This option requires an Enterprise account.</source>
+        <target>crwdns227755:0crwdne227755:0</target>
+      </trans-unit>
+      <trans-unit id="settings.labels.emptyList">
+        <source>Empty list fetched from Cloudflare, please check your credentials.</source>
+        <target>crwdns227759:0crwdne227759:0</target>
+      </trans-unit>
+      <trans-unit id="settings.labels.zoneIdentifiers">
+        <source>Cloudflare API Zone Identifiers</source>
+        <target>crwdns227761:0crwdne227761:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
