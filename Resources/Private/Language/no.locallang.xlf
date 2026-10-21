@@ -3,186 +3,186 @@
   <file source-language="en" datatype="plaintext" original="messages" date="2014-12-30T10:37:08Z" product-name="cloudflare" target-language="no">
     <header/>
     <body>
-      <trans-unit id="toolbarItem">
+      <trans-unit id="toolbarItem" approved="yes">
         <source>Cloudflare</source>
-        <target state="translated">Cloudflare</target>
+        <target state="final">Cloudflare</target>
       </trans-unit>
-      <trans-unit id="no_domains">
+      <trans-unit id="no_domains" approved="yes">
         <source>No domains configured for Cloudflare.</source>
-        <target state="translated">Ingen domener er konfigurert for Cloudflare.</target>
+        <target state="final">Ingen domener er konfigurert for Cloudflare.</target>
       </trans-unit>
-      <trans-unit id="toggle_development">
+      <trans-unit id="toggle_development" approved="yes">
         <source>Toggle development mode</source>
-        <target state="translated">Veksle utviklingsmodus</target>
+        <target state="final">Veksle utviklingsmodus</target>
       </trans-unit>
-      <trans-unit id="zone_active">
+      <trans-unit id="zone_active" approved="yes">
         <source>This zone is active</source>
-        <target state="translated">Denne sonen er aktiv</target>
+        <target state="final">Denne sonen er aktiv</target>
       </trans-unit>
-      <trans-unit id="zone_inactive">
+      <trans-unit id="zone_inactive" approved="yes">
         <source>This zone is currently inactive</source>
-        <target state="translated">Denne sonen er for øyeblikket inaktiv</target>
+        <target state="final">Denne sonen er for øyeblikket inaktiv</target>
       </trans-unit>
-      <trans-unit id="zone_development">
+      <trans-unit id="zone_development" approved="yes">
         <source>This zone is in development mode</source>
-        <target state="translated">Denne sonen er i utviklingsmodus</target>
+        <target state="final">Denne sonen er i utviklingsmodus</target>
       </trans-unit>
-      <trans-unit id="clear_cache">
+      <trans-unit id="clear_cache" approved="yes">
         <source>Clear Cloudflare cache</source>
-        <target state="translated">Tøm Cloudflare-hurtigbuffer</target>
+        <target state="final">Tøm Cloudflare-hurtigbuffer</target>
       </trans-unit>
-      <trans-unit id="clear_cache.description">
+      <trans-unit id="clear_cache.description" approved="yes">
         <source>Clear frontend and page-related caches on Cloudflare.</source>
-        <target state="translated">Tømmer frontend- og siderelaterte hurtigbuffere på Cloudflare.</target>
+        <target state="final">Tømmer frontend- og siderelaterte hurtigbuffere på Cloudflare.</target>
       </trans-unit>
       <!-- dashboard -->
-      <trans-unit id="period.30">
+      <trans-unit id="period.30" approved="yes">
         <source>Last 30 Minutes</source>
-        <target state="translated">Siste 30 minutter</target>
+        <target state="final">Siste 30 minutter</target>
       </trans-unit>
-      <trans-unit id="period.360">
+      <trans-unit id="period.360" approved="yes">
         <source>Last 6 Hours</source>
-        <target state="translated">Siste 6 timer</target>
+        <target state="final">Siste 6 timer</target>
       </trans-unit>
-      <trans-unit id="period.720">
+      <trans-unit id="period.720" approved="yes">
         <source>Last 12 Hours</source>
-        <target state="translated">Siste 12 timer</target>
+        <target state="final">Siste 12 timer</target>
       </trans-unit>
-      <trans-unit id="period.1440">
+      <trans-unit id="period.1440" approved="yes">
         <source>Last 24 Hours</source>
-        <target state="translated">Siste 24 timer</target>
+        <target state="final">Siste 24 timer</target>
       </trans-unit>
-      <trans-unit id="period.10080">
+      <trans-unit id="period.10080" approved="yes">
         <source>Last Week</source>
-        <target state="translated">Siste uke</target>
+        <target state="final">Siste uke</target>
       </trans-unit>
-      <trans-unit id="period.43200">
+      <trans-unit id="period.43200" approved="yes">
         <source>Last Month</source>
-        <target state="translated">Siste måned</target>
+        <target state="final">Siste måned</target>
       </trans-unit>
-      <trans-unit id="dashboard.requests">
+      <trans-unit id="dashboard.requests" approved="yes">
         <source>Requests</source>
-        <target state="translated">Forespørsler</target>
+        <target state="final">Forespørsler</target>
       </trans-unit>
-      <trans-unit id="dashboard.requests.long">
+      <trans-unit id="dashboard.requests.long" approved="yes">
         <source>Requests Through Cloudflare</source>
-        <target state="translated">Forespørsler via Cloudflare</target>
+        <target state="final">Forespørsler via Cloudflare</target>
       </trans-unit>
-      <trans-unit id="dashboard.requests.total">
+      <trans-unit id="dashboard.requests.total" approved="yes">
         <source>Total Requests</source>
-        <target state="translated">Totalt antall forespørsler</target>
+        <target state="final">Totalt antall forespørsler</target>
       </trans-unit>
-      <trans-unit id="dashboard.requests.cached">
+      <trans-unit id="dashboard.requests.cached" approved="yes">
         <source>Cached Requests</source>
-        <target state="translated">Bufrede forespørsler</target>
+        <target state="final">Bufrede forespørsler</target>
       </trans-unit>
-      <trans-unit id="dashboard.requests.uncached">
+      <trans-unit id="dashboard.requests.uncached" approved="yes">
         <source>Uncached Requests</source>
-        <target state="translated">Ikke-bufrede forespørsler</target>
+        <target state="final">Ikke-bufrede forespørsler</target>
       </trans-unit>
-      <trans-unit id="dashboard.bandwidth">
+      <trans-unit id="dashboard.bandwidth" approved="yes">
         <source>Bandwidth</source>
-        <target state="translated">Båndbredde</target>
+        <target state="final">Båndbredde</target>
       </trans-unit>
-      <trans-unit id="dashboard.bandwidth.total">
+      <trans-unit id="dashboard.bandwidth.total" approved="yes">
         <source>Total Bandwidth</source>
-        <target state="translated">Total båndbredde</target>
+        <target state="final">Total båndbredde</target>
       </trans-unit>
-      <trans-unit id="dashboard.bandwidth.cached">
+      <trans-unit id="dashboard.bandwidth.cached" approved="yes">
         <source>Cached Bandwidth</source>
-        <target state="translated">Bufret båndbredde</target>
+        <target state="final">Bufret båndbredde</target>
       </trans-unit>
-      <trans-unit id="dashboard.bandwidth.uncached">
+      <trans-unit id="dashboard.bandwidth.uncached" approved="yes">
         <source>Uncached Bandwidth</source>
-        <target state="translated">Ikke-bufret båndbredde</target>
+        <target state="final">Ikke-bufret båndbredde</target>
       </trans-unit>
-      <trans-unit id="dashboard.uniques">
+      <trans-unit id="dashboard.uniques" approved="yes">
         <source>Unique Visitors</source>
-        <target state="translated">Unike besøkende</target>
+        <target state="final">Unike besøkende</target>
       </trans-unit>
-      <trans-unit id="dashboard.uniques.total">
+      <trans-unit id="dashboard.uniques.total" approved="yes">
         <source>Total Unique Visitors</source>
-        <target state="translated">Totalt antall unike besøkende</target>
+        <target state="final">Totalt antall unike besøkende</target>
       </trans-unit>
-      <trans-unit id="dashboard.uniques.maximum">
+      <trans-unit id="dashboard.uniques.maximum" approved="yes">
         <source>Maximum Unique Visitors</source>
-        <target state="translated">Maksimalt antall unike besøkende</target>
+        <target state="final">Maksimalt antall unike besøkende</target>
       </trans-unit>
-      <trans-unit id="dashboard.uniques.minimum">
+      <trans-unit id="dashboard.uniques.minimum" approved="yes">
         <source>Minimum Unique Visitors</source>
-        <target state="translated">Minimum antall unike besøkende</target>
+        <target state="final">Minimum antall unike besøkende</target>
       </trans-unit>
-      <trans-unit id="dashboard.threats">
+      <trans-unit id="dashboard.threats" approved="yes">
         <source>Threats</source>
-        <target state="translated">Trusler</target>
+        <target state="final">Trusler</target>
       </trans-unit>
-      <trans-unit id="dashboard.threats.total">
+      <trans-unit id="dashboard.threats.total" approved="yes">
         <source>Total Threats</source>
-        <target state="translated">Totalt antall trusler</target>
+        <target state="final">Totalt antall trusler</target>
       </trans-unit>
-      <trans-unit id="dashboard.threats.topCountry">
+      <trans-unit id="dashboard.threats.topCountry" approved="yes">
         <source>Top Country</source>
-        <target state="translated">Toppland</target>
+        <target state="final">Toppland</target>
       </trans-unit>
-      <trans-unit id="dashboard.threats.topType">
+      <trans-unit id="dashboard.threats.topType" approved="yes">
         <source>Top Threat Type</source>
-        <target state="translated">Vanligste trusseltype</target>
+        <target state="final">Vanligste trusseltype</target>
       </trans-unit>
-      <trans-unit id="dashboard.threats.bic.ban.unknown">
+      <trans-unit id="dashboard.threats.bic.ban.unknown" approved="yes">
         <source>Bad Browser</source>
-        <target state="translated">Dårlig nettleser</target>
+        <target state="final">Dårlig nettleser</target>
       </trans-unit>
-      <trans-unit id="dashboard.threats.hot.ban.unknown">
+      <trans-unit id="dashboard.threats.hot.ban.unknown" approved="yes">
         <source>Blocked hotlink</source>
-        <target state="translated">Blokkert hotlink</target>
+        <target state="final">Blokkert hotlink</target>
       </trans-unit>
-      <trans-unit id="dashboard.threats.macro.ban.unknown">
+      <trans-unit id="dashboard.threats.macro.ban.unknown" approved="yes">
         <source>Bad IP</source>
-        <target state="translated">Dårlig IP</target>
+        <target state="final">Dårlig IP</target>
       </trans-unit>
-      <trans-unit id="dashboard.threats.macro.chl.captchaFail">
+      <trans-unit id="dashboard.threats.macro.chl.captchaFail" approved="yes">
         <source>Human challenged</source>
-        <target state="translated">Menneskelig utfordring</target>
+        <target state="final">Menneskelig utfordring</target>
       </trans-unit>
-      <trans-unit id="dashboard.threats.macro.chl.jschlFail">
+      <trans-unit id="dashboard.threats.macro.chl.jschlFail" approved="yes">
         <source>Browser challenged</source>
-        <target state="translated">Nettleserutfordring</target>
+        <target state="final">Nettleserutfordring</target>
       </trans-unit>
-      <trans-unit id="dashboard.threats.user.ban.ip">
+      <trans-unit id="dashboard.threats.user.ban.ip" approved="yes">
         <source>IP block (user)</source>
-        <target state="translated">IP-blokkering (bruker)</target>
+        <target state="final">IP-blokkering (bruker)</target>
       </trans-unit>
-      <trans-unit id="dashboard.performanceSecurity">
+      <trans-unit id="dashboard.performanceSecurity" approved="yes">
         <source>Performance &amp; Security</source>
-        <target state="translated">Ytelse og sikkerhet</target>
+        <target state="final">Ytelse og sikkerhet</target>
       </trans-unit>
-      <trans-unit id="dashboard.bandwidthSaved">
+      <trans-unit id="dashboard.bandwidthSaved" approved="yes">
         <source>Bandwidth Saved</source>
-        <target state="translated">Spart båndbredde</target>
+        <target state="final">Spart båndbredde</target>
       </trans-unit>
-      <trans-unit id="dashboard.contentType">
+      <trans-unit id="dashboard.contentType" approved="yes">
         <source>Content Type Breakdown</source>
-        <target state="translated">Fordeling etter innholdstype</target>
+        <target state="final">Fordeling etter innholdstype</target>
       </trans-unit>
-      <trans-unit id="dashboard.ssl">
+      <trans-unit id="dashboard.ssl" approved="yes">
         <source>Traffic Served Over SSL</source>
-        <target state="translated">Trafikk levert via SSL</target>
+        <target state="final">Trafikk levert via SSL</target>
       </trans-unit>
-      <trans-unit id="dashboard.cached">
+      <trans-unit id="dashboard.cached" approved="yes">
         <source>Cached</source>
-        <target state="translated">Bufret</target>
+        <target state="final">Bufret</target>
       </trans-unit>
-      <trans-unit id="dashboard.uncached">
+      <trans-unit id="dashboard.uncached" approved="yes">
         <source>Uncached</source>
-        <target state="translated">Ikke bufret</target>
+        <target state="final">Ikke bufret</target>
       </trans-unit>
-      <trans-unit id="dashboard.encrypted">
+      <trans-unit id="dashboard.encrypted" approved="yes">
         <source>Encrypted</source>
-        <target state="translated">Kryptert</target>
+        <target state="final">Kryptert</target>
       </trans-unit>
-      <trans-unit id="dashboard.unencrypted">
+      <trans-unit id="dashboard.unencrypted" approved="yes">
         <source>Unencrypted</source>
-        <target state="translated">Ukryptert</target>
+        <target state="final">Ukryptert</target>
       </trans-unit>
     </body>
   </file>
